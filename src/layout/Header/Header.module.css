@@ -1,0 +1,25 @@
+.header_list {
+   display: flex;
+   justify-content: end;
+   align-items: center;
+   gap: 70px;
+   padding: 10px 0;
+   border-top: 1px solid #fff;
+}
+
+.header_btn{
+   padding: 10px 20px;
+   display: flex;
+   align-items: center;
+   gap: 15px;
+   font-size: 18px;
+   border-top-left-radius: 25px;
+   border-bottom-left-radius: 25px;
+   color: var(--txt-white);
+   background-color: var(--orange);
+}
+
+.header_btn_icon{
+   color: var(--txt-black);
+}
+
