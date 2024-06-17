@@ -10,7 +10,7 @@ export default function NavMenu() {
 					<Link to='/'>Главная</Link>
 				</li>
 				<li>
-					<Link to='/products'>Продукция</Link>
+					<Link to='/types'>Продукция</Link>
 				</li>
 				<li>
 					<Link to='/service-centers'>Сервисные центры</Link>

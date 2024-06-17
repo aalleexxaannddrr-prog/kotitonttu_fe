@@ -1,0 +1,10 @@
+.wrapper {
+   padding: 40px 0;
+}
+
+.container_cards{
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+   gap: 20px;
+}
