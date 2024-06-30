@@ -1,6 +1,6 @@
 .card_container {
    flex: 1;
-   max-width: 350px;
+   max-width: 250px;
    height: 100%;
    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
    border-radius: 12px;
@@ -10,7 +10,7 @@
 .card_img {
    display: block;
    width: 100%;
-   height: 346px;
+   height: 246px;
    border-top-left-radius: 12px;
    border-top-right-radius: 12px;
    border-bottom: 1px solid var(--grey);
