@@ -1,8 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 :root {
-  --bg-green: #135333;
-  --orange: #9A6515;
+  --bg-green: #167144;
+  --orange: #d88f07e1;
+  --white: #fff;
+  --grey: #5049498e;
   --txt-white: #fff;
   --txt-black: #1D1D21;
 }
@@ -36,6 +38,6 @@ button {
 
 .container {
   margin: 0 auto;
-  padding: 10px 5px 0 150px;
+  padding: 0 5px 0 150px;
   max-width: 1360px;
 }
