@@ -9,6 +9,12 @@ import { fetchAllTypes } from "./store/slices/typesSlice";
 import { useDispatch } from "react-redux";
 import ProductsByTypesPage from "./pages/ProductsByTypesPage/ProductsByTypesPage";
 import { fetchProductsByTypes } from "./store/slices/dataSlice";
+import ExplodedViewPage from "./pages/ExplodedViewPage/ExplodedViewPage";
+import SparePartsPage from "./pages/SparePartsPage/SparePartsPage";
+import ErrorСodesPage from "./pages/ErrorСodesPage/ErrorСodesPage";
+import BarcodesPage from "./pages/BarcodesPage/BarcodesPage";
+import PassportsPage from "./pages/PassportsPage/PassportsPage";
+import ServiceCentersPage from "./pages/ServiceCentersPage/ServiceCentersPage";
 
 function App() {
 	const dispatch = useDispatch();
@@ -25,6 +31,12 @@ function App() {
 				<Route path='/' element={<MainPage />} />
 				<Route path='/types' element={<TypesPage />} />
 				<Route path='/types/all/:id' element={<ProductsByTypesPage />} />
+				<Route path='/service-centers' element={<ServiceCentersPage />} />
+				<Route path='/exploded-view' element={<ExplodedViewPage />} />
+				<Route path='/spare-parts' element={<SparePartsPage />} />
+				<Route path='/passports' element={<PassportsPage />} />
+				<Route path='/error-codes' element={<ErrorСodesPage />} />
+				<Route path='/barcodes' element={<BarcodesPage />} />
 				<Route path='*' element={<NotFoundPage />} />
 			</Routes>
 		</div>

@@ -1,0 +1,14 @@
+.content {
+   margin-bottom: 30px;
+}
+
+.btn {
+   margin-top: 15px;
+   padding: 10px;
+   font-size: 14px;
+   cursor: pointer;
+   border-radius: 25px;
+   border: 1px solid rgba(250, 250, 250, 0.2);
+   color: var(--txt-white);
+   background-color: var(--orange);
+}
