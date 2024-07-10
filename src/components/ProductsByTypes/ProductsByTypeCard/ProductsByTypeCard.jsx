@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './ProductsByTypeCard.module.css'
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Kind from "../Kind/Kind";
@@ -14,8 +15,7 @@ export default function ProductsByTypeCard() {
 
 	return (
 		<div>
-			<h1>{selectedProduct.title}</h1>
-			<p>{selectedProduct.description}</p>
+			<h1 className={styles.title}>{selectedProduct.title}</h1>
 			{selectedProduct.kinds &&
 				selectedProduct.kinds.map(kind => (
 					<Kind key={kind.id} kind={kind} />

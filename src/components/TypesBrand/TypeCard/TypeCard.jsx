@@ -12,7 +12,7 @@ export default function TypeCard({ id, title, description, path }) {
 			<Link to={`/types/all/${id}`}>
 				<div className={styles.card_container}>
 					<img
-						src={`http://31.129.102.70:8080/api/fileSystemTypes/${path}`}
+						src={`http://31.129.102.70:8080/heatingSystem/fileSystemTypes/${path}`}
 						alt={title}
 						className={styles.card_img}
 					/>

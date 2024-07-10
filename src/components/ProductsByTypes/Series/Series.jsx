@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './Series.module.css'
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -24,6 +25,14 @@ const formatValue = value => {
 	}
 	return value;
 };
+
+function getMagnitude(value) {
+	return value.svalue !== "null"
+		? value.svalue
+		: value.dvalue !== 0.0
+		? String(value.dvalue)
+		: `${value.minValue}-${value.maxValue}`;
+}
 
 export default function Series({ series }) {
 	const classes = useStyles();
@@ -66,7 +75,6 @@ export default function Series({ series }) {
 
 	// Преобразуем карту в массив
 	const characteristics = Array.from(characteristicsMap.values());
-
 	// console.log("Characteristics:", characteristics);
 
 	const rows = characteristics.map(charac => ({
@@ -78,17 +86,7 @@ export default function Series({ series }) {
 			);
 
 			if (value) {
-				if (value.minValue !== null && value.maxValue !== null) {
-					acc[boiler.title] = formatValue(
-						`${value.minValue}${value.maxValue ? "/" + value.maxValue : ""}`
-					);
-				} else if (value.svalue) {
-					acc[boiler.title] = formatValue(value.svalue);
-				} else if (value.dvalue !== null && value.dvalue !== undefined) {
-					acc[boiler.title] = formatValue(value.dvalue);
-				} else {
-					acc[boiler.title] = ""; // Пустая строка для значений, которые равны null или undefined
-				}
+				acc[boiler.title] = getMagnitude(value);
 			} else {
 				acc[boiler.title] = ""; // Пустая строка для значений, которые равны null или undefined
 			}
@@ -96,13 +94,12 @@ export default function Series({ series }) {
 			return acc; // Возвращаем накопленный объект
 		}, {}),
 	}));
-
 	// console.log("Rows:", rows);
 
 	return (
 		<div>
-			<h3>{series.title}</h3>
-			<p>{series.description}</p>
+			<h3 className={styles.series_title}>{series.title}</h3>
+			<p className={styles.series_descr}>{series.description}</p>
 			<TableContainer component={Paper}>
 				<Table
 					className={classes.table}
