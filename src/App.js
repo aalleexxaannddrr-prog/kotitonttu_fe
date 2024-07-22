@@ -15,6 +15,7 @@ import ErrorСodesPage from "./pages/ErrorСodesPage/ErrorСodesPage";
 import BarcodesPage from "./pages/BarcodesPage/BarcodesPage";
 import PassportsPage from "./pages/PassportsPage/PassportsPage";
 import ServiceCentersPage from "./pages/ServiceCentersPage/ServiceCentersPage";
+import { fetchServiceCentres } from "./store/slices/servicesSlice";
 
 function App() {
 	const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function App() {
 	useEffect(() => {
 		dispatch(fetchAllTypes());
 		dispatch(fetchProductsByTypes());
+		dispatch(fetchServiceCentres());
 	}, [dispatch]);
 
 	return (
