@@ -1,0 +1,16 @@
+.btn {
+   display: none;
+}
+
+.select_css {
+   display: block;
+   padding: 5px;
+   border: 1px solid #aaa;
+   border-radius: .5em;
+   background: var(--txt-white);
+   outline: none;
+}
+
+.select_css option {
+   font-weight: normal;
+}
