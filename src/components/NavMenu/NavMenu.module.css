@@ -1,0 +1,16 @@
+.nav_menu{
+   width: 1200px;
+}
+.nav_list {
+   display: flex;
+   justify-content: space-between;
+   
+}
+
+.nav_list li{
+   font-size: 18px;
+}
+
+.nav_list a:hover {
+   color: var(--txt-black);
+}

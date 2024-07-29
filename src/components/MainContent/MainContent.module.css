@@ -1,0 +1,46 @@
+.wrapper{
+   margin-top: 20px;
+   margin-left: 40px;
+}
+
+.main_title_block {
+   width: 500px;
+}
+
+.main_brand {
+   font-size: 24px;
+   font-weight: 300;
+}
+
+.main_title {
+   margin-top: 10px;
+   font-size: 48px;
+   font-weight: 700;
+}
+
+.main_title span{
+   display: block;
+   color: var(--orange);
+}
+
+.main_text{
+   margin-top: 20px;
+   font-size: 18px;
+   line-height: 1.5;
+}
+
+.main_btn{
+   margin-top: 40px;
+padding: 10px 25px;
+   font-size: 18px;
+   border: 1px solid var(--txt-white);
+   border-radius: 50px;
+   color: var(--txt-white);
+   background-color: transparent;
+}
+
+.btn_orange{
+   margin-left: 20px;
+   border: transparent;
+background-color: var(--orange);
+}
