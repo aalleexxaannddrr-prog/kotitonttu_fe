@@ -1,3 +1,7 @@
 .map_content {
    margin-top: 10px;
 }
+
+.leaflet-control-attribution {
+   display: none;
+}
