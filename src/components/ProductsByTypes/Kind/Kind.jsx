@@ -9,8 +9,6 @@ export default function Kind({ kind }) {
 			{/* <p>{kind.description}</p> */}
 			{kind.series &&
 				kind.series.map(series => <Series key={series.id} series={series} />)}
-
-			<button className={styles.btn}>Добавить котёл</button>
 		</div>
 	);
 }
