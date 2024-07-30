@@ -37,11 +37,19 @@ export const fetchAllTypes = createAsyncThunk(
 		try {
 			const res = await fetch("/types/all");
 			if (!res.ok) {
-				throw new Error("Failed to fetch types!");
+				const errorBody = await res.text(); // Получение текста ошибки для более подробного сообщения
+				throw new Error(`Failed to fetch types: ${res.status} ${errorBody}`);
 			}
 			const json = await res.json();
+
+			// Проверяем, что data является массивом
+			if (!Array.isArray(json.data)) {
+				throw new Error("Data format is invalid: expected an array");
+			}
+
 			return json.data; // Возвращаем массив, который находится внутри поля `data`
 		} catch (err) {
+			console.error("Error fetching types:", err);
 			return Promise.reject(err.message);
 		}
 	}
