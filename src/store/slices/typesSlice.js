@@ -42,6 +42,7 @@ export const fetchAllTypes = createAsyncThunk(
 			}
 			const json = await res.json();
 			return json.data;
+
 		} catch (err) {
 			console.error("Error fetching types:", err);
 			return Promise.reject(err.message);
