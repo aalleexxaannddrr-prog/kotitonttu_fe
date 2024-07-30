@@ -37,14 +37,11 @@ export const fetchAllTypes = createAsyncThunk(
 		try {
 			const res = await fetch("/types/all");
 			if (!res.ok) {
-				const errorBody = await res.text(); // или res.json() если сервер возвращает JSON
-				throw new Error(`Failed to fetch types: ${res.status} ${errorBody}`);
+				throw new Error("Failed to fetch types!");
 			}
 			const json = await res.json();
-			return json.data;
-
+			return json.data; // Возвращаем массив, который находится внутри поля `data`
 		} catch (err) {
-			console.error("Error fetching types:", err);
 			return Promise.reject(err.message);
 		}
 	}
