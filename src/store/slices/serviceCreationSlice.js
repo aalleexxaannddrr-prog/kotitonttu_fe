@@ -31,22 +31,20 @@ export const addServiceCentre = createAsyncThunk(
 	"serviceCreation/addServiceCentre",
 	async (newCentre, { rejectWithValue }) => {
 		try {
-			const response = await fetch(
-				"/service-centres/add",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(newCentre),
-				}
-			);
+			const response = await fetch("/service-centres/add", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newCentre),
+			});
 
 			if (!response.ok) {
 				throw new Error("Failed to post new service centre");
 			}
 
 			const result = await response.json(); // Возвращаем добавленный сервисный центр
+			window.location.reload(); // Перезагрузка страницы после успешного добавления
 			return result;
 		} catch (error) {
 			return rejectWithValue(error.message); // Передаем ошибку
@@ -82,9 +80,7 @@ export const addServiceCentre = createAsyncThunk(
 const serviceCreationSlice = createSlice({
 	name: "serviceCreation",
 	initialState,
-	reducers: {
-		// Можно добавить обычные редьюсеры, если нужно
-	},
+	reducers: {},
 	extraReducers: builder => {
 		builder
 			.addCase(addServiceCentre.pending, state => {

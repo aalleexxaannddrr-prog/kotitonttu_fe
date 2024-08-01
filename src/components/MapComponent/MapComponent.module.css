@@ -5,3 +5,10 @@
 .leaflet-control-attribution {
    display: none;
 }
+
+.popup_btn {
+   padding: 5px 8px;
+   font-size: 14px;
+   border: none;
+   border-radius: .5em;
+}
