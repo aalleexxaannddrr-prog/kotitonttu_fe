@@ -1,12 +1,5 @@
 import React, { useState } from "react";
 import styles from "./Series.module.css";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 // Функции обработки и форматирования данных
@@ -83,32 +76,28 @@ export default function Series({ series }) {
 				</ul>
 			)}
 			{selectedBoiler && (
-				<TableContainer component={Paper} className={styles.table_container}>
-					<Table
-						className={styles.table}
-						size='small'
-						aria-label='a dense table'
-					>
-						<TableHead>
-							<TableRow>
+				<div className={styles.table_container}>
+					<table className={styles.table}>
+						<thead>
+							<tr>
 								{columns.map(column => (
-									<TableCell key={column.accessor}>{column.Header}</TableCell>
+									<th key={column.accessor}>{column.Header}</th>
 								))}
-							</TableRow>
-						</TableHead>
-						<TableBody>
+							</tr>
+						</thead>
+						<tbody>
 							{rows.map((row, rowIndex) => (
-								<TableRow key={rowIndex}>
+								<tr key={rowIndex}>
 									{columns.map(column => (
-										<TableCell key={column.accessor}>
+										<td key={column.accessor}>
 											{formatValue(row[column.accessor])}
-										</TableCell>
+										</td>
 									))}
-								</TableRow>
+								</tr>
 							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+						</tbody>
+					</table>
+				</div>
 			)}
 		</div>
 	);
