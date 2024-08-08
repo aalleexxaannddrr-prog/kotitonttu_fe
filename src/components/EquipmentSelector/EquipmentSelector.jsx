@@ -29,7 +29,8 @@ export default function EquipmentSelector({
 				value={selectedEquipment}
 				onChange={handleChange}
 			>
-				<option value=''>Показать все сервисные центры</option>
+				<option value=''>Все сервисные центры</option>
+
 				{equipmentOptions.map((equipment, index) => (
 					<option key={index} value={equipment}>
 						{equipment}
