@@ -14,6 +14,11 @@ const getLinkStyle = (path) => {
 		<nav className={styles.nav_menu}>
 			<ul className={styles.nav_list}>
 				<li>
+					<Link to='/users' style={getLinkStyle("/users")}>
+						Пользователи
+					</Link>
+				</li>
+				<li>
 					<Link to='/types' style={getLinkStyle("/types")}>
 						Продукция
 					</Link>
