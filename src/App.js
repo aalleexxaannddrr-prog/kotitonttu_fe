@@ -4,6 +4,7 @@ import Header from "./layout/Header/Header";
 import MainPage from "./pages/MainPage/MainPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import TypesPage from "./pages/TypesPage/TypesPage";
+import UserPage from "./pages/UserPage/UserPage";
 import { useEffect } from "react";
 import { fetchAllTypes } from "./store/slices/typesSlice";
 import { useDispatch } from "react-redux";
@@ -31,6 +32,7 @@ function App() {
 			<Header />
 			<Routes>
 				<Route path='/' element={<MainPage />} />
+				<Route path="/users" element={<UserPage/>}/>
 				<Route path='/types' element={<TypesPage />} />
 				<Route path='/types/all/:id' element={<ProductsByTypesPage />} />
 				<Route path='/service-centers' element={<ServiceCentersPage />} />
