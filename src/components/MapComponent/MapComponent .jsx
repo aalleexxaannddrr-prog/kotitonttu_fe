@@ -1,18 +1,29 @@
 import React from "react";
-import styles from './MapComponent.module.css'
-import {
-	MapContainer,
-	Marker,
-	Popup,
-	TileLayer,
-} from "react-leaflet";
+import styles from "./MapComponent.module.css";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import markerIcon from "../../assets/icons/marker.svg";
+import { useDispatch} from "react-redux";
+import { deleteServiceCenter } from "../../store/slices/serviceDeletionSlice";
 
 const MapComponent = ({ servisesCenters }) => {
 	const position = [55.751244, 37.618423];
 	// console.log(servisesCenters);
+
+	const dispatch = useDispatch();
+
+	const handleDelete = id => {
+		dispatch(deleteServiceCenter(id));
+	};
+
+	const RemoveAttribution = () => {
+		const map = useMap();
+		React.useEffect(() => {
+			map.removeControl(map.attributionControl);
+		}, [map]);
+		return null;
+	};
 
 	const MarkerMemo = React.memo(({ center, icon }) => (
 		<Marker position={[center.latitude, center.longitude]} icon={icon}>
@@ -22,6 +33,12 @@ const MapComponent = ({ servisesCenters }) => {
 				<p>{center.address}</p>
 				<p>{center.phone}</p>
 				<p>{center.servicedEquipment}</p>
+				<button
+					className={styles.popup_btn}
+					onClick={() => handleDelete(center.id)}
+				>
+					Удалить СЦ
+				</button>
 			</Popup>
 		</Marker>
 	));
@@ -57,6 +74,7 @@ const MapComponent = ({ servisesCenters }) => {
 					servisesCenters.map(center => (
 						<MarkerMemo key={center.id} center={center} icon={myIcon} />
 					))}
+				<RemoveAttribution />
 			</MapContainer>
 		</div>
 	);
