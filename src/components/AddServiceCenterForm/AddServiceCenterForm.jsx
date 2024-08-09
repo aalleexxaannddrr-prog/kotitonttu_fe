@@ -57,6 +57,7 @@ function AddServiceCenterForm({ onAdd }) {
 			setErrors(validationErrors);
 		} else {
 			onAdd(formData);
+			window.location.reload(); // Перезагрузка страницы после успешного добавления
 			setFormData({
 				title: "",
 				city: "",

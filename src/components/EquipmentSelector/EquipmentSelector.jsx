@@ -30,6 +30,7 @@ export default function EquipmentSelector({
 				onChange={handleChange}
 			>
 				<option value=''>Все сервисные центры</option>
+
 				{equipmentOptions.map((equipment, index) => (
 					<option key={index} value={equipment}>
 						{equipment}
