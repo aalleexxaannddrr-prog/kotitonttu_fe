@@ -1,11 +1,6 @@
 import React from "react";
-import styles from './MapComponent.module.css'
-import {
-	MapContainer,
-	Marker,
-	Popup,
-	TileLayer,
-} from "react-leaflet";
+import styles from "./MapComponent.module.css";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import markerIcon from "../../assets/icons/marker.svg";
@@ -13,6 +8,14 @@ import markerIcon from "../../assets/icons/marker.svg";
 const MapComponent = ({ servisesCenters }) => {
 	const position = [55.751244, 37.618423];
 	// console.log(servisesCenters);
+
+	const RemoveAttribution = () => {
+		const map = useMap();
+		React.useEffect(() => {
+			map.removeControl(map.attributionControl);
+		}, [map]);
+		return null;
+	};
 
 	const MarkerMemo = React.memo(({ center, icon }) => (
 		<Marker position={[center.latitude, center.longitude]} icon={icon}>
@@ -57,8 +60,11 @@ const MapComponent = ({ servisesCenters }) => {
 					servisesCenters.map(center => (
 						<MarkerMemo key={center.id} center={center} icon={myIcon} />
 					))}
+
+				<RemoveAttribution />
 			</MapContainer>
 		</div>
 	);
 };
+
 export default MapComponent;

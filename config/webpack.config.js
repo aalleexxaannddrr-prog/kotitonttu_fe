@@ -248,7 +248,7 @@ module.exports = function (webpackEnv) {
 		devServer: isEnvDevelopment && {
 			proxy: {
 				"/api": {
-					target: "http://31.129.102.70:8080", // Ваш сервер
+					target: "http://31.129.102.70:8080", // Наш сервер
 					changeOrigin: true,
 					secure: false,
 				},
