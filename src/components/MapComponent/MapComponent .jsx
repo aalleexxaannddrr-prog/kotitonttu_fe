@@ -79,4 +79,5 @@ const MapComponent = ({ servisesCenters }) => {
 		</div>
 	);
 };
+
 export default MapComponent;
