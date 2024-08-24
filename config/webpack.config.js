@@ -246,13 +246,8 @@ module.exports = function (webpackEnv) {
 			level: 'none',
 		},
 		devServer: isEnvDevelopment && {
-			proxy: {
-				'/api': {
-					target: 'http://31.129.102.70:8080', // Наш сервер
-					changeOrigin: true,
-					secure: false,
-				},
-			},
+			port: 8080,
+			host: 'localhost',
 			allowedHosts: ['.'],
 		},
 		optimization: {
