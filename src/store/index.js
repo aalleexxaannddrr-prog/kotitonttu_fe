@@ -5,6 +5,7 @@ import servicesReducer from "./slices/servicesSlice";
 import serviceCreationReducer from "./slices/serviceCreationSlice";
 import authReduser from "./slices/authSlice";
 import serviceDeletionSlice from "./slices/serviceDeletionSlice";
+import usersReducer from './slices/usersSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
 		serviceCreation: serviceCreationReducer,
 		serviceDeletionSlice: serviceDeletionSlice,
 		auth: authReduser,
+		users: usersReducer,
 	},
 });

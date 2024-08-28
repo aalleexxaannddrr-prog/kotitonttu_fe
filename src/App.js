@@ -17,6 +17,9 @@ import BarcodesPage from "./pages/BarcodesPage/BarcodesPage";
 import PassportsPage from "./pages/PassportsPage/PassportsPage";
 import ServiceCentersPage from "./pages/ServiceCentersPage/ServiceCentersPage";
 import { fetchServiceCentres } from "./store/slices/servicesSlice";
+import BonusProgramModels from "./pages/BonusProgramModels/BonusProgramModels";
+import BonusProgramApplications from "./pages/BonusProgramApplications/BonusProgramApplications";
+import { fetchUsers } from "./store/slices/usersSlice";
 
 function App() {
 	const dispatch = useDispatch();
@@ -25,6 +28,7 @@ function App() {
 		dispatch(fetchAllTypes());
 		dispatch(fetchProductsByTypes());
 		dispatch(fetchServiceCentres());
+		dispatch(fetchUsers());
 	}, [dispatch]);
 
 	return (
@@ -32,7 +36,7 @@ function App() {
 			<Header />
 			<Routes>
 				<Route path='/' element={<MainPage />} />
-				<Route path="/users" element={<UserPage/>}/>
+				<Route path='/users' element={<UserPage />} />
 				<Route path='/types' element={<TypesPage />} />
 				<Route path='/types/all/:id' element={<ProductsByTypesPage />} />
 				<Route path='/service-centers' element={<ServiceCentersPage />} />
@@ -41,6 +45,12 @@ function App() {
 				<Route path='/passports' element={<PassportsPage />} />
 				<Route path='/error-codes' element={<ErrorСodesPage />} />
 				<Route path='/barcodes' element={<BarcodesPage />} />
+				<Route path='/bonus-program/models' element={<BonusProgramModels/>} />
+				<Route
+					path='/bonus-program/applications'
+					element={<BonusProgramApplications/>}
+				/>
+
 				<Route path='*' element={<NotFoundPage />} />
 			</Routes>
 		</div>

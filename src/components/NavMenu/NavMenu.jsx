@@ -14,44 +14,65 @@ const getLinkStyle = (path) => {
 		<nav className={styles.nav_menu}>
 			<ul className={styles.nav_list}>
 				<li>
-					<Link to='/users' style={getLinkStyle("/users")}>
+					<Link to='/users' style={getLinkStyle('/users')}>
 						Пользователи
 					</Link>
 				</li>
 				<li>
-					<Link to='/types' style={getLinkStyle("/types")}>
+					<Link to='/types' style={getLinkStyle('/types')}>
 						Продукция
 					</Link>
 				</li>
 				<li>
-					<Link to='/service-centers' style={getLinkStyle("/service-centers")}>
+					<Link to='/service-centers' style={getLinkStyle('/service-centers')}>
 						Сервисные центры
 					</Link>
 				</li>
 				<li>
-					<Link to='/exploded-view' style={getLinkStyle("/exploded-view")}>
+					<Link to='/exploded-view' style={getLinkStyle('/exploded-view')}>
 						Взрыв-схемы
 					</Link>
 				</li>
 				<li>
-					<Link to='/spare-parts' style={getLinkStyle("/spare-parts")}>
+					<Link to='/spare-parts' style={getLinkStyle('/spare-parts')}>
 						Запчасти
 					</Link>
 				</li>
 				<li>
-					<Link to='/passports' style={getLinkStyle("/passports")}>
+					<Link to='/passports' style={getLinkStyle('/passports')}>
 						Паспорта
 					</Link>
 				</li>
 				<li>
-					<Link to='/error-codes' style={getLinkStyle("/error-codes")}>
+					<Link to='/error-codes' style={getLinkStyle('/error-codes')}>
 						Коды ошибок
 					</Link>
 				</li>
 				<li>
-					<Link to='/barcodes' style={getLinkStyle("/barcodes")}>
+					<Link to='/barcodes' style={getLinkStyle('/barcodes')}>
 						Штрих коды
 					</Link>
+				</li>
+				<li>
+					<Link style={getLinkStyle('/bonus-program')}>Котибонус</Link>
+					<ul className={styles.dropdown_menu}>
+						<li>
+							<Link
+								to='/bonus-program/models'
+								style={getLinkStyle('/bonus-program/models')}
+							>
+								Модели, участвующие в программе
+							</Link>
+						</li>
+						<li>
+							<Link
+								to='/bonus-program/applications'
+								style={getLinkStyle('/bonus-program/applications')}
+							>
+								Заявки
+							</Link>
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</nav>

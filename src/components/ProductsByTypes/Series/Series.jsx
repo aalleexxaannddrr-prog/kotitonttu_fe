@@ -56,7 +56,7 @@ export default function Series({ series }) {
 			<p className={styles.series_descr}>{series.description}</p>
 			<div className={styles.select_block}>
 				<div className={styles.custom_seelect} onClick={toggleDropdown}>
-					{selectedBoiler ? selectedBoiler.title : "Выбрать тип"}
+					{selectedBoiler ? selectedBoiler.title : "Выбрать модель"}
 					<RiArrowDropDownLine size={24} />
 				</div>
 
