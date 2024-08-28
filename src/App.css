@@ -39,7 +39,12 @@ button {
   border: none;
   cursor: pointer;
   color: var(--txt-white);
-    background: var(--orange);
+  background: var(--orange);
+}
+
+img {
+  display: block;
+  width: 100%;
 }
 
 .container {
