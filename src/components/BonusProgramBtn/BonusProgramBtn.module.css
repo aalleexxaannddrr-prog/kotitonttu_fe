@@ -1,0 +1,17 @@
+.btn_content {
+   display: flex;
+   gap: 20px;
+}
+
+.btn {
+   padding: 10px;
+   margin-top: 20px;
+   font-size: 14px;
+   border: none;
+   border-radius: 8px;
+   color: var(--txt-white);
+}
+
+.btn:hover {
+   background: var(--btn-hover);
+}

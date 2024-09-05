@@ -61,7 +61,7 @@ const getLinkStyle = (path) => {
 								to='/bonus-program/models'
 								style={getLinkStyle('/bonus-program/models')}
 							>
-								Модели, участвующие в программе
+								Редактировать
 							</Link>
 						</li>
 						<li>
@@ -70,6 +70,14 @@ const getLinkStyle = (path) => {
 								style={getLinkStyle('/bonus-program/applications')}
 							>
 								Заявки
+							</Link>
+						</li>
+						<li>
+							<Link
+								to='/bonus-program/kotibonus'
+								style={getLinkStyle('/bonus-program/kotibonus')}
+							>
+								Котибонус
 							</Link>
 						</li>
 					</ul>
