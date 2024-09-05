@@ -1,0 +1,43 @@
+.confirmation_card {
+   padding: 14px;
+   max-width: 20%;
+   color: var(--txt-black);
+   background: var(--white);
+}
+
+.descr_info {
+   margin-bottom: 10px;
+}
+
+.amount {
+   margin-bottom: 10px;
+}
+
+.descr_title {
+   margin-bottom: 5px;
+}
+
+.descr{
+   padding: 2px;
+   border: 1px solid var(--grey);
+}
+
+.btn_card {
+   display: flex;
+   justify-content: space-evenly;
+}
+
+.btn {
+   padding: 8px;
+   font-size: 14px;
+   border-radius: 20px;
+   border: 1px solid rgba(250, 250, 250, 0.2);
+}
+
+.btn:first-child:hover {
+   background: var(--btn-hover);
+}
+
+.btn:last-child:hover {
+   background: var(--error);
+}

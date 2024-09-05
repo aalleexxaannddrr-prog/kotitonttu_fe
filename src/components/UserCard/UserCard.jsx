@@ -1,19 +1,15 @@
 import React from 'react';
 import styles from './UserCard.module.css';
 
-// Вспомогательная функция для форматирования потенциально пустых или неопределенных значений
-const formatValue = value => {
-    return value || ''; // Упрощено, возвращает пустую строку, если значение ложно
-};
-
-export default function UserTable({ users }) {
+export default function UserCard({ users }) {
+	
 	const columns = [
-		// { Header: 'Фото', accessor: 'photo' },
+		{ Header: 'Фото', accessor: 'photo' },
 		{ Header: 'Имя', accessor: 'firstname' },
 		{ Header: 'Фамилия', accessor: 'lastname' },
 		{ Header: 'Email', accessor: 'email' },
 		{ Header: 'Телефон', accessor: 'phoneNumber' },
-		{ Header: 'Должность', accessor: 'workerRole' },
+		{ Header: 'Роль', accessor: 'workerRole' },
 		{ Header: 'Дата рождения', accessor: 'dateOfBirth' },
 	];
 

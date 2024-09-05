@@ -1,0 +1,9 @@
+.user_content{
+   display: flex;
+   color: var(--txt-black);
+   background: var(--white);
+}
+.image{
+   width: 300px;
+   height: 100%;
+}
