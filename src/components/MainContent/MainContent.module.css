@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
    margin-top: 20px;
    margin-left: 40px;
 }
@@ -18,20 +18,20 @@
    font-weight: 700;
 }
 
-.main_title span{
+.main_title span {
    display: block;
    color: var(--orange);
 }
 
-.main_text{
+.main_text {
    margin-top: 20px;
    font-size: 18px;
    line-height: 1.5;
 }
 
-.main_btn{
+.main_btn {
    margin-top: 40px;
-padding: 10px 25px;
+   padding: 10px 25px;
    font-size: 18px;
    border: 1px solid var(--txt-white);
    border-radius: 50px;
@@ -39,8 +39,8 @@ padding: 10px 25px;
    background-color: transparent;
 }
 
-.btn_orange{
+.btn_orange {
    margin-left: 20px;
    border: transparent;
-background-color: var(--orange);
+   background-color: var(--orange);
 }

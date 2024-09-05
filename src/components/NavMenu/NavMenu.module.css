@@ -1,16 +1,63 @@
-.nav_menu{
+.nav_menu {
    width: 1200px;
 }
+
 .nav_list {
    display: flex;
    justify-content: space-between;
-   
+   flex-wrap: wrap;
 }
 
-.nav_list li{
+.nav_list li {
    font-size: 18px;
+   position: relative;
+   list-style-type: none;
+   /* Убрать стандартные маркеры списка */
 }
 
 .nav_list a:hover {
    color: var(--txt-black);
 }
+
+li .dropdown_menu {
+   display: none;
+   position: absolute;
+   top: 100%;
+   /* Расположение подменю непосредственно под пунктом меню */
+   left: 0;
+   
+   /* Фон подменю */
+   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+   /* Тень для подменю */
+   z-index: 1000;
+   border-radius: 10px;
+}
+
+/* Отображение подменю при наведении */
+.nav_menu .nav_list li:hover .dropdown_menu {
+   display: block;
+}
+
+.nav_menu .nav_list li .dropdown_menu li {
+   padding: 8px 16px;
+   background: var(--orange);
+
+   
+}
+
+.dropdown_menu li:last-child{
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+}
+
+.nav_menu .nav_list li .dropdown_menu li:hover {
+   background: var(--btn-hover);
+}
+
+.nav_menu .nav_list li .dropdown_menu li a {
+   color: var(--txt-white);
+   text-decoration: none;
+   display: block;
+   font-size: 14px;
+}
+

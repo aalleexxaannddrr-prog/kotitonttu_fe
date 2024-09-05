@@ -1,0 +1,32 @@
+.table_container {
+   margin-top: 20px;
+   color: var(--txt-black);
+   background: var(--white);
+}
+
+.photo {
+   margin: 0 auto;
+   width: 50px;
+}
+
+table {
+   border-collapse: collapse;
+   width: 100%;
+}
+
+th {
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}
+
+td {
+   text-align: center;
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}
+
+table td:first-child {
+   padding-left: 10px;
+   padding-right: 10px;
+   text-align: start;
+}
