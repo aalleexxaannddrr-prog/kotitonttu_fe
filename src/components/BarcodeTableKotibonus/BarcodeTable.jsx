@@ -1,26 +1,75 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBarcodeTypes } from '../../store/slices/barcodeDataSlice';
-import { updateBarcodeType } from '../../store/slices/updateBarcodeTypeSlice'; // Импортируем экшен для обновления
-import styles from './BarcodeTable.module.css'; // Импорт вашего CSS модуля
+import { updateBarcodeType } from '../../store/slices/updateBarcodeTypeSlice';
+import styles from './BarcodeTable.module.css';
+import { deleteBarcodeType } from '../../store/slices/deleteBarcodeTypeSlice';
+import { IoClose } from 'react-icons/io5';
 
 export default function BarcodeTable() {
 	const dispatch = useDispatch();
 	const { data, status, error } = useSelector(state => state.barcodeData);
-	const [editMode, setEditMode] = useState(null); // ID строки, которая сейчас редактируется
-	const [newPoints, setNewPoints] = useState(''); // Новое значение для очков
+
+	// Состояния для редактирования полей
+	const [editMode, setEditMode] = useState(null);
+	const [editedData, setEditedData] = useState({});
+	const [originalData, setOriginalData] = useState({});
 
 	useEffect(() => {
 		dispatch(fetchBarcodeTypes());
 	}, [dispatch]);
 
-	// Обработчик обновления очков
-	const handleUpdatePoints = (id, points, type, subtype) => {
-		dispatch(updateBarcodeType({ id, points, type, subtype }))
-		
-		setEditMode(null); // После обновления закрываем режим редактирования
+	// Обработчик обновления данных
+	const handleUpdateField = (id, field) => {
+		const updatedData = editedData[id][field];
 
-		// Перезагрузка страницы после успешного обновления
+		if (updatedData !== originalData[id][field]) {
+			const updateData = {
+				id,
+				points:
+					field === 'points'
+						? updatedData
+						: data.find(item => item.id === id).points,
+				type:
+					field === 'type'
+						? updatedData
+						: data.find(item => item.id === id).type,
+				subtype:
+					field === 'subtype'
+						? updatedData
+						: data.find(item => item.id === id).subtype,
+			};
+
+			dispatch(updateBarcodeType(updateData));
+			window.location.reload();
+		}
+
+		setEditMode(null);
+	};
+
+	const handleCellClick = (id, field, value) => {
+		setEditMode({ id, field });
+
+		setOriginalData(prev => ({
+			...prev,
+			[id]: {
+				...prev[id],
+				[field]: value !== undefined ? value : '',
+			},
+		}));
+
+		setEditedData(prev => ({
+			...prev,
+			[id]: {
+				...prev[id],
+				[field]: value !== undefined ? value : '',
+			},
+		}));
+	};
+
+	// Обработчик удаления
+	const handleDelete = id => {
+		dispatch(deleteBarcodeType(id));
 		window.location.reload();
 	};
 
@@ -28,6 +77,7 @@ export default function BarcodeTable() {
 		{ Header: 'Очки', accessor: 'points' },
 		{ Header: 'Тип', accessor: 'type' },
 		{ Header: 'Подтип', accessor: 'subtype' },
+		{ Header: '', accessor: 'delete' }, // Добавляем столбец для удаления
 	];
 
 	return (
@@ -55,47 +105,54 @@ export default function BarcodeTable() {
 						data.map(row => (
 							<tr key={row.id}>
 								{columns.map(column => (
-									<td key={`${row.id}-${column.accessor}`}>
-										{column.accessor === 'points' ? (
-											editMode === row.id ? (
-												// Инпут для редактирования значения "Очки"
-												<input
-													type='number'
-													value={newPoints}
-													onChange={e => setNewPoints(e.target.value)} // Обязательно передаем событие e
-													onBlur={() =>
-														handleUpdatePoints(
-															row.id,
-															newPoints,
-															row.type,
-															row.subtype
-														)
-													} // Обновление при потере фокуса
-													onKeyPress={e => {
-														if (e.key === 'Enter') {
-															handleUpdatePoints(
-																row.id,
-																newPoints,
-																row.type,
-																row.subtype
-															); // Обновление при нажатии Enter
-														}
-													}}
-													autoFocus
-												/>
-											) : (
-												// Двойной клик для включения режима редактирования
-												<span
-													onDoubleClick={() => {
-														setEditMode(row.id);
-														setNewPoints(row.points);
-													}}
-												>
-													{row.points}
-												</span>
+									<td
+										key={`${row.id}-${column.accessor}`}
+										onClick={() =>
+											column.accessor !== 'delete' &&
+											handleCellClick(
+												row.id,
+												column.accessor,
+												row[column.accessor]
 											)
+										}
+									>
+										{editMode?.id === row.id &&
+										editMode.field === column.accessor ? (
+											<input
+												type={column.accessor === 'points' ? 'number' : 'text'}
+												value={
+													editedData[row.id]?.[column.accessor] !== undefined
+														? editedData[row.id][column.accessor]
+														: row[column.accessor]
+												}
+												onChange={e =>
+													setEditedData(prev => ({
+														...prev,
+														[row.id]: {
+															...prev[row.id],
+															[column.accessor]: e.target.value,
+														},
+													}))
+												}
+												onBlur={() =>
+													handleUpdateField(row.id, column.accessor)
+												}
+												onKeyPress={e => {
+													if (e.key === 'Enter') {
+														handleUpdateField(row.id, column.accessor);
+													}
+												}}
+												autoFocus
+											/>
+										) : column.accessor === 'delete' ? (
+											<button
+												className={styles.delete_btn}
+												onClick={() => handleDelete(row.id)}
+											>
+												<IoClose size={24} />
+											</button>
 										) : (
-											row[column.accessor]
+											<span>{row[column.accessor]}</span>
 										)}
 									</td>
 								))}
