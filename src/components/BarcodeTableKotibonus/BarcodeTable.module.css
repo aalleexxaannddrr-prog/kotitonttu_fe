@@ -14,9 +14,22 @@ table {
    width: 100%;
 }
 
+td,
+th {
+   width: 200px;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
 th {
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
+}
+
+td:last-child,
+th:last-child {
+   width: 30px;
 }
 
 td {
@@ -29,4 +42,33 @@ table td:first-child {
    padding-left: 10px;
    padding-right: 10px;
    text-align: start;
+}
+
+tr input {
+   display: flex;
+   padding: 4px;
+   width: 100%;
+   font-size: 14px;
+   outline: none;
+   border: 1px solid var(--txt-black);
+   border-radius: 8px;
+}
+
+tr input:hover,
+tr input:focus {
+   border: 1px solid var(--orange);
+}
+
+.delete_btn {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+   cursor: pointer;
+   color: var(--txt-black);
+   background: transparent;
+}
+
+.delete_btn:hover{
+   color: var(--error);
 }
