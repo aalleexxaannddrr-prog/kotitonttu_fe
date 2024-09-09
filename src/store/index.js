@@ -8,6 +8,7 @@ import serviceDeletionSlice from "./slices/serviceDeletionSlice";
 import usersReducer from './slices/usersSlice';
 import barcodeTypeReducer from './slices/barcodeTypeSlice';
 import barcodeDataReducer from './slices/barcodeDataSlice';
+import updateBarcodeTypeReducer from './slices/updateBarcodeTypeSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
 		users: usersReducer,
 		barcodeTypes: barcodeTypeReducer,
 		barcodeData: barcodeDataReducer,
+		updateBarcodeType: updateBarcodeTypeReducer,
 	},
 });

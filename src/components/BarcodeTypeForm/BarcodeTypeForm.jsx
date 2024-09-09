@@ -12,11 +12,19 @@ function BarcodeTypeForm() {
 	const handleSubmit = event => {
 		event.preventDefault();
 		dispatch(addBarcodeType({ points, type, subtype }));
+
+		// Очищаем форму
+		setPoints('');
+		setType('');
+		setSubtype('');
+
+		// Обновляем страницу
+		window.location.reload();
 	};
 
 	return (
 		<form className={styles.form_block} onSubmit={handleSubmit}>
-			<label htmlFor='points'>Points:</label>
+			<label htmlFor='points'>Балы:</label>
 			<input
 				type='number'
 				id='points'
@@ -24,7 +32,7 @@ function BarcodeTypeForm() {
 				onChange={e => setPoints(e.target.value)}
 				required
 			/>
-			<label htmlFor='type'>Type:</label>
+			<label htmlFor='type'>Тип:</label>
 			<input
 				type='text'
 				id='type'
@@ -32,7 +40,7 @@ function BarcodeTypeForm() {
 				onChange={e => setType(e.target.value)}
 				required
 			/>
-			<label htmlFor='subtype'>Subtype:</label>
+			<label htmlFor='subtype'>Подтип:</label>
 			<input
 				type='text'
 				id='subtype'

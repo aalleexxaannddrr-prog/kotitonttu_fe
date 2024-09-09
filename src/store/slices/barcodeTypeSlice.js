@@ -10,13 +10,18 @@ export const addBarcodeType = createAsyncThunk(
 	'barcodeTypes/addBarcodeType',
 	async (barcodeTypeData, { rejectWithValue }) => {
 		try {
-			const response = await fetch('/admin/add-barcode-type', {
+			const formdata = new FormData();
+			formdata.append('points', barcodeTypeData.points);
+			formdata.append('type', barcodeTypeData.type);
+			formdata.append('subtype', barcodeTypeData.subtype);
+
+			const requestOptions = {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(barcodeTypeData),
-			});
+				body: formdata,
+				redirect: 'follow',
+			};
+
+			const response = await fetch('/admin/add-barcode-type', requestOptions);
 
 			if (!response.ok) {
 				throw new Error('Failed to add barcode type');
