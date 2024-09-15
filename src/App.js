@@ -20,8 +20,9 @@ import { fetchServiceCentres } from "./store/slices/servicesSlice";
 import BonusProgramApplications from "./pages/BonusProgramApplications/BonusProgramApplications";
 import { fetchUsers } from "./store/slices/usersSlice";
 import DetailedInfoPage from "./pages/DetailedInfoPage/DetailedInfoPage";
-import KotibonusPage from "./pages/KotibonusPage/KotibonusPage";
 import BonusProgramModelsPage from "./pages/BonusProgramModelsPage/BonusProgramModelsPage";
+import RejectedApplicationsPage from "./pages/RejectedApplicationsPage/RejectedApplicationsPage";
+import AcceptedApplicationsPage from "./pages/AcceptedApplicationsPage/AcceptedApplicationsPage";
 // import { fetchBarcodeTypes } from "./store/slices/barcodeDataSlice";
 
 function App() {
@@ -49,14 +50,21 @@ function App() {
 				<Route path='/passports' element={<PassportsPage />} />
 				<Route path='/error-codes' element={<ErrorСodesPage />} />
 				<Route path='/barcodes' element={<BarcodesPage />} />
-				<Route path='/bonus-program/models' element={<BonusProgramModelsPage />} />
 				<Route
-					path='/bonus-program/applications'
+					path='/bonus-program/models'
+					element={<BonusProgramModelsPage />}
+				/>
+				<Route
+					path='/bonus-program/active-applications'
 					element={<BonusProgramApplications />}
 				/>
 				<Route
-					path='/bonus-program/kotibonus'
-					element={<KotibonusPage />}
+					path='/bonus-program/accepted-applications'
+					element={<AcceptedApplicationsPage/>}
+				/>
+				<Route
+					path='/bonus-program/rejected-applications'
+					element={<RejectedApplicationsPage/>}
 				/>
 				<Route path='/detailed-info' element={<DetailedInfoPage />} />
 

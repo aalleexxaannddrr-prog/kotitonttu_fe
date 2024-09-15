@@ -6,7 +6,6 @@ export default function BonusProgramModelsPage() {
 	return (
 		<div className='container'>
 			<BarcodeTypeForm />
-			{/* <EditBarcodeForm /> */}
 			<BarcodeTable />
 		</div>
 	);

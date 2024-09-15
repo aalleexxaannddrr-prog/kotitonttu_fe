@@ -47,6 +47,10 @@ img {
   width: 100%;
 }
 
+td {
+  position: relative;
+}
+
 .container {
   margin: 0 auto;
   padding: 0 20px 0 20px;
