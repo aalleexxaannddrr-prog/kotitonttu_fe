@@ -56,28 +56,29 @@ export default function Series({ series }) {
 			<p className={styles.series_descr}>{series.description}</p>
 			<div className={styles.select_block}>
 				<div className={styles.custom_seelect} onClick={toggleDropdown}>
-					{selectedBoiler ? selectedBoiler.title : "Выбрать серию"}
+					{selectedBoiler ? selectedBoiler.title : 'Выбрать серию'}
 					<RiArrowDropDownLine size={24} />
+
+					{isOpen && (
+						<ul className={styles.dropdown_menu}>
+							{series.boilers.map(boiler => (
+								<li
+									key={boiler.title}
+									onClick={() => handleBoilerChange(boiler.title)}
+								>
+									{boiler.title}
+								</li>
+							))}
+						</ul>
+					)}
 				</div>
 
 				<button className={styles.btn}>Добавить котёл</button>
 			</div>
 
-			{isOpen && (
-				<ul className={styles.dropdown_menu}>
-					{series.boilers.map(boiler => (
-						<li
-							key={boiler.title}
-							onClick={() => handleBoilerChange(boiler.title)}
-						>
-							{boiler.title}
-						</li>
-					))}
-				</ul>
-			)}
 			{selectedBoiler && (
 				<div className={styles.table_container}>
-					<table className={styles.table}>
+					<table className={styles.series_table}>
 						<thead>
 							<tr>
 								{columns.map(column => (
