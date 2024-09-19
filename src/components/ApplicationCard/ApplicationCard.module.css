@@ -4,27 +4,28 @@
    background: var(--white);
 }
 
-table {
+.table {
    border-collapse: collapse;
    width: 100%;
 }
 
-th {
+.table th {
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
 }
 
-td {
+.table td {
    text-align: center;
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
 }
 
-/* table td:first-child {
+.table td:first-child {
    padding-left: 10px;
    padding-right: 10px;
+   width: 300px;
    text-align: start;
-} */
+}
 
 .detailed_info {
    position: absolute;

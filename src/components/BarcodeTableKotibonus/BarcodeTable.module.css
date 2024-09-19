@@ -9,42 +9,42 @@
    width: 50px;
 }
 
-table {
+.barcode_table {
    border-collapse: collapse;
    width: 100%;
 }
 
-td,
-th {
+.barcode_table td,
+.barcode_table th {
    width: 200px;
    white-space: nowrap;
    overflow: hidden;
    text-overflow: ellipsis;
 }
 
-th {
+.barcode_table th {
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
 }
 
-td:last-child,
-th:last-child {
+.barcode_table td:last-child,
+.barcode_table th:last-child {
    width: 30px;
 }
 
-td {
+.barcode_table td {
    text-align: center;
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
 }
 
-table td:first-child {
+.barcode_table td:first-child {
    padding-left: 10px;
    padding-right: 10px;
    text-align: start;
 }
 
-tr input {
+.barcode_table tr input {
    display: flex;
    padding: 4px;
    width: 100%;
@@ -54,8 +54,8 @@ tr input {
    border-radius: 8px;
 }
 
-tr input:hover,
-tr input:focus {
+.barcode_table tr input:hover,
+.barcode_table tr input:focus {
    border: 1px solid var(--orange);
 }
 
