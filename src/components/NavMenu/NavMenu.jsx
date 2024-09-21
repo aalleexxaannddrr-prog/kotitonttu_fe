@@ -1,14 +1,16 @@
-import React from "react";
-import styles from "./NavMenu.module.css";
-import { Link, useLocation } from "react-router-dom";
+import React from 'react';
+import styles from './NavMenu.module.css';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function NavMenu() {
-const location = useLocation();
-const currentPath = location.pathname;
+	const location = useLocation();
+	const currentPath = location.pathname;
 
-const getLinkStyle = (path) => {
-	return currentPath === path ? {color: 'var(--txt-black)'} : {color: 'inherit'}
-}
+	const getLinkStyle = path => {
+		return currentPath === path
+			? { color: 'var(--txt-black)' }
+			: { color: 'inherit' };
+	};
 
 	return (
 		<nav className={styles.nav_menu}>
@@ -66,18 +68,26 @@ const getLinkStyle = (path) => {
 						</li>
 						<li>
 							<Link
-								to='/bonus-program/applications'
-								style={getLinkStyle('/bonus-program/applications')}
+								to='/bonus-program/active-applications'
+								style={getLinkStyle('/bonus-program/active-applications')}
 							>
-								Заявки
+								Активные заявки
 							</Link>
 						</li>
 						<li>
 							<Link
-								to='/bonus-program/kotibonus'
-								style={getLinkStyle('/bonus-program/kotibonus')}
+								to='/bonus-program/accepted-applications'
+								style={getLinkStyle('/bonus-program/accepted-applications')}
 							>
-								Котибонус
+								Принятые заявки
+							</Link>
+						</li>
+						<li>
+							<Link
+								to='/bonus-program/rejected-applications'
+								style={getLinkStyle('/bonus-program/rejected-applications')}
+							>
+								Отклоненные заявки
 							</Link>
 						</li>
 					</ul>

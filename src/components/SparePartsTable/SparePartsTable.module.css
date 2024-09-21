@@ -9,23 +9,23 @@
    width: 50px;
 }
 
-.user_table {
+.spare_table {
    border-collapse: collapse;
    width: 100%;
 }
 
-.user_table th {
+.spare_table th {
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
 }
 
-.user_table td {
+.spare_table td {
    text-align: center;
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
 }
 
-.user_table td:first-child {
+.spare_table td:first-child {
    padding-left: 10px;
    padding-right: 10px;
    text-align: start;

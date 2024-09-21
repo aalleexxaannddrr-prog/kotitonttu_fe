@@ -10,6 +10,7 @@ import barcodeTypeReducer from './slices/barcodeTypeSlice';
 import barcodeDataReducer from './slices/barcodeDataSlice';
 import updateBarcodeTypeReducer from './slices/updateBarcodeTypeSlice';
 import deleteBarcodeTypeReducer from './slices/deleteBarcodeTypeSlice';
+import errorscodeReducer from './slices/errorscodeSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -24,5 +25,6 @@ export const store = configureStore({
 		barcodeData: barcodeDataReducer,
 		updateBarcodeType: updateBarcodeTypeReducer,
 		deleteBarcodeType: deleteBarcodeTypeReducer,
+		errorscode: errorscodeReducer,
 	},
 });

@@ -6,6 +6,7 @@
    height: 100%;
    display: flex;
    justify-content: center;
+   align-items: center;
    z-index: 1000;
    color: var(--txt-black);
    background: rgba(0, 0, 0, 0.5);
@@ -14,8 +15,10 @@
 .modal_block {
    position: relative;
    padding: 20px;
-   width: 80%;
+   width: 100%;
    max-width: 500px;
+   max-height: 100%;
+   overflow-y: auto;
    border-radius: 5px;
    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
    background: var(--txt-white);

@@ -6,7 +6,12 @@
 
 .service_page_btn {
    padding: 5px 8px;
-   font-size: 14px;
+   font-size: 16px;
    border: none;
    border-radius: .5em;
+}
+
+.service_page_btn:hover{
+   color: var(--txt-white);
+   background: var(--btn-hover);
 }

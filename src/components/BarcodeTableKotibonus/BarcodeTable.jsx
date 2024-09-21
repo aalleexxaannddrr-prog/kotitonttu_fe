@@ -82,7 +82,7 @@ export default function BarcodeTable() {
 
 	return (
 		<div className={styles.table_container}>
-			<table className={styles.table}>
+			<table className={styles.barcode_table}>
 				<thead>
 					<tr>
 						{columns.map(column => (

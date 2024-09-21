@@ -15,7 +15,7 @@ export default function UserCard({ users }) {
 
 	return (
 		<div className={styles.table_container}>
-			<table className={styles.table}>
+			<table className={styles.user_table}>
 				<thead>
 					<tr>
 						{columns.map(column => (
