@@ -23,7 +23,7 @@ export default function SparePartsTable() {
 
 	return (
 		<div className={styles.table_container}>
-			<table className={styles.user_table}>
+			<table className={styles.spare_table}>
 				<thead>
 					<tr>
 						{columns.map(column => (
@@ -32,23 +32,23 @@ export default function SparePartsTable() {
 					</tr>
 				</thead>
 				<tbody>
-					{/* {spares.map(spare => (
-						<tr key={spare.id}>
+					{/* {spares.map(spare => ( */}
+						<tr>
 							{columns.map(column => (
 								<td key={column.accessor}>
-									{column.accessor === 'photo' && spare[column.accessor] ? (
+									{column.accessor === 'photo' && [column.accessor] ? (
 										<img
-											src={spare[column.accessor]}
-											alt={`${spare.lastname}, ${spare.firstname}`}
+											src={[column.accessor]}
+											alt={`sparePhoto`}
 											className={styles.photo}
 										/>
 									) : (
-										user[column.accessor]
+										[column.accessor]
 									)}
 								</td>
 							))}
 						</tr>
-					))} */}
+					{/* ))} */}
 				</tbody>
 			</table>
 		</div>

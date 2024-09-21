@@ -1,0 +1,55 @@
+.userpass_content {
+   display: grid;
+   grid-template-areas:
+      "passport data"
+      "passport buttons";
+   grid-template-columns: 2fr 1fr;
+   gap: 20px;
+   margin-top: 20px;
+}
+
+.userpass_info {
+   grid-area: data;
+}
+
+.userpass_info>*+* {
+   margin-top: 5px;
+}
+
+.img_content {
+   grid-area: passport;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   max-width: 100%;
+   gap: 20px;
+   background: var(--white);
+}
+
+.pass_img {
+   width: 250px;
+}
+
+.btn_block {
+   grid-area: buttons;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 20px;
+}
+
+.userpass_btn {
+   padding: 10px;
+   font-size: 16px;
+   border: none;
+   border-radius: 8px;
+   color: var(--txt-white);
+}
+
+.btn_accept:hover {
+   background: var(--btn-hover);
+}
+
+.btn_reject:hover {
+   background: var(--error);
+}
