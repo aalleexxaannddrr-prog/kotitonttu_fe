@@ -1,0 +1,8 @@
+.compose_btn {
+   padding: 10px;
+}
+
+.compose_btn:hover,
+.compose_btn:focus{
+   background: var(--btn-hover);
+}

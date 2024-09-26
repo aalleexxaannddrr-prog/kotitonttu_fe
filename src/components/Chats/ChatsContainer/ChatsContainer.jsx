@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './ChatsContainer.module.css';
 import ChatList from '../ChatList/ChatList';
 import ChatDetails from '../ChatDetails/ChatDetails';
+import MessageButton from '../MessageButton/MessageButton';
 
 const sampleChats = [
 	{
@@ -54,6 +55,7 @@ export default function ChatsContainer() {
 
 	return (
 		<div className='container'>
+			<MessageButton/>
 			<div className={styles.chats_content}>
 				<div className={styles.chat_list_container}>
 					<ChatList chats={sampleChats} onSelectChat={handleSelectChat} />

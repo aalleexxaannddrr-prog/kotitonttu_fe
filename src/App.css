@@ -3,6 +3,7 @@
 :root {
   --bg-green: #167144;
   --bg-chats: #63bc8fd2;
+  --bg-chats-modal: #f2f2f;
   --orange: #d88f07e1;
   --white: #fff;
   --grey: #5049498e;
@@ -12,7 +13,7 @@
   --txt-chat-date: #241c1c84;
   --error: #A52A2A;
   --btn-hover: #76B947;
-  --select-hover:#76B947 ;
+  --select-hover: #76B947;
   --table-grey: #6764645b;
 }
 
@@ -42,6 +43,8 @@ button {
   font-family: "Roboto", sans-serif;
   border: none;
   cursor: pointer;
+  font-size: 18px;
+  border-radius: 8px;
   color: var(--txt-white);
   background: var(--orange);
 }
