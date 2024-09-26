@@ -5,20 +5,20 @@
    right: 0;
    bottom: 0;
    display: flex;
-   justify-content: flex-end;
-   align-items: flex-end;
+   justify-content: center;
+   align-items: center;
    z-index: 1000;
    background: rgba(0, 0, 0, 0.5);
 }
 
 .modal_content {
-   position: fixed;
+   position: relative;
    right: 20px;
    bottom: 20px;
    display: flex;
    flex-direction: column;
    margin: 20px;
-   width: 40%;
+   width: 50%;
    height: 70%;
    overflow: hidden;
    border-radius: 8px;
@@ -31,7 +31,7 @@
    justify-content: space-between;
    align-items: center;
    padding: 10px 20px;
-   border-bottom: 1px solid #ccc;
+   border-bottom: 1px solid var(--border-chats-modal);
    background: var(--bg-chats-modal);
 }
 
@@ -98,7 +98,7 @@
 .modal_footer {
    padding: 10px 20px;
    background: var(--bg-chats-modal);
-   border-top: 1px solid #ccc;
+   border-top: 1px solid var(--border-chats-modal);
    text-align: right;
 }
 
