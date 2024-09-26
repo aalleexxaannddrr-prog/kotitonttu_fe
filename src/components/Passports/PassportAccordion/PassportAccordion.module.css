@@ -104,7 +104,7 @@
    transition: color 0.3s ease;
 }
 
-.accordion_sub_body ul li a:hover
+.accordion_sub_body ul li a:hover,
 .accordion_sub_body ul li a:focus {
    color: var(--orange);
 }
