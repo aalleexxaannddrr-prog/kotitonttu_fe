@@ -64,7 +64,8 @@ input::placeholder {
    color: var(--txt-white);
 }
 
-.form_btn:hover {
+.form_btn:hover,
+.form_btn:focus {
    background: var(--btn-hover);
 }
 
@@ -75,4 +76,9 @@ input::placeholder {
    right: 10px;
    color: var(--txt-black);
    background: transparent;
+}
+
+.close_btn:hover,
+.close_btn:focus{
+color: var(--error);
 }

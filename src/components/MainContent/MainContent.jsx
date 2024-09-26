@@ -17,10 +17,6 @@ export default function MainContent() {
 						товарам и поможем с выбором.
 					</p>
 				</div>
-				<div className={styles.main_buttons}>
-					<button className={styles.main_btn}>Связаться с нами</button>
-					<button className={`${styles.main_btn} ${styles.btn_orange}`}>Обратиться в сервис</button>
-				</div>
 			</div>
 		</div>
 	);

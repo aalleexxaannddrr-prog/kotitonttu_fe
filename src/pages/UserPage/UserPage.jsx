@@ -1,5 +1,5 @@
 import React from 'react'
-import UsersContainer from '../../components/UsersContainer/UsersContainer'
+import UsersContainer from '../../components/Users/UsersContainer/UsersContainer'
 
 export default function UserPage() {
   return (

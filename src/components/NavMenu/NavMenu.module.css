@@ -12,25 +12,24 @@
    font-size: 18px;
    position: relative;
    list-style-type: none;
-   /* Убрать стандартные маркеры списка */
 }
 
-.nav_list a:hover {
-   color: var(--txt-black);
+.nav_list li:hover,
+.nav_list li:focus {
+   color: var(--orange);
 }
 
 li .dropdown_menu {
    display: none;
    position: absolute;
    top: 100%;
-   /* Расположение подменю непосредственно под пунктом меню */
    left: 0;
-   
    /* Фон подменю */
    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
    /* Тень для подменю */
    z-index: 1000;
    border-radius: 10px;
+   color: var(--txt-white);
 }
 
 /* Отображение подменю при наведении */
@@ -40,17 +39,17 @@ li .dropdown_menu {
 
 .nav_menu .nav_list li .dropdown_menu li {
    padding: 8px 16px;
+   color: var(--txt-white);
    background: var(--orange);
-
-   
 }
 
 .dropdown_menu li:last-child{
-border-bottom-left-radius: 10px;
-border-bottom-right-radius: 10px;
+border-bottom-left-radius: 8px;
+border-bottom-right-radius: 8px;
 }
 
-.nav_menu .nav_list li .dropdown_menu li:hover {
+.nav_menu .nav_list li .dropdown_menu li:hover,
+.nav_menu .nav_list li .dropdown_menu li:focus {
    background: var(--btn-hover);
 }
 
