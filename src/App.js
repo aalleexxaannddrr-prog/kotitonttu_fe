@@ -25,6 +25,8 @@ import RejectedApplicationsPage from "./pages/RejectedApplicationsPage/RejectedA
 import AcceptedApplicationsPage from "./pages/AcceptedApplicationsPage/AcceptedApplicationsPage";
 import ClientPassportPage from "./pages/ClientPassportPage/ClientPassportPage";
 import ProductPassportPage from "./pages/ProductPassportPage/ProductPassportPage";
+import ChatsPage from "./pages/ChatsPage/ChatsPage";
+import ChatDetails from "./components/Chats/ChatDetails/ChatDetails";
 // import { fetchBarcodeTypes } from "./store/slices/barcodeDataSlice";
 
 function App() {
@@ -50,10 +52,12 @@ function App() {
 				<Route path='/exploded-view' element={<ExplodedViewPage />} />
 				<Route path='/spare-parts' element={<SparePartsPage />} />
 				<Route path='/passports' element={<PassportsPage />}>
-				<Route path="pass-client" element={<ClientPassportPage/>} />
-				<Route path="pass-product" element={<ProductPassportPage/>} />
+					<Route path='pass-client' element={<ClientPassportPage />} />
+					<Route path='pass-product' element={<ProductPassportPage />} />
 				</Route>
 				<Route path='/error-codes' element={<ErrorСodesPage />} />
+				<Route path='/chats' element={<ChatsPage />} />
+				<Route path='/chat/:id' element={<ChatDetails />} />
 				<Route path='/barcodes' element={<BarcodesPage />} />
 				<Route
 					path='/bonus-program/models'
@@ -65,11 +69,11 @@ function App() {
 				/>
 				<Route
 					path='/bonus-program/accepted-applications'
-					element={<AcceptedApplicationsPage/>}
+					element={<AcceptedApplicationsPage />}
 				/>
 				<Route
 					path='/bonus-program/rejected-applications'
-					element={<RejectedApplicationsPage/>}
+					element={<RejectedApplicationsPage />}
 				/>
 				<Route path='/detailed-info' element={<DetailedInfoPage />} />
 

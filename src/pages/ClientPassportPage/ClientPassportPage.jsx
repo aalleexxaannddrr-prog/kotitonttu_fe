@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './ClientPassportPage.module.css'
-import UsersPass from '../../components/UsersPass/UsersPass';
+import UsersPass from '../../components/Passports/UsersPass/UsersPass';
 
 export default function ClientPassportPage() {
   return (
