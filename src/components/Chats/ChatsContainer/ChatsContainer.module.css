@@ -1,6 +1,7 @@
 .chats_content {
    display: flex;
-   height: 100vh;
+   /* height: 100vh; */
+   margin-top: 20px;
 }
 
 .chat_list_container {
