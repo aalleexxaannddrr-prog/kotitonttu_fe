@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ServiceCentersPage.module.css";
-import MapComponent from "../../components/MapComponent/MapComponent ";
+import MapComponent from "../../components/Services/MapComponent/MapComponent ";
 import { useDispatch, useSelector } from "react-redux";
-import EquipmentSelector from "../../components/EquipmentSelector/EquipmentSelector";
+import EquipmentSelector from "../../components/Services/EquipmentSelector/EquipmentSelector";
 import { addServiceCentre } from "../../store/slices/serviceCreationSlice";
-import AddServiceCenterForm from "../../components/AddServiceCenterForm/AddServiceCenterForm";
-import ModalFormForServices from "../../components/ModalFormForServices/ModalFormForServices";
+import AddServiceCenterForm from "../../components/Services/AddServiceCenterForm/AddServiceCenterForm";
+import ModalFormForServices from "../../components/Services/ModalFormForServices/ModalFormForServices";
 
 export default function ServiceCentersPage() {
 	const dispatch = useDispatch();

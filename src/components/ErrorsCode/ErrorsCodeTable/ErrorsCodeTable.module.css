@@ -1,0 +1,47 @@
+.errors_table {
+   border-collapse: collapse;
+   width: 100%;
+   color: var(--txt-black);
+   background-color: white;
+}
+
+.errors_table .errors_td:first-child {
+   width: 80px;
+   padding-left: 10px;
+   padding-right: 10px;
+}
+
+.errors_td, .errors_th {
+   text-align: center;
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}
+
+.errors_table tr input {
+   display: flex;
+   padding: 4px;
+   width: 100%;
+   font-size: 14px;
+   outline: none;
+   border: 1px solid var(--txt-black);
+   border-radius: 8px;
+}
+
+.errors_table tr input:hover,
+.errors_table tr input:focus {
+   border: 1px solid var(--orange);
+}
+
+.delete_btn {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+   cursor: pointer;
+   color: var(--txt-black);
+   background: transparent;
+}
+
+.delete_btn:hover {
+   color: var(--error);
+}
