@@ -1,0 +1,113 @@
+.modal_backdrop {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 1000;
+   background: rgba(0, 0, 0, 0.5);
+}
+
+.modal_content {
+   position: relative;
+   right: 20px;
+   bottom: 20px;
+   display: flex;
+   flex-direction: column;
+   margin: 20px;
+   width: 50%;
+   height: 70%;
+   overflow: hidden;
+   border-radius: 8px;
+   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+   background: var(--white);
+}
+
+.modal_header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 10px 20px;
+   border-bottom: 1px solid var(--border-chats-modal);
+   background: var(--bg-chats-modal);
+}
+
+.modal_header h2 {
+   margin: 0;
+   font-size: 16px;
+   color: var(--txt-black);
+}
+
+.close_btn {
+   position: absolute;
+   top: 8px;
+   right: 10px;
+   color: var(--txt-black);
+   background: transparent;
+}
+
+.close_btn:hover,
+.close_btn:focus {
+   color: var(--error);
+}
+
+.modal_body {
+   padding: 10px 15px;
+   flex: 1;
+   overflow-y: auto;
+}
+
+.input_group {
+   margin-bottom: 8px;
+}
+
+.input_group label {
+   display: block;
+   margin-bottom: 5px;
+   color: var(--txt-black);
+}
+
+.input_group input,
+.input_group textarea {
+   padding: 8px;
+   width: 100%;
+   outline: none;
+   border: 1px solid var(--txt-black);
+   border-radius: 8px;
+}
+
+.input_group input:hover,
+.input_group input:focus {
+   border: 1px solid var(--orange);
+}
+
+.input_group textarea {
+   resize: none;
+   /* Отключаем изменение размера текстового поля */
+   height: 200px;
+}
+
+.input_group textarea:hover,
+.input_group textarea:focus{
+   border: 1px solid var(--orange);
+}
+
+.modal_footer {
+   padding: 10px 20px;
+   background: var(--bg-chats-modal);
+   border-top: 1px solid var(--border-chats-modal);
+   text-align: right;
+}
+
+.send_btn {
+   padding: 8px;
+   font-size: 14px;
+   border-radius: 4px;
+}
+
+.send_btn:hover {
+   background: var(--btn-hover);
+}
