@@ -1,0 +1,10 @@
+.chats_content {
+   display: flex;
+   height: 100vh;
+}
+
+.chat_list_container {
+   min-width: 300px;
+   overflow-y: auto;
+   background: var(--bg-chats);
+}

@@ -46,6 +46,9 @@ export default function NavMenu() {
 					</Link>
 				</li>
 				<li>
+					<Link to='chats' style={getLinkStyle('/chats')}>Чат</Link>
+				</li>
+				<li>
 					<Link to='/error-codes' style={getLinkStyle('/error-codes')}>
 						Коды ошибок
 					</Link>
