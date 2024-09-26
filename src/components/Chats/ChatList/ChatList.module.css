@@ -1,0 +1,36 @@
+.chat_list {
+   width: 300px;
+   overflow-y: auto;
+}
+
+.chat_item {
+   padding: 10px;
+   border-bottom: 1px solid var(--bg-green);
+   cursor: pointer;
+}
+
+.chat_item:hover,
+.chat_item:focus {
+   background-color: var(--orange);
+}
+
+.chat_from {
+   font-weight: bold;
+   text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+}
+
+.chat_subject {
+margin-top: 5px;
+text-overflow: ellipsis;
+   overflow: hidden;
+   white-space: nowrap;
+   color: var(--txt-chat-title);
+}
+
+.chat_date {
+   margin-top: 5px;
+   font-size: 12px;
+   color: var(--txt-chat-date);
+}
