@@ -11,6 +11,7 @@ import barcodeDataReducer from './slices/barcodeDataSlice';
 import updateBarcodeTypeReducer from './slices/updateBarcodeTypeSlice';
 import deleteBarcodeTypeReducer from './slices/deleteBarcodeTypeSlice';
 import errorscodeReducer from './slices/errorscodeSlice';
+import approvedBonusDataReducer from './slices/approvedBonusDataSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -26,5 +27,6 @@ export const store = configureStore({
 		updateBarcodeType: updateBarcodeTypeReducer,
 		deleteBarcodeType: deleteBarcodeTypeReducer,
 		errorscode: errorscodeReducer,
+		approvedBonusData: approvedBonusDataReducer,
 	},
 });
