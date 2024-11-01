@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import styles from './PassportAccordion.module.css'
+import styles from './PassportAccordion.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchErrorscode } from '../../../store/slices/errorscodeSlice';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { IoMdArrowDropup } from 'react-icons/io';
 
 const PassportAccordion = () => {
-	  const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.errorscode);
-  const [activeCategory, setActiveCategory] = useState(null);
-  const [activeTitle, setActiveTitle] = useState(null);
+	const dispatch = useDispatch();
+	const { data, loading, error } = useSelector(state => state.errorscode);
+	const [activeCategory, setActiveCategory] = useState(null);
+	const [activeTitle, setActiveTitle] = useState(null);
 
-  useEffect(() => {
-    dispatch(fetchErrorscode());
-  }, [dispatch]);
+	useEffect(() => {
+		dispatch(fetchErrorscode());
+	}, [dispatch]);
 
-  const toggleCategory = index => {
+	const toggleCategory = index => {
 		setActiveCategory(activeCategory === index ? null : index);
 		setActiveTitle(null); // Сбрасываем активное состояние внутреннего аккордеона при переключении категории
 	};
@@ -96,19 +96,19 @@ const PassportAccordion = () => {
 									{activeTitle === titleIndex && (
 										<div className={styles.accordion_sub_body}>
 											<ul>
-												{title.files &&
-													title.files.map((file, fileIndex) => (
-														<li key={fileIndex}>
-															<a
-																href={file}
-																target='_blank'
-																rel='noopener noreferrer'
-															>
-																{file.split('/').pop()}{' '}
-																{/* Отображаем имя файла */}
-															</a>
-														</li>
-													))}
+												{/* Обрабатываем одиночное поле file */}
+												{title.file && (
+													<li key={title.file}>
+														<a
+															href={title.file}
+															target='_blank'
+															rel='noopener noreferrer'
+														>
+															{title.file.split('/').pop()}{' '}
+															{/* Отображаем имя файла */}
+														</a>
+													</li>
+												)}
 											</ul>
 										</div>
 									)}

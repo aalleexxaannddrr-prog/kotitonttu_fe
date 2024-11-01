@@ -10,27 +10,36 @@ export const fetchBarcodeTypes = createAsyncThunk(
 	'barcodeData/fetchBarcodeTypes',
 	async () => {
 		try {
-			const response = await fetch('/user/get-all-barcode-types', {
+			const response = await fetch('/bonus-program/get-all-barcode-types', {
 				method: 'GET',
 				redirect: 'follow',
 			});
 
 			if (!response.ok) {
-				throw new Error('Failed to fetch barcode types');
+				throw new Error(
+					`Failed to fetch barcode types: ${response.status} ${response.statusText}`
+				);
 			}
 
 			const text = await response.text();
-			// console.log('Ответ сервера (текст):', text); // Логгируем текст ответа
-			const json = JSON.parse(text);
 
-			return json; // Изменено с json.data на json, так как ответ сервера уже является массивом
+			// Проверка, является ли ответ валидным JSON
+			try {
+				const json = JSON.parse(text);
+				// Проверяем, что json является массивом
+				if (!Array.isArray(json)) {
+					throw new Error('Ответ сервера не является массивом');
+				}
+				return json; // Возвращаем данные
+			} catch (parseError) {
+				throw new Error('Ошибка парсинга JSON: ' + parseError.message);
+			}
 		} catch (err) {
-			console.log('Ошибка при запросе:', err); // Логгируем ошибки запроса
-			return Promise.reject(err.message);
+			console.error('Ошибка при запросе:', err); // Логируем ошибки
+			return Promise.reject(err.message); // Возвращаем ошибку с сообщением
 		}
 	}
 );
-
 
 const barcodeDataSlice = createSlice({
 	name: 'barcodeData',
@@ -42,11 +51,12 @@ const barcodeDataSlice = createSlice({
 				state.status = 'loading';
 			})
 			.addCase(fetchBarcodeTypes.fulfilled, (state, action) => {
-				//console.log('Data received in reducer:', action.payload); // Добавьте этот лог
+				// console.log('Data received in reducer:', action.payload); // Добавляем лог
 				state.data = action.payload;
 				state.status = 'ready';
 			})
 			.addCase(fetchBarcodeTypes.rejected, (state, action) => {
+				console.error('Error received in reducer:', action.error); // Логируем ошибку
 				state.status = 'error';
 				state.error = action.error.message;
 			});

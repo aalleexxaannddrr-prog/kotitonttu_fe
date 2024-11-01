@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './BarcodeTypeForm.module.css';
 import { useDispatch } from 'react-redux';
-import { addBarcodeType } from '../../../store/slices/barcodeTypeSlice';
+import { addBarcodeType } from '../../../store/slices/addBarcodeTypeSlice';
 
 function BarcodeTypeForm() {
 	const [points, setPoints] = useState('');

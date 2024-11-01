@@ -1,17 +1,22 @@
-import { configureStore } from "@reduxjs/toolkit";
-import typesReducer from "./slices/typesSlice";
-import dataReducer from "./slices/dataSlice";
-import servicesReducer from "./slices/servicesSlice";
-import serviceCreationReducer from "./slices/serviceCreationSlice";
-import authReduser from "./slices/authSlice";
-import serviceDeletionSlice from "./slices/serviceDeletionSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import typesReducer from './slices/typesSlice';
+import dataReducer from './slices/dataSlice';
+import servicesReducer from './slices/servicesSlice';
+import serviceCreationReducer from './slices/serviceCreationSlice';
+import authReduser from './slices/authSlice';
+import serviceDeletionSlice from './slices/serviceDeletionSlice';
 import usersReducer from './slices/usersSlice';
-import barcodeTypeReducer from './slices/barcodeTypeSlice';
+import barcodeTypeReducer from './slices/addBarcodeTypeSlice';
 import barcodeDataReducer from './slices/barcodeDataSlice';
+import allBarcodeDataReducer from './slices/allBarcodeDataSlice'
 import updateBarcodeTypeReducer from './slices/updateBarcodeTypeSlice';
 import deleteBarcodeTypeReducer from './slices/deleteBarcodeTypeSlice';
 import errorscodeReducer from './slices/errorscodeSlice';
 import approvedBonusDataReducer from './slices/approvedBonusDataSlice';
+import pendingBonusDataReducer from './slices/pendingBonusDataSlice';
+import rejectedBonusDataReducer from './slices/rejectedBonusDataSlice';
+import approvedStatusKotibonusReducer from './slices/approvedStatusKotibonusSlice';
+import rejectedStatusKotibonusReducer from './slices/rejectedStatusKotibonusSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -24,9 +29,19 @@ export const store = configureStore({
 		users: usersReducer,
 		barcodeTypes: barcodeTypeReducer,
 		barcodeData: barcodeDataReducer,
+		allBarcodeData: allBarcodeDataReducer,
 		updateBarcodeType: updateBarcodeTypeReducer,
 		deleteBarcodeType: deleteBarcodeTypeReducer,
 		errorscode: errorscodeReducer,
 		approvedBonusData: approvedBonusDataReducer,
+		pendingBonusData: pendingBonusDataReducer,
+		rejectedBonusData: rejectedBonusDataReducer,
+		approvedStatusKotibonus: approvedStatusKotibonusReducer,
+		rejectedStatusKotibonus: rejectedStatusKotibonusReducer,
 	},
+	middleware: getDefaultMiddleware =>
+		getDefaultMiddleware({
+			serializableCheck: false, // Отключение проверки сериализуемости
+			immutableCheck: false, // Отключение проверки неизменяемости
+		}),
 });

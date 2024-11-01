@@ -1,13 +1,18 @@
-import React, { useState } from "react";
-import styles from "./LoginModal.module.css";
-import { IoClose } from "react-icons/io5";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './LoginModal.module.css';
+import { IoClose } from 'react-icons/io5';
+import { loginUser } from '../../store/slices/authSlice';
+import PasswordInput from '../PasswordInput/PasswordInput';
 
 const LoginModal = ({ closeModal }) => {
+	const dispatch = useDispatch();
+	const { user, isAuthenticated, status } = useSelector(state => state.auth);
 	const [formData, setFormData] = useState({
-		email: "",
-		password: "",
+		email: '',
+		password: '',
 	});
-	const [errors, setErrors] = useState({});
+	const [error, setError] = useState(null);
 
 	const handleChange = event => {
 		const { name, value } = event.target;
@@ -17,36 +22,24 @@ const LoginModal = ({ closeModal }) => {
 		}));
 	};
 
-	const validate = () => {
-		const newErrors = {};
-		if (!formData.email) {
-			newErrors.email = "Email обязателен";
-		} else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-			newErrors.email = "Неверный формат email";
-		}
-		if (!formData.password) {
-			newErrors.password = "Пароль обязателен";
-		} else if (formData.password.length < 8) {
-			newErrors.password = "Пароль должен содержать минимум 8 символов";
-		}
-		return newErrors;
-	};
-
 	const handleSubmit = event => {
 		event.preventDefault();
-		const validationErrors = validate();
-		if (Object.keys(validationErrors).length > 0) {
-			setErrors(validationErrors);
-		} else {
-			console.log("Submitting", formData);
-			// Здесь можно добавить логику отправки данных на сервер
-			setFormData({
-				email: "",
-				password: "",
+		setError(null); // Очистка ошибок перед попыткой логина
+		dispatch(
+			loginUser({
+				email: formData.email,
+				password: formData.password,
+				bearerToken: 'YOUR_BEARER_TOKEN',
+			})
+		)
+			.unwrap()
+			.then(() => {
+				setFormData({ email: '', password: '' });
+				closeModal();
+			})
+			.catch(error => {
+				setError('Ошибка авторизации. Пожалуйста, проверьте ваши данные.');
 			});
-			setErrors({});
-			closeModal(); // закрыть модальное окно после успешной отправки
-		}
 	};
 
 	return (
@@ -55,39 +48,37 @@ const LoginModal = ({ closeModal }) => {
 				<button className={styles.close_btn} onClick={closeModal}>
 					<IoClose size={24} />
 				</button>
-				<form onSubmit={handleSubmit} className={styles.form_block}>
-					<label>
-						Email
-						<input
-							type='email'
-							name='email'
-							placeholder='Введите ваш email'
-							value={formData.email}
-							onChange={handleChange}
-							required
-						/>
-						{errors.email && (
-							<span className={styles.error}>{errors.email}</span>
-						)}
-					</label>
-					<label>
-						Пароль
-						<input
-							type='password'
-							name='password'
-							placeholder='Введите ваш пароль'
-							value={formData.password}
-							onChange={handleChange}
-							required
-						/>
-						{errors.password && (
-							<span className={styles.error}>{errors.password}</span>
-						)}
-					</label>
-					<button className={styles.form_btn} type='submit'>
-						Войти
-					</button>
-				</form>
+				{!isAuthenticated ? (
+					<form onSubmit={handleSubmit} className={styles.form_block}>
+						<label>
+							Email
+							<input
+								type='email'
+								name='email'
+								placeholder='Введите ваш email'
+								value={formData.email}
+								onChange={handleChange}
+								required
+							/>
+						</label>
+						<label>
+							Пароль
+							<PasswordInput
+								value={formData.password}
+								onChange={handleChange}
+							/>
+						</label>
+						<button className={styles.form_btn} type='submit'>
+							Войти
+						</button>
+						{status === 'loading' && <p>Загрузка...</p>}
+						{error && <span className={styles.error}>{error}</span>}
+					</form>
+				) : (
+					<div>
+						<p>Добро пожаловать, {user.firstname}!</p>
+					</div>
+				)}
 			</div>
 		</div>
 	);

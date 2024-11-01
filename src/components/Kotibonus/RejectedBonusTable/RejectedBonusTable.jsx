@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './ApprovedBonusTable.module.css';
+import styles from './RejectedBonusTable.module.css';
 import { fetchUsers } from '../../../store/slices/usersSlice';
-import { fetchApprovedBonusRequests } from '../../../store/slices/approvedBonusDataSlice';
+import { fetchRejectedBonusRequests } from '../../../store/slices/rejectedBonusDataSlice';
 
-export default function ApprovedBonusTable() {
+export default function RejectedBonusTable() {
 	const dispatch = useDispatch();
-	const { data: approvedBonusData, status: bonusStatus } = useSelector(
-		state => state.approvedBonusData
+	const { data: rejectedBonusData, status: bonusStatus } = useSelector(
+		state => state.rejectedBonusData
 	);
 	const { users, status: userStatus } = useSelector(state => state.users);
 
 	useEffect(() => {
-		dispatch(fetchApprovedBonusRequests()); // Запрашиваем одобренные заявки
+		dispatch(fetchRejectedBonusRequests()); // Запрашиваем отклоненные заявки
 		dispatch(fetchUsers()); // Запрашиваем пользователей
 	}, [dispatch]);
 
@@ -27,16 +27,18 @@ export default function ApprovedBonusTable() {
 		{ Header: 'Имя', accessor: 'firstName' },
 		{ Header: 'Фамилия', accessor: 'lastName' },
 		{ Header: 'Статус', accessor: 'status' },
+		{ Header: 'Сообщение об отклонении', accessor: 'rejectionMessage' },
 	];
 
-	// Объединяем данные из пользователей и заявок
-	const combinedData = approvedBonusData.flatMap(user =>
+	// Объединяем данные из пользователей и отклоненных заявок
+	const combinedData = rejectedBonusData.flatMap(user =>
 		user.bonusRequests.map(request => {
 			const userInfo = getUserByEmail(user.email);
 			return {
 				firstName: userInfo ? userInfo.firstname : 'Unknown',
 				lastName: userInfo ? userInfo.lastname : 'Unknown',
-				status: request.status === 'APPROVED' ? 'Принят' : request.status,
+				status: request.status === 'REJECTED' ? 'Отклонен' : request.status,
+				rejectionMessage: request.rejectionMessage || 'Причина не указана',
 			};
 		})
 	);
@@ -50,7 +52,7 @@ export default function ApprovedBonusTable() {
 	}
 
 	return (
-		<div className={styles.approved_bonus_table}>
+		<div className={styles.rejected_bonus_table}>
 			<table className={styles.table}>
 				<thead>
 					<tr>
@@ -65,6 +67,7 @@ export default function ApprovedBonusTable() {
 							<td>{row.firstName}</td>
 							<td>{row.lastName}</td>
 							<td>{row.status}</td>
+							<td>{row.rejectionMessage}</td>
 						</tr>
 					))}
 				</tbody>

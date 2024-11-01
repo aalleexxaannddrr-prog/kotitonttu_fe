@@ -1,12 +1,12 @@
-.approved_bonus_table{
-margin-top: 20px;
+.rejected_bonus_table {
+   margin-top: 20px;
    color: var(--txt-black);
    background: var(--white);
 }
 
-.table{
+.table {
    border-collapse: collapse;
-      width: 100%;
+   width: 100%;
 }
 
 .table th {

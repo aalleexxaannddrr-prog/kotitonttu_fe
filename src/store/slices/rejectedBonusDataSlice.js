@@ -7,9 +7,9 @@ const initialState = {
 	error: null,
 };
 
-// Асинхронное действие для получения всех одобренных бонусных заявок
-export const fetchApprovedBonusRequests = createAsyncThunk(
-	'approvedBonusData/fetchApprovedBonusRequests',
+// Асинхронное действие для получения всех отклоненных бонусных заявок
+export const fetchRejectedBonusRequests = createAsyncThunk(
+	'rejectedBonusData/fetchRejectedBonusRequests',
 	async () => {
 		const requestOptions = {
 			method: 'GET',
@@ -18,12 +18,12 @@ export const fetchApprovedBonusRequests = createAsyncThunk(
 
 		try {
 			const response = await fetch(
-				'/bonus-program/get-all-bonus-requests-by-parameter?requestStatus=APPROVED',
+				'/bonus-program/get-all-bonus-requests-by-parameter?requestStatus=REJECTED',
 				requestOptions
 			);
 
 			if (!response.ok) {
-				throw new Error('Failed to fetch approved bonus requests');
+				throw new Error('Failed to fetch rejected bonus requests');
 			}
 
 			const text = await response.text(); // Получаем текстовый ответ
@@ -38,16 +38,16 @@ export const fetchApprovedBonusRequests = createAsyncThunk(
 );
 
 // Создание слайса
-const approvedBonusDataSlice = createSlice({
-	name: 'approvedBonusData',
+const rejectedBonusDataSlice = createSlice({
+	name: 'rejectedBonusData',
 	initialState,
 	reducers: {},
 	extraReducers: builder => {
 		builder
-			.addCase(fetchApprovedBonusRequests.pending, state => {
+			.addCase(fetchRejectedBonusRequests.pending, state => {
 				state.status = 'loading';
 			})
-			.addCase(fetchApprovedBonusRequests.fulfilled, (state, action) => {
+			.addCase(fetchRejectedBonusRequests.fulfilled, (state, action) => {
 				// Сохраняем данные в стейт после успешного запроса
 				state.data = action.payload.map(user => ({
 					email: user.email,
@@ -56,16 +56,17 @@ const approvedBonusDataSlice = createSlice({
 						requestDate: request.requestDate,
 						responseDate: request.responseDate,
 						status: request.status,
+						rejectionMessage: request.rejectionMessage,
 						photos: request.photos,
 					})),
 				}));
 				state.status = 'ready';
 			})
-			.addCase(fetchApprovedBonusRequests.rejected, (state, action) => {
+			.addCase(fetchRejectedBonusRequests.rejected, (state, action) => {
 				state.status = 'error';
 				state.error = action.error.message;
 			});
 	},
 });
 
-export default approvedBonusDataSlice.reducer;
+export default rejectedBonusDataSlice.reducer;
