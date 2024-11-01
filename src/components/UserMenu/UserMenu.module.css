@@ -1,0 +1,49 @@
+.user_container {
+   position: relative;
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+}
+
+.user_name {
+   padding: 12px 25px;
+   display: flex;
+   align-items: center;
+   gap: 18px;
+   font-size: 18px;
+   border-top-left-radius: 25px;
+   border-bottom-left-radius: 25px;
+   border: 1px solid var(--orange);
+   color: var(--txt-white);
+   background: var(--orange);
+}
+
+.user_name_icon {
+   font-size: 24px;
+   color: var(--txt-black);
+}
+
+.dropdown_menu {
+   position: absolute;
+   top: 100%;
+   right: 0;
+   padding: 8px 16px;
+   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+   ;
+   color: var(--txt-white);
+   background-color: var(--orange);
+}
+
+.dropdown_menu:last-child {
+   border-bottom-left-radius: 8px;
+   border-bottom-right-radius: 8px;
+}
+
+.dropdown_menu:hover,
+.dropdown_menu:focus {
+   background: var(--btn-hover);
+}
+
+.dropdown_menu li {
+   font-size: 14px;
+}

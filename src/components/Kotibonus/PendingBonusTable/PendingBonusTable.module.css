@@ -37,6 +37,5 @@
 }
 
 .detailed_link {
-   font-size: 14px;
-   color: var(--txt-white);
+   color: var(--txt-black);
 }

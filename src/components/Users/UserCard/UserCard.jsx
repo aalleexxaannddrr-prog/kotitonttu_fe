@@ -28,9 +28,11 @@ export default function UserCard({ users }) {
 						<tr key={user.id}>
 							{columns.map(column => (
 								<td key={column.accessor}>
-									{column.accessor === 'photo' && user[column.accessor] ? (
+									{column.accessor === 'photo' &&
+									user[column.accessor] &&
+									user.photo !== 'null' ? (
 										<img
-											src={user[column.accessor]}
+											src={user.photo}
 											alt={`${user.lastname}, ${user.firstname}`}
 											className={styles.photo}
 										/>

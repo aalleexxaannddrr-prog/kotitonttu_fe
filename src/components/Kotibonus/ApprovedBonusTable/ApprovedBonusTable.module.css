@@ -1,0 +1,21 @@
+.approved_bonus_table{
+margin-top: 20px;
+   color: var(--txt-black);
+   background: var(--white);
+}
+
+.table{
+   border-collapse: collapse;
+      width: 100%;
+}
+
+.table th {
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}
+
+.table td {
+   text-align: center;
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}

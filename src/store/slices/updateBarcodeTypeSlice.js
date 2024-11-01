@@ -15,7 +15,7 @@ export const updateBarcodeType = createAsyncThunk(
 			};
 
 			const response = await fetch(
-				`/admin/update-barcode-type/${id}/type?`,
+				`/bonus-program/update-barcode-type/${id}/type?`,
 				requestOptions
 			);
 			if (!response.ok) {
