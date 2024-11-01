@@ -21,7 +21,7 @@ export const addBarcodeType = createAsyncThunk(
 				redirect: 'follow',
 			};
 
-			const response = await fetch('/admin/add-barcode-type', requestOptions);
+			const response = await fetch('/bonus-program/add-barcode-type', requestOptions);
 
 			if (!response.ok) {
 				throw new Error('Failed to add barcode type');

@@ -1,9 +1,23 @@
-.user_content{
+.user_content {
    display: flex;
+   gap: 20px;
    color: var(--txt-black);
    background: var(--white);
 }
-.image{
+
+.image {
    width: 300px;
    height: 100%;
+}
+
+.username{
+   margin-top: 5px;
+}
+
+.user_info {
+   margin-top: 10px;
+}
+
+.user_info p {
+   margin-bottom: 5px;
 }

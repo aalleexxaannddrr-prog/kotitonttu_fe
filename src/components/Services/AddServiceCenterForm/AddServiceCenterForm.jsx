@@ -102,7 +102,7 @@ function AddServiceCenterForm({ onAdd }) {
 				<input
 					type='text'
 					name='address'
-					placeholder='Москва'
+					placeholder='ул. Неглинная, 21'
 					value={formData.address}
 					onChange={handleChange}
 					required

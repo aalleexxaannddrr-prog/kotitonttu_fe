@@ -6,6 +6,7 @@ import EquipmentSelector from "../../components/Services/EquipmentSelector/Equip
 import { addServiceCentre } from "../../store/slices/serviceCreationSlice";
 import AddServiceCenterForm from "../../components/Services/AddServiceCenterForm/AddServiceCenterForm";
 import ModalFormForServices from "../../components/Services/ModalFormForServices/ModalFormForServices";
+import { fetchServiceCentres } from "../../store/slices/servicesSlice";
 
 export default function ServiceCentersPage() {
 	const dispatch = useDispatch();
@@ -19,6 +20,10 @@ export default function ServiceCentersPage() {
 		// Инициализация при загрузке данных
 		setFilteredCenters(servisesCenters);
 	}, [servisesCenters]);
+
+	useEffect(() => {
+		dispatch(fetchServiceCentres());
+	}, [dispatch])
 
 	// Функция фильтрации сервисных центров
 	const handleEquipmentSelect = equipment => {

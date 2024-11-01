@@ -10,7 +10,7 @@ export const deleteBarcodeType = createAsyncThunk(
 		};
 		try {
 			const response = await fetch(
-				`/admin/delete-barcode-type/${id}`,
+				`/bonus-program/delete-barcode-type/${id}`,
 				requestOptions
 			);
 			if (!response.ok) {

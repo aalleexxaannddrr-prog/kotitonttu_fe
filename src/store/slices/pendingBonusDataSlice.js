@@ -7,9 +7,9 @@ const initialState = {
 	error: null,
 };
 
-// Асинхронное действие для получения всех одобренных бонусных заявок
-export const fetchApprovedBonusRequests = createAsyncThunk(
-	'approvedBonusData/fetchApprovedBonusRequests',
+// Асинхронное действие для получения всех ожидающих бонусных заявок
+export const fetchPendingBonusRequests = createAsyncThunk(
+	'pendingBonusData/fetchPendingBonusRequests',
 	async () => {
 		const requestOptions = {
 			method: 'GET',
@@ -18,12 +18,12 @@ export const fetchApprovedBonusRequests = createAsyncThunk(
 
 		try {
 			const response = await fetch(
-				'/bonus-program/get-all-bonus-requests-by-parameter?requestStatus=APPROVED',
+				'/bonus-program/get-all-bonus-requests-by-parameter?requestStatus=PENDING',
 				requestOptions
 			);
 
 			if (!response.ok) {
-				throw new Error('Failed to fetch approved bonus requests');
+				throw new Error('Failed to fetch pending bonus requests');
 			}
 
 			const text = await response.text(); // Получаем текстовый ответ
@@ -38,34 +38,28 @@ export const fetchApprovedBonusRequests = createAsyncThunk(
 );
 
 // Создание слайса
-const approvedBonusDataSlice = createSlice({
-	name: 'approvedBonusData',
+const pendingBonusDataSlice = createSlice({
+	name: 'pendingBonusData',
 	initialState,
 	reducers: {},
 	extraReducers: builder => {
 		builder
-			.addCase(fetchApprovedBonusRequests.pending, state => {
+			.addCase(fetchPendingBonusRequests.pending, state => {
 				state.status = 'loading';
 			})
-			.addCase(fetchApprovedBonusRequests.fulfilled, (state, action) => {
+			.addCase(fetchPendingBonusRequests.fulfilled, (state, action) => {
 				// Сохраняем данные в стейт после успешного запроса
 				state.data = action.payload.map(user => ({
 					email: user.email,
-					bonusRequests: user.bonusRequests.map(request => ({
-						id: request.bonusRequestId,
-						requestDate: request.requestDate,
-						responseDate: request.responseDate,
-						status: request.status,
-						photos: request.photos,
-					})),
+					bonusRequests: user.bonusRequests,
 				}));
 				state.status = 'ready';
 			})
-			.addCase(fetchApprovedBonusRequests.rejected, (state, action) => {
+			.addCase(fetchPendingBonusRequests.rejected, (state, action) => {
 				state.status = 'error';
 				state.error = action.error.message;
 			});
 	},
 });
 
-export default approvedBonusDataSlice.reducer;
+export default pendingBonusDataSlice.reducer;
