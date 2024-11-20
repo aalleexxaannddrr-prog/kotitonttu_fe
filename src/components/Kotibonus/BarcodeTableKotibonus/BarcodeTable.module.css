@@ -41,7 +41,6 @@
 .barcode_table td:first-child {
    padding-left: 10px;
    padding-right: 10px;
-   text-align: start;
 }
 
 .barcode_table tr input {

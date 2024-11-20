@@ -1,17 +1,35 @@
-import React from 'react'
-import styles from './ConfirmationCode.module.css'
+import React, { useState, useEffect } from 'react';
+import styles from './ConfirmationCode.module.css';
 import { approvedStatusKotibonus } from '../../../store/slices/approvedStatusKotibonusSlice';
 import { useDispatch } from 'react-redux';
 import { rejectedStatusKotibonus } from '../../../store/slices/rejectedStatusKotibonusSlice';
 
-export default function ConfirmationCode({ requestId, rejectionMessage, bearerToken }) {
+export default function ConfirmationCode({
+	requestId,
+	barcodeId,
+	rejectionMessage,
+	bearerToken,
+	status,
+}) {
 	const dispatch = useDispatch();
+	const [isApproved, setIsApproved] = useState(false);
+
+	useEffect(() => {
+		if (status) {
+			setIsApproved(status === 'APPROVED');
+		}
+	}, [status]);
 
 	const handleApprove = () => {
-		approvedStatusKotibonus(requestId, rejectionMessage, bearerToken)
-			.then(result =>
-				console.log('Запрос на одобрение выполнен успешно:', result)
-			)
+		dispatch(
+			approvedStatusKotibonus({
+				requestId: barcodeId,
+				rejectionMessage,
+				bearerToken,
+			})
+		)
+			.unwrap()
+			.then(() => setIsApproved(true))
 			.catch(error =>
 				console.error('Ошибка при выполнении запроса на одобрение:', error)
 			);
@@ -19,12 +37,14 @@ export default function ConfirmationCode({ requestId, rejectionMessage, bearerTo
 
 	const handleReject = () => {
 		dispatch(
-			rejectedStatusKotibonus({ requestId, rejectionMessage, bearerToken })
+			rejectedStatusKotibonus({
+				requestId: barcodeId,
+				rejectionMessage,
+				bearerToken,
+			})
 		)
 			.unwrap()
-			.then(result =>
-				console.log('Запрос на отклонение выполнен успешно:', result)
-			)
+			.then(() => setIsApproved(false))
 			.catch(error =>
 				console.error('Ошибка при выполнении запроса на отклонение:', error)
 			);
@@ -42,14 +62,18 @@ export default function ConfirmationCode({ requestId, rejectionMessage, bearerTo
 					<p className={styles.descr}>{rejectionMessage}</p>
 				</div>
 			</div>
-			<div className={styles.btn_card}>
-				<button className={styles.btn} onClick={handleApprove}>
-					Подтвердить
-				</button>
-				<button className={styles.btn} onClick={handleReject}>
-					Отклонить
-				</button>
-			</div>
+			{isApproved ? (
+				<p className={styles.status_approved}>Заявка одобрена!</p>
+			) : (
+				<div className={styles.btn_card}>
+					<button className={styles.btn} onClick={handleApprove}>
+						Подтвердить
+					</button>
+					<button className={styles.btn} onClick={handleReject}>
+						Отклонить
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }

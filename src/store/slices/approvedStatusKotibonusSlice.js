@@ -4,28 +4,39 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 export const approvedStatusKotibonus = createAsyncThunk(
 	'approvedStatusKotibonus/approve',
 	async ({ requestId, rejectionMessage, bearerToken }) => {
+		if (!bearerToken) {
+			throw new Error('Bearer token is missing');
+		}
+
 		const myHeaders = new Headers();
 		myHeaders.append('Accept', '*/*');
 		myHeaders.append('Authorization', `Bearer ${bearerToken}`);
 
-		const requestOptions = {
-			method: 'POST',
-			headers: myHeaders,
-			redirect: 'follow',
-		};
+		const url = `/bonus-program/updateStatus?requestId=${requestId}&status=APPROVED&rejectionMessage=${encodeURIComponent(
+			rejectionMessage || ''
+		)}`;
+
+		// console.log('Bearer Token в approvedStatusKotibonus:', bearerToken);
+		// console.log('URL:', url);
 
 		try {
-			const response = await fetch(
-				`/bonus-program/updateStatus?requestId=${requestId}&status=APPROVED&rejectionMessage=${rejectionMessage}`,
-				requestOptions
-			);
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: myHeaders,
+				credentials: 'include', // Включаем отправку куков
+				redirect: 'follow',
+			});
+
+			// console.log('Response status:', response.status);
 
 			if (!response.ok) {
-				throw new Error('Failed to approve bonus request');
+				const errorText = await response.text();
+				console.error('Ошибка в ответе:', errorText);
+				throw new Error(errorText || 'Failed to approve bonus request');
 			}
 
 			const result = await response.text();
-			return result; // Возвращаем результат для последующей обработки в слайсе
+			return result;
 		} catch (error) {
 			console.error('Ошибка при выполнении запроса:', error);
 			throw error;

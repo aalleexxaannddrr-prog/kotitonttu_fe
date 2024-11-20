@@ -1,47 +1,74 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './PhotosOfCompletedWork.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers } from '../../../store/slices/usersSlice';
-import { fetchPendingBonusRequests } from '../../../store/slices/pendingBonusDataSlice';
+import { useSelector } from 'react-redux';
 
-export default function PhotosOfCompletedWork() {
-	const dispatch = useDispatch();
+export default function PhotosOfCompletedWork({ targetEmail, bonusRequestId }) {
+	const pendingBonusData = useSelector(state => state.pendingBonusData.data);
+	const approvedBonusData = useSelector(state => state.approvedBonusData.data);
 
-	// Получаем данные пользователей и бонусных заявок из Redux
-	const users = useSelector(state => state.users.users);
-	const bonusRequests = useSelector(state => state.pendingBonusData.data);
-	const userStatus = useSelector(state => state.users.status);
-	const bonusStatus = useSelector(state => state.pendingBonusData.status);
+	// console.log('Pending Bonus Data:', pendingBonusData);
+	// console.log('Approved Bonus Data:', approvedBonusData);
+	// console.log('Target Email:', targetEmail);
+	// console.log('Bonus Request ID:', bonusRequestId);
 
-	// Вызов обоих запросов при монтировании компонента
-	useEffect(() => {
-		if (userStatus === '') dispatch(fetchUsers());
-		if (bonusStatus === 'idle') dispatch(fetchPendingBonusRequests());
-	}, [dispatch, userStatus, bonusStatus]);
+	// Найти пользователя по email в pendingBonusData или approvedBonusData
+	const userPendingData = pendingBonusData.find(
+		user => user.email === targetEmail
+	);
+	const userApprovedData = approvedBonusData.find(
+		user => user.email === targetEmail
+	);
 
-	// Получаем фотографии из заявок на бонусы, если они имеются
-	const photos = bonusRequests
-		.flatMap(bonusRequest =>
-			bonusRequest.bonusRequests.flatMap(request => request.photos)
-		)
-		.filter(photo => photo); // Убираем null значения, если фото не найдено
+	let bonusRequest = null;
+	let status = null;
 
-	// Отображение в зависимости от статуса загрузки
-	if (userStatus === 'loading' || bonusStatus === 'loading')
-		return <p>Загрузка...</p>;
-	if (userStatus === 'error' || bonusStatus === 'error')
-		return <p>Ошибка при загрузке данных</p>;
+	// Проверка в PENDING
+	if (userPendingData) {
+		bonusRequest = userPendingData.bonusRequests.find(
+			request =>
+				String(request.bonusRequestId || request.id) === String(bonusRequestId)
+		);
+		if (bonusRequest) status = 'PENDING';
+	}
+
+	// Если не нашли в PENDING, проверяем APPROVED
+	if (!bonusRequest && userApprovedData) {
+		bonusRequest = userApprovedData.bonusRequests.find(
+			request =>
+				String(request.bonusRequestId || request.id) === String(bonusRequestId)
+		);
+		if (bonusRequest) status = 'APPROVED';
+	}
+
+	// Если заявка не найдена ни в одной категории
+	if (!bonusRequest) {
+		console.error('Нет данных о заявке:', bonusRequestId);
+		return <p>Нет данных о заявке</p>;
+	}
+
+	// console.log('Bonus Request:', bonusRequest);
+	// console.log('Status:', status);
+
+	// Получить URL фотографии
+	const photo = bonusRequest.photos?.[0];
+
+	// console.log('URL фотографии:', photo);
+
+	if (!photo) {
+		return <p>Нет фотографии для отображения</p>;
+	}
 
 	return (
-		<div>
-			{photos.map((photo, index) => (
-				<img
-					key={index}
-					className={styles.images}
-					src={photo}
-					alt='Фото завершенной работы'
-				/>
-			))}
+		<div className={styles.wrapper}>
+			<img
+				className={styles.images}
+				src={photo}
+				alt='Фото завершенной работы'
+				onError={e => {
+					console.error('Ошибка загрузки фотографии:', e.target.src);
+					e.target.src = '/path/to/placeholder/image.jpg'; // Заглушка
+				}}
+			/>
 		</div>
 	);
 }

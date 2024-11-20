@@ -1,22 +1,23 @@
-// src/context/UserContext.js
+// UserContext.js
 import React, { createContext, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 
 const UserContext = createContext();
 
-export const UserProvider = ({ children }) => {
-	const { email } = useParams(); // Получаем email из URL
-	const users = useSelector(state => state.users.users); // Данные о пользователях из Redux
-	const user = useMemo(
-		() => users.find(user => user.email === email),
-		[email, users]
-	); // Находим нужного пользователя
+export const UserProvider = ({ children, email }) => {
+	const users = useSelector(state => state.users.users);
+	const bearerToken = useSelector(state => state.auth.bearerToken);
+
+	const user = useMemo(() => {
+		if (email) {
+			const foundUser = users.find(user => user.email === email);
+			return foundUser ? { ...foundUser, bearerToken } : null;
+		}
+		return null;
+	}, [email, users, bearerToken]);
 
 	return (
-		<UserContext.Provider value={{ user, email }}>
-			{children}
-		</UserContext.Provider>
+		<UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
 	);
 };
 

@@ -1,43 +1,56 @@
 .confirmation_card {
-   padding: 14px;
-   max-width: 20%;
-   color: var(--txt-black);
-   background: var(--white);
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 10px;
+   padding: 10px 0;
 }
 
-.descr_info {
-   margin-bottom: 10px;
-}
-
+.descr_info,
 .amount {
+   width: 100%;
    margin-bottom: 10px;
 }
 
 .descr_title {
+   font-weight: bold;
    margin-bottom: 5px;
 }
 
-.descr{
-   padding: 2px;
+.descr {
+   padding: 8px;
    border: 1px solid var(--grey);
+   border-radius: 4px;
+   color: var(--txt-black);
+}
+
+.status_approved{
+   font-size: 20px;
 }
 
 .btn_card {
    display: flex;
-   justify-content: space-evenly;
+   justify-content: space-between;
+   width: 100%;
+   gap: 10px;
 }
 
 .btn {
-   padding: 8px;
+   flex: 1;
+   padding: 10px;
    font-size: 14px;
-   border-radius: 20px;
-   border: 1px solid rgba(250, 250, 250, 0.2);
+   border-radius: 8px;
+   cursor: pointer;
+   transition: background-color 0.3s;
 }
 
 .btn:first-child:hover {
-   background: var(--btn-hover);
+   background-color: var(--btn-hover);
+   color: var(--white);
 }
 
 .btn:last-child:hover {
-   background: var(--error);
+   background-color: var(--error);
+   color: var(--white);
 }

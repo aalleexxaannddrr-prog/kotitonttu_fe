@@ -3,10 +3,10 @@ import DetailedInfoContainer from '../../components/Kotibonus/DetailedInfoContai
 import { useParams } from 'react-router-dom';
 
 export default function DetailedInfoPage() {
-	const { email } = useParams(); // Получаем email из URL
+	const { requestId } = useParams();
 	return (
 		<div>
-			<DetailedInfoContainer email={email} />
+			<DetailedInfoContainer requestId={requestId} />
 		</div>
 	);
 }

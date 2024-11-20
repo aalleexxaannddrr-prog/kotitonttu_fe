@@ -8,7 +8,7 @@ const initialState = {
 
 export const fetchBarcodes = createAsyncThunk(
 	'allBarcodeData/fetchBarcodes',
-	async bearerToken => {
+	async (bearerToken, { rejectWithValue }) => {
 		const myHeaders = new Headers();
 		myHeaders.append('Accept', '*/*');
 		myHeaders.append('Authorization', `Bearer ${bearerToken}`);
@@ -32,22 +32,16 @@ export const fetchBarcodes = createAsyncThunk(
 			}
 
 			const text = await response.text();
-			console.log('Raw response text:', text); // Логирование текста ответа
 
-			try {
-				const json = JSON.parse(text);
-				if (!Array.isArray(json)) {
-					throw new Error('Response is not an array');
-				}
-				console.log('Parsed JSON response:', json); // Логирование JSON после парсинга
-				return json;
-			} catch (parseError) {
-				console.error('JSON parsing error:', parseError.message);
-				throw new Error('JSON parsing error: ' + parseError.message);
+			const json = JSON.parse(text);
+			if (!Array.isArray(json)) {
+				throw new Error('Response is not an array');
 			}
+
+			return json;
 		} catch (err) {
-			console.error('Request error:', err); // Логирование ошибок запроса
-			return Promise.reject(err.message);
+			console.error('Request error:', err.message);
+			return rejectWithValue(err.message);
 		}
 	}
 );
@@ -66,9 +60,9 @@ const allBarcodeDataSlice = createSlice({
 				state.status = 'ready';
 			})
 			.addCase(fetchBarcodes.rejected, (state, action) => {
-				console.error('Error in reducer:', action.error); // Логирование ошибки
+				console.error('Error in reducer:', action.error);
 				state.status = 'error';
-				state.error = action.error.message;
+				state.error = action.payload;
 			});
 	},
 });

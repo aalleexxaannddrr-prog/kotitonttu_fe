@@ -31,7 +31,7 @@ function App() {
 	const { isAuthenticated, isLoading } = useSelector(state => state.auth); // Получаем статус авторизации
 
 	useEffect(() => {
-		dispatch(restoreAuth()); // Восстанавливаем авторизацию при загрузке приложения
+		dispatch(restoreAuth()); // Восстанавливаем авторизацию при загрузке
 	}, [dispatch]);
 
 	if (isLoading) {
@@ -77,7 +77,7 @@ function App() {
 							element={<RejectedApplicationsPage />}
 						/>
 						<Route
-							path='/detailed-info/:email'
+							path='/detailed-info/:requestId'
 							element={
 								<UserProvider>
 									<DetailedInfoPage />
