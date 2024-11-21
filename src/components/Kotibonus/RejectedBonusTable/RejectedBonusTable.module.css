@@ -19,3 +19,7 @@
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
 }
+
+.detailed_link {
+   color: var(--txt-black);
+}

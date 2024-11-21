@@ -42,11 +42,11 @@ export default function PendingBonusTable({ bearerToken }) {
 		const barcodeType = barcodeTypes.find(item => item.id === bonusRequestId);
 
 		// Логируем, если данные отсутствуют
-		if (!barcodeType) {
-			console.warn(
-				`Не найдена информация для bonusRequestId: ${bonusRequestId}`
-			);
-		}
+		// if (!barcodeType) {
+		// 	console.warn(
+		// 		`Не найдена информация для bonusRequestId: ${bonusRequestId}`
+		// 	);
+		// }
 
 		return {
 			model: barcodeType?.type || 'Нет данных',
@@ -71,11 +71,11 @@ export default function PendingBonusTable({ bearerToken }) {
 			const { model, cost } = getModelAndCost(request.bonusRequestId);
 
 			// Логируем, если модель или стоимость не найдены
-			if (model === 'Нет данных' || cost === 'Нет данных') {
-				console.warn(
-					`Для заявки ${request.bonusRequestId} у пользователя ${user.email} отсутствуют данные модели или стоимости.`
-				);
-			}
+			// if (model === 'Нет данных' || cost === 'Нет данных') {
+			// 	console.warn(
+			// 		`Для заявки ${request.bonusRequestId} у пользователя ${user.email} отсутствуют данные модели или стоимости.`
+			// 	);
+			// }
 
 			return {
 				firstName: userInfo?.firstname || 'Unknown',

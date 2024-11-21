@@ -25,7 +25,7 @@
    color: var(--txt-black);
 }
 
-.status_approved{
+.status{
    font-size: 20px;
 }
 
@@ -41,16 +41,13 @@
    padding: 10px;
    font-size: 14px;
    border-radius: 8px;
-   cursor: pointer;
    transition: background-color 0.3s;
 }
 
 .btn:first-child:hover {
    background-color: var(--btn-hover);
-   color: var(--white);
 }
 
 .btn:last-child:hover {
    background-color: var(--error);
-   color: var(--white);
 }

@@ -8,52 +8,64 @@ import PhotosOfCompletedWork from '../PhotosOfCompletedWork/PhotosOfCompletedWor
 import { UserProvider } from '../../../context/UserContext';
 import { fetchPendingBonusRequests } from '../../../store/slices/pendingBonusDataSlice';
 import { fetchApprovedBonusRequests } from '../../../store/slices/approvedBonusDataSlice';
+import { fetchRejectedBonusRequests } from '../../../store/slices/rejectedBonusDataSlice';
 import { fetchBarcodeTypes } from '../../../store/slices/barcodeDataSlice';
 import { fetchBarcodes } from '../../../store/slices/allBarcodeDataSlice';
 
 export default function DetailedInfoContainer() {
-	const { requestId } = useParams();
+	const { requestId } = useParams(); // Получаем ID запроса из URL
 	const dispatch = useDispatch();
 
 	const pendingBonusData = useSelector(state => state.pendingBonusData.data);
 	const approvedBonusData = useSelector(state => state.approvedBonusData.data);
+	const rejectedBonusData = useSelector(state => state.rejectedBonusData.data); // Берем `data`
 	const barcodeTypes = useSelector(state => state.barcodeData.data);
 	const barcodes = useSelector(state => state.allBarcodeData.data);
 	const bearerToken = useSelector(state => state.auth.bearerToken);
 
-	const [isLoading, setIsLoading] = useState(true); // Индикатор загрузки данных
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		// Загружаем данные
 		Promise.all([
 			dispatch(fetchPendingBonusRequests()).unwrap(),
 			dispatch(fetchApprovedBonusRequests()).unwrap(),
+			dispatch(fetchRejectedBonusRequests()).unwrap(), // Загружаем отклоненные заявки
 			dispatch(fetchBarcodeTypes()).unwrap(),
-			dispatch(fetchBarcodes()).unwrap(),
+			dispatch(fetchBarcodes(bearerToken)).unwrap(),
 		])
-			.then(() => setIsLoading(false)) // Убираем индикатор загрузки
+			.then(() => setIsLoading(false))
 			.catch(error => {
 				console.error('Ошибка при загрузке данных:', error);
 				setIsLoading(false);
 			});
-	}, [dispatch]);
+	}, [dispatch, bearerToken]);
 
-	// Поиск пользователя по requestId
+	// Поиск пользователя по `requestId` в данных всех типов
 	const userBonusData =
 		pendingBonusData.find(user =>
 			user.bonusRequests.some(
-				request =>
-					String(request.bonusRequestId || request.id) === String(requestId)
+				request => request.bonusRequestId === Number(requestId)
 			)
 		) ||
 		approvedBonusData.find(user =>
 			user.bonusRequests.some(
-				request =>
-					String(request.bonusRequestId || request.id) === String(requestId)
+				request => request.bonusRequestId === Number(requestId)
+			)
+		) ||
+		rejectedBonusData.find(user =>
+			user.bonusRequests.some(
+				request => request.bonusRequestId === Number(requestId)
 			)
 		);
 
 	const email = userBonusData?.email;
+
+	// Поиск заявки по `requestId`
+	const bonusRequest =
+		userBonusData?.bonusRequests.find(
+			request => request.bonusRequestId === Number(requestId)
+		) || null;
 
 	// Поиск данных для бонусов
 	const bonusTypeData = barcodeTypes.find(
@@ -69,17 +81,15 @@ export default function DetailedInfoContainer() {
 	const barcodeId = barcodeData ? barcodeData.id : null;
 
 	// Статус заявки
-	const status = userBonusData?.bonusRequests.find(
-		request =>
-			String(request.bonusRequestId || request.id) === String(requestId)
-	)?.status;
+	const status = bonusRequest?.status || 'Неизвестно';
 
 	// Проверка загрузки данных
 	if (isLoading) {
 		return <p>Загрузка данных...</p>;
 	}
 
-	if (!email) {
+	// Проверка на наличие данных о пользователе
+	if (!userBonusData) {
 		return <p>Данные пользователя не найдены</p>;
 	}
 

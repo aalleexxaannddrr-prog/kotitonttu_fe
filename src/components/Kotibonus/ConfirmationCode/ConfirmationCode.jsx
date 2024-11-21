@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ConfirmationCode.module.css';
 import { approvedStatusKotibonus } from '../../../store/slices/approvedStatusKotibonusSlice';
-import { useDispatch } from 'react-redux';
 import { rejectedStatusKotibonus } from '../../../store/slices/rejectedStatusKotibonusSlice';
+import { useDispatch } from 'react-redux';
+import RejectionModal from '../RejectionModal/RejectionModal';
 
 export default function ConfirmationCode({
 	requestId,
@@ -13,10 +14,19 @@ export default function ConfirmationCode({
 }) {
 	const dispatch = useDispatch();
 	const [isApproved, setIsApproved] = useState(false);
+	const [isRejected, setIsRejected] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
-		if (status) {
-			setIsApproved(status === 'APPROVED');
+		if (status === 'APPROVED') {
+			setIsApproved(true);
+			setIsRejected(false);
+		} else if (status === 'REJECTED') {
+			setIsApproved(false);
+			setIsRejected(true);
+		} else {
+			setIsApproved(false);
+			setIsRejected(false);
 		}
 	}, [status]);
 
@@ -24,7 +34,7 @@ export default function ConfirmationCode({
 		dispatch(
 			approvedStatusKotibonus({
 				requestId: barcodeId,
-				rejectionMessage,
+				rejectionMessage: '',
 				bearerToken,
 			})
 		)
@@ -35,7 +45,13 @@ export default function ConfirmationCode({
 			);
 	};
 
-	const handleReject = () => {
+	const handleRejectSubmit = rejectionMessage => {
+		console.log('Отправляемые данные:', {
+			requestId: barcodeId,
+			rejectionMessage,
+			bearerToken,
+		});
+
 		dispatch(
 			rejectedStatusKotibonus({
 				requestId: barcodeId,
@@ -44,10 +60,17 @@ export default function ConfirmationCode({
 			})
 		)
 			.unwrap()
-			.then(() => setIsApproved(false))
+			.then(() => {
+				setIsRejected(true);
+				setIsModalOpen(false);
+			})
 			.catch(error =>
 				console.error('Ошибка при выполнении запроса на отклонение:', error)
 			);
+	};
+
+	const handleReject = () => {
+		setIsModalOpen(true);
 	};
 
 	return (
@@ -62,8 +85,12 @@ export default function ConfirmationCode({
 					<p className={styles.descr}>{rejectionMessage}</p>
 				</div>
 			</div>
+
+			{/* Сообщение о статусе заявки */}
 			{isApproved ? (
-				<p className={styles.status_approved}>Заявка одобрена!</p>
+				<p className={styles.status}>Заявка одобрена!</p>
+			) : isRejected ? (
+				<p className={styles.status}>Заявка отклонена!</p>
 			) : (
 				<div className={styles.btn_card}>
 					<button className={styles.btn} onClick={handleApprove}>
@@ -74,6 +101,13 @@ export default function ConfirmationCode({
 					</button>
 				</div>
 			)}
+
+			{/* Модальное окно */}
+			<RejectionModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				onSubmit={handleRejectSubmit}
+			/>
 		</div>
 	);
 }

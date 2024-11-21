@@ -5,39 +5,40 @@ import { useSelector } from 'react-redux';
 export default function PhotosOfCompletedWork({ targetEmail, bonusRequestId }) {
 	const pendingBonusData = useSelector(state => state.pendingBonusData.data);
 	const approvedBonusData = useSelector(state => state.approvedBonusData.data);
+	const rejectedBonusData = useSelector(state => state.rejectedBonusData.data);
 
-	// console.log('Pending Bonus Data:', pendingBonusData);
-	// console.log('Approved Bonus Data:', approvedBonusData);
-	// console.log('Target Email:', targetEmail);
-	// console.log('Bonus Request ID:', bonusRequestId);
-
-	// Найти пользователя по email в pendingBonusData или approvedBonusData
+	// Найти пользователя по email в данных PENDING, APPROVED или REJECTED
 	const userPendingData = pendingBonusData.find(
 		user => user.email === targetEmail
 	);
 	const userApprovedData = approvedBonusData.find(
 		user => user.email === targetEmail
 	);
+	const userRejectedData = rejectedBonusData.find(
+		user => user.email === targetEmail
+	);
 
 	let bonusRequest = null;
 	let status = null;
 
-	// Проверка в PENDING
-	if (userPendingData) {
-		bonusRequest = userPendingData.bonusRequests.find(
-			request =>
-				String(request.bonusRequestId || request.id) === String(bonusRequestId)
-		);
-		if (bonusRequest) status = 'PENDING';
-	}
+	const datasets = [
+		{ data: userPendingData, status: 'PENDING' },
+		{ data: userApprovedData, status: 'APPROVED' },
+		{ data: userRejectedData, status: 'REJECTED' },
+	];
 
-	// Если не нашли в PENDING, проверяем APPROVED
-	if (!bonusRequest && userApprovedData) {
-		bonusRequest = userApprovedData.bonusRequests.find(
-			request =>
-				String(request.bonusRequestId || request.id) === String(bonusRequestId)
-		);
-		if (bonusRequest) status = 'APPROVED';
+	for (const dataset of datasets) {
+		if (dataset.data) {
+			bonusRequest = dataset.data.bonusRequests.find(
+				request =>
+					String(request.bonusRequestId || request.id) ===
+					String(bonusRequestId)
+			);
+			if (bonusRequest) {
+				status = dataset.status;
+				break;
+			}
+		}
 	}
 
 	// Если заявка не найдена ни в одной категории
@@ -46,13 +47,8 @@ export default function PhotosOfCompletedWork({ targetEmail, bonusRequestId }) {
 		return <p>Нет данных о заявке</p>;
 	}
 
-	// console.log('Bonus Request:', bonusRequest);
-	// console.log('Status:', status);
-
 	// Получить URL фотографии
 	const photo = bonusRequest.photos?.[0];
-
-	// console.log('URL фотографии:', photo);
 
 	if (!photo) {
 		return <p>Нет фотографии для отображения</p>;
