@@ -5,8 +5,8 @@ export const deleteServiceCenter = createAsyncThunk(
 	"serviceDeletionSlice/deleteServiceCenter",
 	async (id, { rejectWithValue }) => {
 		try {
-			const response = await fetch(`/service-centres/${id}`, {
-				method: "DELETE",
+			const response = await fetch(`/service-centers/delete-by-id/${id}`, {
+				method: 'DELETE',
 			});
 			if (!response.ok) {
 				throw new Error("Ошибка при удалении сервисного центра");

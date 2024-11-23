@@ -10,10 +10,7 @@ export const fetchErrorscode = createAsyncThunk(
 		};
 
 		try {
-			const response = await fetch(
-				'/passport/categories',
-				requestOptions
-			);
+			const response = await fetch('/error/get-all', requestOptions);
 			if (!response.ok) {
 				throw new Error('Ошибка сети');
 			}

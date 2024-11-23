@@ -21,7 +21,7 @@ export default function ProductPassportPage() {
 	};
 
 	return (
-		<div>
+		<div className='container'>
 			<h2 className={styles.pass_title}>Паспорт Продукции</h2>
 			{/* Скрытый input для выбора файла */}
 			<input

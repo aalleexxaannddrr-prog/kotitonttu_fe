@@ -12,7 +12,6 @@ import ExplodedViewPage from './pages/ExplodedViewPage/ExplodedViewPage';
 import SparePartsPage from './pages/SparePartsPage/SparePartsPage';
 import ErrorСodesPage from './pages/ErrorСodesPage/ErrorСodesPage';
 import BarcodesPage from './pages/BarcodesPage/BarcodesPage';
-import PassportsPage from './pages/PassportsPage/PassportsPage';
 import ServiceCentersPage from './pages/ServiceCentersPage/ServiceCentersPage';
 import PendingApplicationsPage from './pages/PendingApplicationsPage/PendingApplicationsPage';
 import DetailedInfoPage from './pages/DetailedInfoPage/DetailedInfoPage';
@@ -52,10 +51,8 @@ function App() {
 						<Route path='/service-centers' element={<ServiceCentersPage />} />
 						<Route path='/exploded-view' element={<ExplodedViewPage />} />
 						<Route path='/spare-parts' element={<SparePartsPage />} />
-						<Route path='/passports' element={<PassportsPage />}>
-							<Route path='pass-client' element={<ClientPassportPage />} />
-							<Route path='pass-product' element={<ProductPassportPage />} />
-						</Route>
+						<Route path='pass-client' element={<ClientPassportPage />} />
+						<Route path='pass-product' element={<ProductPassportPage />} />
 						<Route path='/error-codes' element={<ErrorСodesPage />} />
 						<Route path='/chats' element={<ChatsPage />} />
 						<Route path='/chat/:id' element={<ChatDetails />} />
