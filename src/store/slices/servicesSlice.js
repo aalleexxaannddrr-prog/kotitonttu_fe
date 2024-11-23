@@ -7,30 +7,11 @@ const initialState = {
 	error: '',
 };
 
-// export const fetchServiceCentres = createAsyncThunk(
-// 	"services/fetchServiceCentres",
-// 	async (_, { rejectWithValue }) => {
-// 		try {
-// 			const response = await fetch("/service-centres/getAll");
-// 			if (!response.ok) {
-// 				throw new Error("Failed to fetch data");
-// 			}
-// 			const data = await response.json();
-// 			return data; // Непосредственно возвращаем полученные данные
-// 		} catch (error) {
-// 			return rejectWithValue(error.message);
-// 		}
-// 	}
-// );
-
-
 export const fetchServiceCentres = createAsyncThunk(
 	"services/fetchServiceCentres",
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await fetch(
-				"/service-centres/getAll"
-			);
+			const response = await fetch('/service-centers/get-all-service-centers');
 			if (!response.ok) {
 				throw new Error("Failed to fetch data");
 			}

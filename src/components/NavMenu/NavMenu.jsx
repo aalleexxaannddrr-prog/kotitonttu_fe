@@ -14,28 +14,25 @@ export default function NavMenu() {
 
 	return (
 		<nav className={styles.nav_menu}>
-					<ul className={styles.nav_list}>
-						<li>
-							<Link to='/users' style={getLinkStyle('/users')}>
-								Пользователи
-							</Link>
-						</li>
+			<ul className={styles.nav_list}>
+				<li>
+					<Link to='/users' style={getLinkStyle('/users')}>
+						Пользователи
+					</Link>
+				</li>
+				<li>
+					<Link to='/types' style={getLinkStyle('/types')}>
+						Продукция
+					</Link>
+					<ul className={styles.dropdown_menu}>
 						<li>
 							<Link to='/types' style={getLinkStyle('/types')}>
-								Продукция
+								Характеристики продукции
 							</Link>
 						</li>
 						<li>
-							<Link
-								to='/service-centers'
-								style={getLinkStyle('/service-centers')}
-							>
-								Сервисные центры
-							</Link>
-						</li>
-						<li>
-							<Link to='/exploded-view' style={getLinkStyle('/exploded-view')}>
-								Взрыв-схемы
+							<Link to='/pass-product' style={getLinkStyle('/pass-product')}>
+								Паспорт Продукции
 							</Link>
 						</li>
 						<li>
@@ -44,18 +41,55 @@ export default function NavMenu() {
 							</Link>
 						</li>
 						<li>
-							<Link to='/passports' style={getLinkStyle('/passports')}>
-								Паспорта
-							</Link>
-						</li>
-						<li>
-							<Link to='/chats' style={getLinkStyle('/chats')}>
-								Чат
-							</Link>
-						</li>
-						<li>
 							<Link to='/error-codes' style={getLinkStyle('/error-codes')}>
 								Коды ошибок
+							</Link>
+						</li>
+						<li>
+							<Link to='/exploded-view' style={getLinkStyle('/exploded-view')}>
+								Взрыв-схемы
+							</Link>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<Link to='/service-centers' style={getLinkStyle('/service-centers')}>
+						Сервисные центры
+					</Link>
+				</li>
+				<li>
+					<Link style={getLinkStyle('/bonus-program')}>Котибонус</Link>
+					<ul className={styles.dropdown_menu}>
+						<li>
+							<Link
+								to='/bonus-program/models'
+								style={getLinkStyle('/bonus-program/models')}
+							>
+								Редактировать
+							</Link>
+						</li>
+						<li>
+							<Link
+								to='/bonus-program/active-applications'
+								style={getLinkStyle('/bonus-program/active-applications')}
+							>
+								Активные заявки
+							</Link>
+						</li>
+						<li>
+							<Link
+								to='/bonus-program/accepted-applications'
+								style={getLinkStyle('/bonus-program/accepted-applications')}
+							>
+								Принятые заявки
+							</Link>
+						</li>
+						<li>
+							<Link
+								to='/bonus-program/rejected-applications'
+								style={getLinkStyle('/bonus-program/rejected-applications')}
+							>
+								Отклоненные заявки
 							</Link>
 						</li>
 						<li>
@@ -64,43 +98,18 @@ export default function NavMenu() {
 							</Link>
 						</li>
 						<li>
-							<Link style={getLinkStyle('/bonus-program')}>Котибонус</Link>
-							<ul className={styles.dropdown_menu}>
-								<li>
-									<Link
-										to='/bonus-program/models'
-										style={getLinkStyle('/bonus-program/models')}
-									>
-										Редактировать
-									</Link>
-								</li>
-								<li>
-									<Link
-										to='/bonus-program/active-applications'
-										style={getLinkStyle('/bonus-program/active-applications')}
-									>
-										Активные заявки
-									</Link>
-								</li>
-								<li>
-									<Link
-										to='/bonus-program/accepted-applications'
-										style={getLinkStyle('/bonus-program/accepted-applications')}
-									>
-										Принятые заявки
-									</Link>
-								</li>
-								<li>
-									<Link
-										to='/bonus-program/rejected-applications'
-										style={getLinkStyle('/bonus-program/rejected-applications')}
-									>
-										Отклоненные заявки
-									</Link>
-								</li>
-							</ul>
+							<Link to='/pass-client' style={getLinkStyle('/pass-client')}>
+								Паспорт Клиента
+							</Link>
 						</li>
 					</ul>
+				</li>
+				<li>
+					<Link to='/chats' style={getLinkStyle('/chats')}>
+						Чат
+					</Link>
+				</li>
+			</ul>
 		</nav>
 	);
 }

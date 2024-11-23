@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom'; // Добавлено
 import styles from './RejectedBonusTable.module.css';
 import { fetchUsers } from '../../../store/slices/usersSlice';
 import { fetchRejectedBonusRequests } from '../../../store/slices/rejectedBonusDataSlice';
@@ -12,11 +13,10 @@ export default function RejectedBonusTable() {
 	const { users, status: userStatus } = useSelector(state => state.users);
 
 	useEffect(() => {
-		dispatch(fetchRejectedBonusRequests()); // Запрашиваем отклоненные заявки
-		dispatch(fetchUsers()); // Запрашиваем пользователей
+		dispatch(fetchRejectedBonusRequests());
+		dispatch(fetchUsers());
 	}, [dispatch]);
 
-	// Функция для поиска пользователя по email
 	const getUserByEmail = email => {
 		return users.find(
 			user => user.email.trim().toLowerCase() === email.trim().toLowerCase()
@@ -30,7 +30,7 @@ export default function RejectedBonusTable() {
 		{ Header: 'Сообщение об отклонении', accessor: 'rejectionMessage' },
 	];
 
-	// Объединяем данные из пользователей и отклоненных заявок
+	// Объединяем данные
 	const combinedData = rejectedBonusData.flatMap(user =>
 		user.bonusRequests.map(request => {
 			const userInfo = getUserByEmail(user.email);
@@ -39,6 +39,7 @@ export default function RejectedBonusTable() {
 				lastName: userInfo ? userInfo.lastname : 'Unknown',
 				status: request.status === 'REJECTED' ? 'Отклонен' : request.status,
 				rejectionMessage: request.rejectionMessage || 'Причина не указана',
+				bonusRequestId: request.bonusRequestId, // Добавлено для перехода по ссылке
 			};
 		})
 	);
@@ -64,7 +65,14 @@ export default function RejectedBonusTable() {
 				<tbody>
 					{combinedData.map((row, index) => (
 						<tr key={index}>
-							<td>{row.firstName}</td>
+							<td>
+								<Link
+									to={`/detailed-info/${row.bonusRequestId}`} // Переход по bonusRequestId
+									className={styles.detailed_link}
+								>
+									{row.firstName}
+								</Link>
+							</td>
 							<td>{row.lastName}</td>
 							<td>{row.status}</td>
 							<td>{row.rejectionMessage}</td>

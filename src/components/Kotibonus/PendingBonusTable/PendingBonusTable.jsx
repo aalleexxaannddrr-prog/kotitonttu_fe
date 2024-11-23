@@ -16,18 +16,21 @@ export default function PendingBonusTable({ bearerToken }) {
 	const { data: barcodeTypes, status: barcodeTypesStatus } = useSelector(
 		state => state.barcodeData
 	);
-	const { status: barcodesStatus } = useSelector(
-		state => state.allBarcodeData
-	);
+	const { status: barcodesStatus } = useSelector(state => state.allBarcodeData);
 
 	useEffect(() => {
 		dispatch(fetchPendingBonusRequests());
 		dispatch(fetchUsers());
-		dispatch(fetchBarcodeTypes());
+		dispatch(fetchBarcodeTypes())
+			.unwrap()
+			.catch(err => {
+				console.error('Ошибка загрузки barcodeTypes:', err);
+			});
 		if (bearerToken) {
 			dispatch(fetchBarcodes(bearerToken));
 		}
 	}, [dispatch, bearerToken]);
+
 
 	const getUserByEmail = email => {
 		return users.find(
@@ -35,15 +38,22 @@ export default function PendingBonusTable({ bearerToken }) {
 		);
 	};
 
-	// Функция для получения модели и стоимости по ID из двух источников
 	const getModelAndCost = bonusRequestId => {
 		const barcodeType = barcodeTypes.find(item => item.id === bonusRequestId);
 
+		// Логируем, если данные отсутствуют
+		// if (!barcodeType) {
+		// 	console.warn(
+		// 		`Не найдена информация для bonusRequestId: ${bonusRequestId}`
+		// 	);
+		// }
+
 		return {
-			model: barcodeType ? barcodeType.type : 'Нет данных',
-			cost: barcodeType ? `${barcodeType.points} руб.` : 'Нет данных',
+			model: barcodeType?.type || 'Нет данных',
+			cost: barcodeType?.points ? `${barcodeType.points} руб.` : 'Нет данных',
 		};
 	};
+
 
 	const columns = [
 		{ Header: 'Имя', accessor: 'firstName' },
@@ -53,30 +63,33 @@ export default function PendingBonusTable({ bearerToken }) {
 		{ Header: 'Статус', accessor: 'status' },
 	];
 
-	const combinedData = pendingBonusData.map(user => {
+	const combinedData = pendingBonusData.flatMap(user => {
 		const userInfo = getUserByEmail(user.email);
 
-		const requestId =
-			user.bonusRequests.length > 0
-				? user.bonusRequests[0].bonusRequestId
-				: undefined;
-		// console.log('Request ID:', requestId);
+		return user.bonusRequests.map(request => {
+			// Обрабатываем данные заявки
+			const { model, cost } = getModelAndCost(request.bonusRequestId);
 
-		const { model, cost } = requestId
-			? getModelAndCost(requestId)
-			: { model: 'Нет данных', cost: 'Нет данных' };
+			// Логируем, если модель или стоимость не найдены
+			// if (model === 'Нет данных' || cost === 'Нет данных') {
+			// 	console.warn(
+			// 		`Для заявки ${request.bonusRequestId} у пользователя ${user.email} отсутствуют данные модели или стоимости.`
+			// 	);
+			// }
 
-		return {
-			firstName: userInfo ? userInfo.firstname : 'Unknown',
-			lastName: userInfo ? userInfo.lastname : 'Unknown',
-			email: user.email,
-			model,
-			cost,
-			status: user.bonusRequests.length > 0 ? 'Ожидание' : 'Нет заявок',
-		};
+			return {
+				firstName: userInfo?.firstname || 'Unknown',
+				lastName: userInfo?.lastname || 'Unknown',
+				email: user.email,
+				model,
+				cost,
+				status: 'Ожидание',
+				bonusRequestId: request.bonusRequestId, // Добавляем bonusRequestId для каждой записи
+			};
+		});
 	});
 
-	// Фильтруем данные, чтобы оставить только строки со статусом "Ожидание"
+
 	const filteredData = combinedData.filter(row => row.status === 'Ожидание');
 
 	if (
@@ -113,7 +126,7 @@ export default function PendingBonusTable({ bearerToken }) {
 							<tr key={index}>
 								<td>
 									<Link
-										to={`/detailed-info/${row.email}`}
+										to={`/detailed-info/${row.bonusRequestId}`}
 										className={styles.detailed_link}
 									>
 										{row.firstName}
