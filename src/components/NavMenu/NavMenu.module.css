@@ -5,7 +5,6 @@
 .nav_list {
    display: flex;
    gap: 20px;
-   flex-wrap: wrap;
 }
 
 .nav_list li {
@@ -19,33 +18,30 @@
    color: var(--orange);
 }
 
-li .dropdown_menu {
+/* Подменю для "Котибонус" */
+.nav_menu .nav_list li .dropdown_menu {
    display: none;
    position: absolute;
    top: 100%;
    left: 0;
-   /* Фон подменю */
-   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-   /* Тень для подменю */
+   padding: 8px 0;
+   min-width: 150px;
    z-index: 1000;
+   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
    border-radius: 10px;
+   background-color: var(--orange);
    color: var(--txt-white);
 }
 
-/* Отображение подменю при наведении */
-.nav_menu .nav_list li:hover .dropdown_menu {
+/* Отображение подменю для "Котибонус" */
+.nav_menu .nav_list>li:hover>.dropdown_menu {
    display: block;
 }
 
 .nav_menu .nav_list li .dropdown_menu li {
-   padding: 8px 16px;
+   padding: 8px 14px;
+   
    color: var(--txt-white);
-   background: var(--orange);
-}
-
-.dropdown_menu li:last-child{
-border-bottom-left-radius: 8px;
-border-bottom-right-radius: 8px;
 }
 
 .nav_menu .nav_list li .dropdown_menu li:hover,
@@ -54,9 +50,49 @@ border-bottom-right-radius: 8px;
 }
 
 .nav_menu .nav_list li .dropdown_menu li a {
-   color: var(--txt-white);
-   text-decoration: none;
    display: block;
    font-size: 14px;
 }
 
+/* Обертка для "Паспорт Клиента" */
+.nav_menu .nav_list li .dropdown_menu li .dropdown_container {
+   position: absolute;
+   left: 100%;
+   top: 0;
+   padding: 8px 0;
+   z-index: 1000;
+   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+   border-top-right-radius: 10px;
+   border-bottom-right-radius: 10px;
+   background-color: var(--orange);
+}
+
+/* Новый список для "Паспорт Клиента" */
+.additional_list {
+   padding: 8px 14px;
+}
+
+/* Отображение подменю справа при наведении */
+.dropdown_container:hover .additional_list {
+   display: block;
+}
+
+.additional_list li {
+   padding: 8px 16px;
+   color: var(--txt-white);
+}
+
+.additional_list li:hover,
+.additional_list li:focus {
+   background: var(--btn-hover);
+}
+
+.additional_list li:last-child {
+   border-bottom-left-radius: 8px;
+   border-bottom-right-radius: 8px;
+}
+
+.additional_list li a {
+   display: block;
+   font-size: 14px;
+}
