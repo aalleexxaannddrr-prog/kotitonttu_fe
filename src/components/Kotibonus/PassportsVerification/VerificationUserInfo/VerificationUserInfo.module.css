@@ -1,0 +1,41 @@
+.user_content {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 20px;
+   max-width: 350px;
+   color: var(--txt-black);
+   background: var(--white);
+}
+
+.image {
+   width: 150px;
+   height: 150px;
+   border-radius: 50%;
+   margin-bottom: 20px;
+   object-fit: cover;
+}
+
+.user_info_card {
+   width: 100%;
+}
+
+.username {
+   text-align: center;
+   font-size: 18px;
+   font-weight: bold;
+}
+
+.user_info {
+   margin-top: 10px;
+   font-size: 16px;
+   color: var(--txt-black);
+}
+
+.user_info p {
+   margin-bottom: 10px;
+}
+
+.user_info p:last-child {
+   margin-bottom: 0;
+}

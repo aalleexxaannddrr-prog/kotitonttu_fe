@@ -55,14 +55,13 @@ export default function PhotosOfCompletedWork({ targetEmail, bonusRequestId }) {
 	}
 
 	return (
-		<div className={styles.wrapper}>
+		<div>
 			<img
 				className={styles.images}
 				src={photo}
 				alt='Фото завершенной работы'
 				onError={e => {
 					console.error('Ошибка загрузки фотографии:', e.target.src);
-					e.target.src = '/path/to/placeholder/image.jpg'; // Заглушка
 				}}
 			/>
 		</div>

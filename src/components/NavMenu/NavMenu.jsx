@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './NavMenu.module.css';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function NavMenu() {
 	const location = useLocation();
 	const currentPath = location.pathname;
+	const [hoveredPassClient, setHoveredPassClient] = useState(false);
+	const [hoveredApplications, setHoveredApplications] = useState(false);
 
 	const getLinkStyle = path => {
 		return currentPath === path
@@ -65,42 +67,99 @@ export default function NavMenu() {
 								to='/bonus-program/models'
 								style={getLinkStyle('/bonus-program/models')}
 							>
-								Редактировать
+								Добавить модель
 							</Link>
 						</li>
-						<li>
-							<Link
-								to='/bonus-program/active-applications'
-								style={getLinkStyle('/bonus-program/active-applications')}
-							>
-								Активные заявки
+						<li
+							onMouseEnter={() => setHoveredApplications(true)}
+							onMouseLeave={() => setHoveredApplications(false)}
+							className={styles.dropdown_container}
+						>
+							<Link to='/applications' style={getLinkStyle('/applications')}>
+								Заявки
 							</Link>
-						</li>
-						<li>
-							<Link
-								to='/bonus-program/accepted-applications'
-								style={getLinkStyle('/bonus-program/accepted-applications')}
-							>
-								Принятые заявки
-							</Link>
-						</li>
-						<li>
-							<Link
-								to='/bonus-program/rejected-applications'
-								style={getLinkStyle('/bonus-program/rejected-applications')}
-							>
-								Отклоненные заявки
-							</Link>
+							{hoveredApplications && (
+								<ul
+									className={`${styles.dropdown_container} ${styles.additional_list}`}
+								>
+									<li>
+										<Link
+											to='/bonus-program/active-applications'
+											style={getLinkStyle('/bonus-program/active-applications')}
+										>
+											Ожидание
+										</Link>
+									</li>
+									<li>
+										<Link
+											to='/bonus-program/accepted-applications'
+											style={getLinkStyle(
+												'/bonus-program/accepted-applications'
+											)}
+										>
+											Принято
+										</Link>
+									</li>
+									<li>
+										<Link
+											to='/bonus-program/rejected-applications'
+											style={getLinkStyle(
+												'/bonus-program/rejected-applications'
+											)}
+										>
+											Отклонено
+										</Link>
+									</li>
+								</ul>
+							)}
 						</li>
 						<li>
 							<Link to='/barcodes' style={getLinkStyle('/barcodes')}>
 								Штрих коды
 							</Link>
 						</li>
-						<li>
+						<li
+							onMouseEnter={() => setHoveredPassClient(true)}
+							onMouseLeave={() => setHoveredPassClient(false)}
+							className={styles.dropdown_container}
+						>
 							<Link to='/pass-client' style={getLinkStyle('/pass-client')}>
 								Паспорт Клиента
 							</Link>
+							{hoveredPassClient && (
+								<ul
+									className={`${styles.dropdown_container} ${styles.additional_list}`}
+								>
+									<li>
+										<Link
+											to='/bonus-program/pending-verification'
+											style={getLinkStyle(
+												'/bonus-program/pending-verification'
+											)}
+										>
+											Ожидание
+										</Link>
+									</li>
+									<li>
+										<Link
+											to='/bonus-program/approved-verification'
+											style={getLinkStyle(
+												'/bonus-program/approved-verification'
+											)}
+										>
+											Принято
+										</Link>
+									</li>
+									<li>
+										<Link
+											to='/pass-client/rejected'
+											style={getLinkStyle('/pass-client/rejected')}
+										>
+											Отклонено
+										</Link>
+									</li>
+								</ul>
+							)}
 						</li>
 					</ul>
 				</li>
