@@ -1,13 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-// Начальное состояние
 const initialState = {
 	data: [],
 	status: 'idle', // 'idle' | 'loading' | 'ready' | 'error'
 	error: null,
 };
 
-// Асинхронное действие для получения всех ожидающих бонусных заявок
 export const fetchPendingBonusRequests = createAsyncThunk(
 	'pendingBonusData/fetchPendingBonusRequests',
 	async () => {
@@ -48,7 +46,6 @@ const pendingBonusDataSlice = createSlice({
 				state.status = 'loading';
 			})
 			.addCase(fetchPendingBonusRequests.fulfilled, (state, action) => {
-				// Сохраняем данные в стейт после успешного запроса
 				state.data = action.payload.map(user => ({
 					email: user.email,
 					bonusRequests: user.bonusRequests,

@@ -1,0 +1,53 @@
+.confirmation_card {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 10px;
+   padding: 10px 0;
+}
+
+.descr_info,
+.amount {
+   width: 100%;
+   margin-bottom: 10px;
+}
+
+.descr_title {
+   font-weight: bold;
+   margin-bottom: 5px;
+}
+
+.descr {
+   padding: 8px;
+   border: 1px solid var(--grey);
+   border-radius: 4px;
+   color: var(--txt-black);
+}
+
+.status {
+   font-size: 20px;
+}
+
+.btn_card {
+   display: flex;
+   justify-content: space-between;
+   width: 100%;
+   gap: 10px;
+}
+
+.btn {
+   flex: 1;
+   padding: 10px;
+   font-size: 14px;
+   border-radius: 8px;
+   transition: background-color 0.3s;
+}
+
+.btn:first-child:hover {
+   background-color: var(--btn-hover);
+}
+
+.btn:last-child:hover {
+   background-color: var(--error);
+}

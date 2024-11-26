@@ -10,10 +10,10 @@ export const addServiceCentre = createAsyncThunk(
 	"serviceCreation/addServiceCentre",
 	async (newCentre, { rejectWithValue }) => {
 		try {
-			const response = await fetch("/service-centres/add", {
-				method: "POST",
+			const response = await fetch('/service-centers/add-service', {
+				method: 'POST',
 				headers: {
-					"Content-Type": "application/json",
+					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(newCentre),
 			});

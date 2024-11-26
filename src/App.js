@@ -12,7 +12,6 @@ import ExplodedViewPage from './pages/ExplodedViewPage/ExplodedViewPage';
 import SparePartsPage from './pages/SparePartsPage/SparePartsPage';
 import ErrorСodesPage from './pages/ErrorСodesPage/ErrorСodesPage';
 import BarcodesPage from './pages/BarcodesPage/BarcodesPage';
-import PassportsPage from './pages/PassportsPage/PassportsPage';
 import ServiceCentersPage from './pages/ServiceCentersPage/ServiceCentersPage';
 import PendingApplicationsPage from './pages/PendingApplicationsPage/PendingApplicationsPage';
 import DetailedInfoPage from './pages/DetailedInfoPage/DetailedInfoPage';
@@ -25,13 +24,16 @@ import ChatsPage from './pages/ChatsPage/ChatsPage';
 import ChatDetails from './components/Chats/ChatDetails/ChatDetails';
 import { UserProvider } from './context/UserContext';
 import { restoreAuth } from './store/slices/authSlice';
+import PendingVerificationPage from './pages/PendingVerificationPage/PendingVerificationPage';
+import ApprovedVerificationsPage from './pages/ApprovedVerificationsPage/ApprovedVerificationsPage';
+import VerificationInfoPage from './pages/VerificationInfoPage/VerificationInfoPage'
 
 function App() {
 	const dispatch = useDispatch();
 	const { isAuthenticated, isLoading } = useSelector(state => state.auth); // Получаем статус авторизации
 
 	useEffect(() => {
-		dispatch(restoreAuth()); // Восстанавливаем авторизацию при загрузке приложения
+		dispatch(restoreAuth()); // Восстанавливаем авторизацию при загрузке
 	}, [dispatch]);
 
 	if (isLoading) {
@@ -52,10 +54,8 @@ function App() {
 						<Route path='/service-centers' element={<ServiceCentersPage />} />
 						<Route path='/exploded-view' element={<ExplodedViewPage />} />
 						<Route path='/spare-parts' element={<SparePartsPage />} />
-						<Route path='/passports' element={<PassportsPage />}>
-							<Route path='pass-client' element={<ClientPassportPage />} />
-							<Route path='pass-product' element={<ProductPassportPage />} />
-						</Route>
+						<Route path='pass-client' element={<ClientPassportPage />} />
+						<Route path='pass-product' element={<ProductPassportPage />} />
 						<Route path='/error-codes' element={<ErrorСodesPage />} />
 						<Route path='/chats' element={<ChatsPage />} />
 						<Route path='/chat/:id' element={<ChatDetails />} />
@@ -77,12 +77,25 @@ function App() {
 							element={<RejectedApplicationsPage />}
 						/>
 						<Route
-							path='/detailed-info/:email'
+							path='/detailed-info/:requestId'
 							element={
 								<UserProvider>
 									<DetailedInfoPage />
 								</UserProvider>
 							}
+						/>
+						<Route
+							path='/bonus-program/pending-verification'
+							element={<PendingVerificationPage />}
+						/>
+						<Route
+							path='/bonus-program/approved-verification'
+							element={<ApprovedVerificationsPage />}
+						/>
+
+						<Route
+							path='/verification-info/:userId/:documentVerificationId'
+							element={<VerificationInfoPage />}
 						/>
 						<Route path='*' element={<NotFoundPage />} />
 					</>

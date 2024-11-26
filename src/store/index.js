@@ -8,7 +8,7 @@ import serviceDeletionSlice from './slices/serviceDeletionSlice';
 import usersReducer from './slices/usersSlice';
 import barcodeTypeReducer from './slices/addBarcodeTypeSlice';
 import barcodeDataReducer from './slices/barcodeDataSlice';
-import allBarcodeDataReducer from './slices/allBarcodeDataSlice'
+import allBarcodeDataReducer from './slices/allBarcodeDataSlice';
 import updateBarcodeTypeReducer from './slices/updateBarcodeTypeSlice';
 import deleteBarcodeTypeReducer from './slices/deleteBarcodeTypeSlice';
 import errorscodeReducer from './slices/errorscodeSlice';
@@ -17,6 +17,11 @@ import pendingBonusDataReducer from './slices/pendingBonusDataSlice';
 import rejectedBonusDataReducer from './slices/rejectedBonusDataSlice';
 import approvedStatusKotibonusReducer from './slices/approvedStatusKotibonusSlice';
 import rejectedStatusKotibonusReducer from './slices/rejectedStatusKotibonusSlice';
+import pendingPassVerificationDataReducer from './slices/pendingPassVerificationSlice';
+import approvedPassVerificationDataReducer from './slices/approvedPassVerificationDataSlice';
+import rejectedPassVerificationReducer from './slices/rejectedPassVerificationData';
+import approveVerificationStatusReduser from './slices/approvedVerificationSlice';
+import rejectVerificationStatusReducer from './slices/rejectiVerificationSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -38,6 +43,11 @@ export const store = configureStore({
 		rejectedBonusData: rejectedBonusDataReducer,
 		approvedStatusKotibonus: approvedStatusKotibonusReducer,
 		rejectedStatusKotibonus: rejectedStatusKotibonusReducer,
+		pendingPassVerificationData: pendingPassVerificationDataReducer,
+		approvedPassVerificationData: approvedPassVerificationDataReducer,
+		rejectedPassVerificationData: rejectedPassVerificationReducer,
+		approvedVerification: approveVerificationStatusReduser,
+		rejectedVerification: rejectVerificationStatusReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({

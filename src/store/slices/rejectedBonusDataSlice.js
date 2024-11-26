@@ -10,9 +10,15 @@ const initialState = {
 // Асинхронное действие для получения всех отклоненных бонусных заявок
 export const fetchRejectedBonusRequests = createAsyncThunk(
 	'rejectedBonusData/fetchRejectedBonusRequests',
-	async () => {
+	async (_, { getState }) => {
+		const state = getState();
+		const bearerToken = state.auth.bearerToken; // Предполагается, что токен хранится в auth
 		const requestOptions = {
 			method: 'GET',
+			headers: {
+				Accept: '*/*',
+				Authorization: `Bearer ${bearerToken}`,
+			},
 			redirect: 'follow',
 		};
 
@@ -52,12 +58,12 @@ const rejectedBonusDataSlice = createSlice({
 				state.data = action.payload.map(user => ({
 					email: user.email,
 					bonusRequests: user.bonusRequests.map(request => ({
-						id: request.bonusRequestId,
+						bonusRequestId: request.bonusRequestId, // Используем уникальный ID
 						requestDate: request.requestDate,
 						responseDate: request.responseDate,
 						status: request.status,
-						rejectionMessage: request.rejectionMessage,
-						photos: request.photos,
+						rejectionMessage: request.rejectionMessage, // Причина отклонения
+						photos: request.photos || [], // Обработка возможного отсутствия фотографий
 					})),
 				}));
 				state.status = 'ready';

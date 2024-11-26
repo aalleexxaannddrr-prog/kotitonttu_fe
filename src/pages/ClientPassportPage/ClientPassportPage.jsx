@@ -4,7 +4,7 @@ import UsersPass from '../../components/Passports/UsersPass/UsersPass';
 
 export default function ClientPassportPage() {
   return (
-		<div>
+		<div className='container'>
 			<h2 className={styles.title}>Паспорт Клиента</h2>
 			<UsersPass/>
 		</div>
