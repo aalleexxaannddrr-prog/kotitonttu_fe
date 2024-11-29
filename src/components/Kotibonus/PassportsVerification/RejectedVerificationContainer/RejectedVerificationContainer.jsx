@@ -1,7 +1,10 @@
-import React from 'react'
+import React from 'react';
+import RejectedVerificationTable from '../RejectedVerificationTable/RejectedVerificationTable';
 
 export default function RejectedVerificationContainer() {
-  return (
-    <div>RejectedVerificationContainer</div>
-  )
+	return (
+		<div className='container'>
+			<RejectedVerificationTable />
+		</div>
+	);
 }

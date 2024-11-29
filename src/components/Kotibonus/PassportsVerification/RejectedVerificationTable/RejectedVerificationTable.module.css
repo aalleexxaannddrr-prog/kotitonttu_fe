@@ -1,0 +1,40 @@
+.rejected_table {
+   margin-top: 20px;
+   color: var(--txt-black);
+   background: var(--white);
+}
+
+.table {
+   border-collapse: collapse;
+   width: 100%;
+}
+
+.table th {
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}
+
+.table td {
+   text-align: center;
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}
+
+.table td:first-child {
+   padding-left: 10px;
+   padding-right: 10px;
+   width: 300px;
+}
+
+.detailed_info {
+   position: absolute;
+   top: -75%;
+   left: 10px;
+   background: var(--orange);
+   padding: 5px;
+   z-index: 1000;
+}
+
+.detailed_link {
+   color: var(--txt-black);
+}

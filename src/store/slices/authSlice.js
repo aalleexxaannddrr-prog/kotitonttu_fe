@@ -48,8 +48,8 @@ const getTokensFromCookies = () => {
 // Основная функция для обработки успешного входа
 const handleLoginSuccess = () => {
 	const tokens = getTokensFromCookies();
-	console.log('JWT Token:', tokens.jwtToken);
-	console.log('Refresh Token:', tokens.refreshToken);
+	// console.log('JWT Token:', tokens.jwtToken);
+	// console.log('Refresh Token:', tokens.refreshToken);
 };
 
 // Новый thunk для восстановления состояния авторизации из localStorage
@@ -101,7 +101,7 @@ const authSlice = createSlice({
 				state.isLoading = false;
 
 				localStorage.setItem('user', JSON.stringify(action.payload));
-				console.log('Bearer token saved in auth state:', state.bearerToken);
+				// console.log('Bearer token saved in auth state:', state.bearerToken);
 			})
 			.addCase(loginUser.rejected, (state, action) => {
 				state.status = 'failed';
