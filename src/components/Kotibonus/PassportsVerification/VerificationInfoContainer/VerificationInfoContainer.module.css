@@ -43,3 +43,7 @@
    color: var(--txt-black);
    background: var(--white);
 }
+
+.status {
+   font-size: 20px;
+}
