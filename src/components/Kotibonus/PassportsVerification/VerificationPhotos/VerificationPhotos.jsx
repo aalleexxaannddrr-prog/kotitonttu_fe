@@ -3,31 +3,46 @@ import styles from './VerificationPhotos.module.css';
 import { useSelector } from 'react-redux';
 
 export default function VerificationPhotos({ targetEmail, verificationId }) {
-	const verificationData = useSelector(
+	const pendingData = useSelector(
 		state => state.pendingPassVerificationData.data
 	);
+	const approvedData = useSelector(
+		state => state.approvedPassVerificationData.data
+	);
+	const rejectedData = useSelector(
+		state => state.rejectedPassVerificationData.data
+	);
 
-	// Проверка на наличие `verificationId`
-	if (!verificationId) {
-		console.error('Отсутствует verificationId');
-		return <p>Отсутствует ID верификации</p>;
-	}
-
-	// Найти пользователя по email в данных верификации
-	const userVerificationData = verificationData.find(
+	// Найти данные пользователя в PENDING, APPROVED или REJECTED
+	const userPendingData = pendingData.find(user => user.email === targetEmail);
+	const userApprovedData = approvedData.find(
+		user => user.email === targetEmail
+	);
+	const userRejectedData = rejectedData.find(
 		user => user.email === targetEmail
 	);
 
-	// Если данные не найдены
-	if (!userVerificationData) {
-		console.error('Нет данных о пользователе:', targetEmail);
-		return <p>Нет данных о пользователе</p>;
-	}
+	let verification = null;
+	let status = null;
 
-	// Найти верификацию по ID
-	const verification = userVerificationData.documentVerifications.find(
-		v => String(v.documentVerificationId) === String(verificationId)
-	);
+	// Перебираем все возможные данные для поиска нужной верификации
+	const datasets = [
+		{ data: userPendingData, status: 'PENDING' },
+		{ data: userApprovedData, status: 'APPROVED' },
+		{ data: userRejectedData, status: 'REJECTED' },
+	];
+
+	for (const dataset of datasets) {
+		if (dataset.data) {
+			verification = dataset.data.documentVerifications.find(
+				v => String(v.documentVerificationId) === String(verificationId)
+			);
+			if (verification) {
+				status = dataset.status;
+				break;
+			}
+		}
+	}
 
 	// Если верификация не найдена
 	if (!verification) {
@@ -35,10 +50,9 @@ export default function VerificationPhotos({ targetEmail, verificationId }) {
 		return <p>Нет данных о верификации</p>;
 	}
 
-	// Получить фотографии из `photos`
+	// Получение фотографий
 	const photos = verification.photos || [];
 
-	// Если фотографии отсутствуют
 	if (photos.length === 0) {
 		return <p>Нет фотографий для отображения</p>;
 	}
@@ -49,11 +63,11 @@ export default function VerificationPhotos({ targetEmail, verificationId }) {
 				<div key={index} className={styles.photoWrapper}>
 					<img
 						className={styles.images}
-						src={photo} // Используем предоставленный URL
+						src={photo}
 						alt={`Фото документа ${index + 1}`}
 						onError={e => {
 							console.error('Ошибка загрузки фотографии:', e.target.src);
-							e.target.src = '/default_image.png'; // Заглушка
+							e.target.src = '/default_image.png'; // Заменяем на изображение по умолчанию
 						}}
 					/>
 				</div>

@@ -28,7 +28,7 @@ export const fetchRejectedPassVerificationData = createAsyncThunk(
 
 		try {
 			const response = await fetch(
-				'http://31.129.102.70:8080/bonus-program/get-all-document-verifications-request-by-parameter?requestStatus=REJECTED',
+				'/bonus-program/get-all-document-verifications-request-by-parameter?requestStatus=REJECTED',
 				requestOptions
 			);
 
@@ -39,7 +39,7 @@ export const fetchRejectedPassVerificationData = createAsyncThunk(
 			}
 
 			const result = await response.json();
-			return result;
+			return result; // Сохраняем оригинальный ответ
 		} catch (error) {
 			console.error('Ошибка при получении данных:', error);
 			return rejectWithValue(error.message);
@@ -59,12 +59,7 @@ const rejectedPassVerificationSlice = createSlice({
 				state.error = null;
 			})
 			.addCase(fetchRejectedPassVerificationData.fulfilled, (state, action) => {
-				state.data = action.payload.map(verification => ({
-					requestId: verification.requestId,
-					requestDate: verification.requestDate,
-					rejectionReason: verification.rejectionReason,
-					documents: verification.documents || [], // Обработка возможного отсутствия документов
-				}));
+				state.data = action.payload; // Сохраняем оригинальный ответ
 				state.status = 'ready';
 			})
 			.addCase(fetchRejectedPassVerificationData.rejected, (state, action) => {

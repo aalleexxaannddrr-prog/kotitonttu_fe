@@ -1,103 +1,126 @@
 import React, { useEffect, useState } from 'react';
-import styles from './VerificationInfoContainer.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import VerificationUserInfo from '../VerificationUserInfo/VerificationUserInfo';
+import styles from './VerificationInfoContainer.module.css';
 import VerificationPhotos from '../VerificationPhotos/VerificationPhotos';
 import VerificationApprovalForm from '../VerificationApprovalForm/VerificationApprovalForm';
-import { fetchUsers } from '../../../../store/slices/usersSlice';
 import { fetchPendingPassVerificationData } from '../../../../store/slices/pendingPassVerificationSlice';
+import { fetchApprovedPassVerificationData } from '../../../../store/slices/approvedPassVerificationDataSlice';
+import { fetchRejectedPassVerificationData } from '../../../../store/slices/rejectedPassVerificationData';
+import { UserProvider } from '../../../../context/UserContext';
+import VerificationUserInfo from '../VerificationUserInfo/VerificationUserInfo';
 
 export default function VerificationInfoContainer() {
-	const { userId, documentVerificationId } = useParams();
+	const { documentVerificationId } = useParams(); // Получаем ID верификации из URL
 	const dispatch = useDispatch();
 
 	// Redux данные
-	const { data: verificationData, status: verificationFetchStatus } =
-		useSelector(state => state.pendingPassVerificationData);
-	const { users, status: usersFetchStatus } = useSelector(state => state.users);
+	const pendingData = useSelector(
+		state => state.pendingPassVerificationData.data
+	);
+	const approvedData = useSelector(
+		state => state.approvedPassVerificationData.data
+	);
+	const rejectedData = useSelector(
+		state => state.rejectedPassVerificationData.data
+	);
 	const bearerToken = useSelector(state => state.auth.bearerToken);
 
-	const [user, setUser] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
 	const [verification, setVerification] = useState(null);
+	const [email, setEmail] = useState(null);
 
 	// Загружаем данные
 	useEffect(() => {
-		if (usersFetchStatus === 'idle') {
-			dispatch(fetchUsers());
-		}
-		if (verificationFetchStatus === 'idle') {
-			dispatch(fetchPendingPassVerificationData());
-		}
-	}, [dispatch, usersFetchStatus, verificationFetchStatus]);
+		Promise.all([
+			dispatch(fetchPendingPassVerificationData()).unwrap(),
+			dispatch(fetchApprovedPassVerificationData()).unwrap(),
+			dispatch(fetchRejectedPassVerificationData()).unwrap(),
+		])
+			.then(() => setIsLoading(false))
+			.catch(error => {
+				console.error('Ошибка загрузки данных:', error);
+				setIsLoading(false);
+			});
+	}, [dispatch]);
 
-	// Найти пользователя по userId
+	// Ищем верификацию и соответствующий email
 	useEffect(() => {
-		if (users && userId) {
-			const foundUser = users.find(user => String(user.id) === String(userId));
-			setUser(foundUser);
-		}
-	}, [users, userId]);
+		if (!isLoading) {
+			const allVerifications = [
+				...pendingData.flatMap(item =>
+					item.documentVerifications.map(v => ({ ...v, email: item.email }))
+				),
+				...approvedData.flatMap(item =>
+					item.documentVerifications.map(v => ({ ...v, email: item.email }))
+				),
+				...rejectedData.flatMap(item =>
+					item.documentVerifications.map(v => ({ ...v, email: item.email }))
+				),
+			];
 
-	// Найти данные верификации пользователя
-	useEffect(() => {
-		if (user && verificationData) {
-			const userVerification = verificationData.find(
-				item => item.email === user.email
+			const foundVerification = allVerifications.find(
+				v => String(v.documentVerificationId) === String(documentVerificationId)
 			);
 
-			if (userVerification?.documentVerifications?.length > 0) {
-				const specificVerification =
-					userVerification.documentVerifications.find(
-						v =>
-							String(v.documentVerificationId) ===
-							String(documentVerificationId)
-					);
-				setVerification(specificVerification);
+			if (foundVerification) {
+				setVerification(foundVerification);
+				setEmail(foundVerification.email); // Устанавливаем email
 			}
 		}
-	}, [user, verificationData, documentVerificationId]);
+	}, [
+		documentVerificationId,
+		pendingData,
+		approvedData,
+		rejectedData,
+		isLoading,
+	]);
 
-	// Проверки
-	if (verificationFetchStatus === 'loading' || usersFetchStatus === 'loading') {
-		return <div>Данные загружаются...</div>;
-	}
-
-	if (!user) {
-		return <div>Пользователь с ID {userId} не найден</div>;
+	if (isLoading) {
+		return <div>Загрузка данных...</div>;
 	}
 
 	if (!verification) {
-		return (
-			<div>
-				Верификация с ID {documentVerificationId} для пользователя {user.email}{' '}
-				не найдена
-			</div>
-		);
+		return <div>Верификация с ID {documentVerificationId} не найдена</div>;
 	}
 
+	if (!email) {
+		return <div>Email для этой верификации не найден</div>;
+	}
+
+	const status = verification.status || 'Неизвестно';
+	const rejectionMessage =
+		status === 'REJECTED'
+			? verification.rejectionMessage || 'Причина не указана'
+			: null;
+
 	return (
-		<div className={styles.cardWrapper}>
-			<div className={styles.content}>
-				<VerificationUserInfo user={user} />
-				<div className={styles.combinedCard}>
-					<VerificationPhotos
-						targetEmail={user.email}
-						verificationId={verification.documentVerificationId}
-					/>
-					{verification.status === 'PENDING' ? (
-						<VerificationApprovalForm
+		<UserProvider email={email}>
+			<div className={styles.cardWrapper}>
+				<div className={styles.content}>
+					<VerificationUserInfo />
+					<div className={styles.combinedCard}>
+						<VerificationPhotos
+							targetEmail={email}
 							verificationId={verification.documentVerificationId}
-							initialStatus={verification.status}
-							bearerToken={bearerToken}
 						/>
-					) : verification.status === 'APPROVED' ? (
-						<p className={styles.statusApproved}>Верификация одобрена!</p>
-					) : (
-						<p className={styles.statusRejected}>Верификация отклонена!</p>
-					)}
+						{status === 'PENDING' ? (
+							<VerificationApprovalForm
+								verificationId={verification.documentVerificationId}
+								initialStatus={status}
+								bearerToken={bearerToken}
+							/>
+						) : status === 'APPROVED' ? (
+							<p className={styles.status}>Верификация одобрена!</p>
+						) : (
+							<div className={styles.rejectionDetails}>
+								<p className={styles.status}>Верификация отклонена!</p>
+								<p>Причина: {rejectionMessage}</p>
+							</div>
+						)}
+					</div>
 				</div>
 			</div>
-		</div>
+		</UserProvider>
 	);
 }

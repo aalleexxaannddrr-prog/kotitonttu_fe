@@ -152,8 +152,10 @@ export default function NavMenu() {
 									</li>
 									<li>
 										<Link
-											to='/pass-client/rejected'
-											style={getLinkStyle('/pass-client/rejected')}
+											to='/bonus-program/rejected-verification'
+											style={getLinkStyle(
+												'/bonus-program/rejected-verification'
+											)}
 										>
 											Отклонено
 										</Link>

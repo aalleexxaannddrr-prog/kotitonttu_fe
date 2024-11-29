@@ -27,6 +27,7 @@ import { restoreAuth } from './store/slices/authSlice';
 import PendingVerificationPage from './pages/PendingVerificationPage/PendingVerificationPage';
 import ApprovedVerificationsPage from './pages/ApprovedVerificationsPage/ApprovedVerificationsPage';
 import VerificationInfoPage from './pages/VerificationInfoPage/VerificationInfoPage'
+import RejectedVerificationPage from './pages/RejectedVerificationPage/RejectedVerificationPage';
 
 function App() {
 	const dispatch = useDispatch();
@@ -92,10 +93,18 @@ function App() {
 							path='/bonus-program/approved-verification'
 							element={<ApprovedVerificationsPage />}
 						/>
+						<Route
+							path='/bonus-program/rejected-verification'
+							element={<RejectedVerificationPage />}
+						/>
 
 						<Route
-							path='/verification-info/:userId/:documentVerificationId'
-							element={<VerificationInfoPage />}
+							path='/verification-info/:documentVerificationId'
+							element={
+								<UserProvider>
+									<VerificationInfoPage />
+								</UserProvider>
+							}
 						/>
 						<Route path='*' element={<NotFoundPage />} />
 					</>

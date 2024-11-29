@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styles from './ApprovedVerificationTable.module.css';
 import { fetchUsers } from '../../../../store/slices/usersSlice';
 
@@ -37,21 +38,22 @@ export default function ApprovedVerificationTable() {
 	}
 
 	const combinedData = approvedData
-		.filter(
-			item =>
-				item.documentVerifications.some(
-					verification => verification.status === 'APPROVED'
-				) // Фильтруем только те записи, где есть APPROVED
+		.filter(item =>
+			item.documentVerifications.some(
+				verification => verification.status === 'APPROVED'
+			)
 		)
 		.map(item => {
 			const user = getUserByEmail(item.email);
 			return item.documentVerifications
-				.filter(verification => verification.status === 'APPROVED') // Фильтруем только APPROVED
+				.filter(verification => verification.status === 'APPROVED')
 				.map(verification => ({
 					firstName: user?.firstname || 'Unknown',
 					lastName: user?.lastname || 'Unknown',
 					email: item.email,
-					status: 'Принято', // Устанавливаем статус Принято
+					status: 'Принято',
+					userId: user?.id || null,
+					documentVerificationId: verification.documentVerificationId,
 				}));
 		})
 		.flat();
@@ -70,7 +72,14 @@ export default function ApprovedVerificationTable() {
 					<tbody>
 						{combinedData.map((row, index) => (
 							<tr key={index}>
-								<td>{row.firstName}</td>
+								<td>
+									<Link
+										to={`/verification-info/${row.documentVerificationId}`}
+										className={styles.detailed_link}
+									>
+										{row.firstName}
+									</Link>
+								</td>
 								<td>{row.lastName}</td>
 								<td>{row.email}</td>
 								<td>{row.status}</td>

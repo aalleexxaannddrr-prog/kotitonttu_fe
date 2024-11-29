@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import styles from './PendingVerificationTable.module.css';
+import styles from './RejectedVerificationTable.module.css';
 import { fetchUsers } from '../../../../store/slices/usersSlice';
-import { fetchPendingPassVerificationData } from '../../../../store/slices/pendingPassVerificationSlice';
+import { fetchRejectedPassVerificationData } from '../../../../store/slices/rejectedPassVerificationData';
 
-export default function PendingVerificationTable() {
+export default function RejectedVerificationTable() {
 	const dispatch = useDispatch();
+
+	// Данные из Redux
 	const {
 		data: verificationData,
 		status: verificationStatus,
 		error: verificationError,
-	} = useSelector(state => state.pendingPassVerificationData);
+	} = useSelector(state => state.rejectedPassVerificationData);
 	const {
 		users,
 		status: userStatus,
@@ -24,7 +26,7 @@ export default function PendingVerificationTable() {
 			dispatch(fetchUsers());
 		}
 		if (verificationStatus === 'idle') {
-			dispatch(fetchPendingPassVerificationData());
+			dispatch(fetchRejectedPassVerificationData());
 		}
 	}, [dispatch, userStatus, verificationStatus]);
 
@@ -35,11 +37,12 @@ export default function PendingVerificationTable() {
 		);
 	};
 
+	// Колонки таблицы
 	const columns = [
 		{ Header: 'Имя', accessor: 'firstName' },
 		{ Header: 'Фамилия', accessor: 'lastName' },
-		{ Header: 'Почта', accessor: 'email' },
 		{ Header: 'Статус', accessor: 'status' },
+		{ Header: 'Сообщение об отклонении', accessor: 'rejectionReason' },
 	];
 
 	if (verificationStatus === 'loading' || userStatus === 'loading') {
@@ -60,26 +63,32 @@ export default function PendingVerificationTable() {
 	const combinedData = verificationData
 		.filter(item =>
 			item.documentVerifications.some(
-				verification => verification.status === 'PENDING'
+				verification => verification.status === 'REJECTED'
 			)
 		)
 		.map(item => {
 			const user = getUserByEmail(item.email);
 			return item.documentVerifications
-				.filter(verification => verification.status === 'PENDING')
+				.filter(verification => verification.status === 'REJECTED')
 				.map(verification => ({
 					firstName: user?.firstname || 'Unknown',
 					lastName: user?.lastname || 'Unknown',
 					email: item.email,
-					status: "Ожидание",
+					rejectionReason:
+						verification.rejectionMessage || 'Причина не указана',
+					status: 'Ожидание',
 					documentVerificationId: verification.documentVerificationId,
 				}));
 		})
 		.flat();
 
+	// Отладка данных
+	// console.log('Verification Data:', verificationData);
+	// console.log('Combined Data:', combinedData);
+
 	return (
 		<div>
-			<div className={styles.verification_card}>
+			<div className={styles.rejected_table}>
 				<table className={styles.table}>
 					<thead>
 						<tr>
@@ -100,8 +109,8 @@ export default function PendingVerificationTable() {
 									</Link>
 								</td>
 								<td>{row.lastName}</td>
-								<td>{row.email}</td>
 								<td>{row.status}</td>
+								<td>{row.rejectionReason}</td>
 							</tr>
 						))}
 					</tbody>
