@@ -116,7 +116,7 @@ function AddServiceCenterForm({ onAdd }) {
 				<input
 					type='text'
 					name='phone'
-					placeholder='(123) 00-00-00 или +7 123-456-7890'
+					placeholder='(123) 00-00-00 или +7123-456-7890'
 					value={formData.phone}
 					onChange={handleChange}
 					required

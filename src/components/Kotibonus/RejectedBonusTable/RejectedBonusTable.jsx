@@ -26,8 +26,8 @@ export default function RejectedBonusTable() {
 	const columns = [
 		{ Header: 'Имя', accessor: 'firstName' },
 		{ Header: 'Фамилия', accessor: 'lastName' },
-		{ Header: 'Статус', accessor: 'status' },
 		{ Header: 'Сообщение об отклонении', accessor: 'rejectionMessage' },
+		{ Header: 'Статус', accessor: 'status' },
 	];
 
 	// Объединяем данные
@@ -74,8 +74,8 @@ export default function RejectedBonusTable() {
 								</Link>
 							</td>
 							<td>{row.lastName}</td>
-							<td>{row.status}</td>
 							<td>{row.rejectionMessage}</td>
+							<td>{row.status}</td>
 						</tr>
 					))}
 				</tbody>

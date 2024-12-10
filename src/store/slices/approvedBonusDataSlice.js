@@ -50,13 +50,7 @@ const approvedBonusDataSlice = createSlice({
 				// Приводим данные к структуре, аналогичной pendingBonusDataSlice
 				state.data = action.payload.map(user => ({
 					email: user.email,
-					bonusRequests: user.bonusRequests.map(request => ({
-						bonusRequestId: request.bonusRequestId, // Используем bonusRequestId вместо id
-						requestDate: request.requestDate,
-						responseDate: request.responseDate,
-						status: request.status,
-						photos: request.photos || [], // Обработка photos
-					})),
+					bonusRequests: user.bonusRequests,
 				}));
 				state.status = 'ready';
 			})
