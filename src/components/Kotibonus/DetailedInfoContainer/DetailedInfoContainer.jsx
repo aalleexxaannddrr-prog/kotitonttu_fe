@@ -9,8 +9,6 @@ import { UserProvider } from '../../../context/UserContext';
 import { fetchPendingBonusRequests } from '../../../store/slices/pendingBonusDataSlice';
 import { fetchApprovedBonusRequests } from '../../../store/slices/approvedBonusDataSlice';
 import { fetchRejectedBonusRequests } from '../../../store/slices/rejectedBonusDataSlice';
-import { fetchBarcodeTypes } from '../../../store/slices/barcodeDataSlice';
-import { fetchBarcodes } from '../../../store/slices/allBarcodeDataSlice';
 
 export default function DetailedInfoContainer() {
 	const { requestId } = useParams(); // Получаем ID запроса из URL
@@ -18,9 +16,7 @@ export default function DetailedInfoContainer() {
 
 	const pendingBonusData = useSelector(state => state.pendingBonusData.data);
 	const approvedBonusData = useSelector(state => state.approvedBonusData.data);
-	const rejectedBonusData = useSelector(state => state.rejectedBonusData.data); // Берем `data`
-	const barcodeTypes = useSelector(state => state.barcodeData.data);
-	const barcodes = useSelector(state => state.allBarcodeData.data);
+	const rejectedBonusData = useSelector(state => state.rejectedBonusData.data);
 	const bearerToken = useSelector(state => state.auth.bearerToken);
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -30,9 +26,7 @@ export default function DetailedInfoContainer() {
 		Promise.all([
 			dispatch(fetchPendingBonusRequests()).unwrap(),
 			dispatch(fetchApprovedBonusRequests()).unwrap(),
-			dispatch(fetchRejectedBonusRequests()).unwrap(), // Загружаем отклоненные заявки
-			dispatch(fetchBarcodeTypes()).unwrap(),
-			dispatch(fetchBarcodes(bearerToken)).unwrap(),
+			dispatch(fetchRejectedBonusRequests()).unwrap(),
 		])
 			.then(() => setIsLoading(false))
 			.catch(error => {
@@ -41,7 +35,7 @@ export default function DetailedInfoContainer() {
 			});
 	}, [dispatch, bearerToken]);
 
-	// Поиск пользователя по `requestId` в данных всех типов
+	// Поиск данных о пользователе и заявке
 	const userBonusData =
 		pendingBonusData.find(user =>
 			user.bonusRequests.some(
@@ -61,36 +55,21 @@ export default function DetailedInfoContainer() {
 
 	const email = userBonusData?.email;
 
-	// Поиск заявки по `requestId`
-	const bonusRequest =
-		userBonusData?.bonusRequests.find(
-			request => request.bonusRequestId === Number(requestId)
-		) || null;
-
-	// Поиск данных для бонусов
-	const bonusTypeData = barcodeTypes.find(
-		item => item.id === Number(requestId)
+	const bonusRequest = userBonusData?.bonusRequests.find(
+		request => request.bonusRequestId === Number(requestId)
 	);
-	const rejectionMessage = bonusTypeData
-		? `${bonusTypeData.points} руб.`
-		: 'Нет данных';
 
-	// Поиск данных для штрих-кода
-	const barcodeData = barcodes.find(item => item.id === Number(requestId));
-	const code = barcodeData ? barcodeData.code : 'Нет данных';
-	const barcodeId = barcodeData ? barcodeData.id : null;
+	// Извлечение данных для отображения
+	const barcode = bonusRequest?.barcode || 'Нет данных'; // Используем barcode
+	const points = bonusRequest?.points || 'Нет данных'; // Используем points
+	const status = bonusRequest?.status || 'Неизвестно'; // Статус заявки
 
-	// Статус заявки
-	const status = bonusRequest?.status || 'Неизвестно';
-
-	// Проверка загрузки данных
 	if (isLoading) {
 		return <p>Загрузка данных...</p>;
 	}
 
-	// Проверка на наличие данных о пользователе
-	if (!userBonusData) {
-		return <p>Данные пользователя не найдены</p>;
+	if (!userBonusData || !bonusRequest) {
+		return <p>Данные пользователя или заявки не найдены</p>;
 	}
 
 	return (
@@ -106,9 +85,9 @@ export default function DetailedInfoContainer() {
 							/>
 							{bearerToken && requestId && (
 								<ConfirmationCode
-									requestId={code}
-									barcodeId={barcodeId}
-									rejectionMessage={rejectionMessage}
+									requestId={bonusRequest.bonusRequestId} // Передаем bonusRequestId для функций
+									barcode={barcode} // Передаем barcode для отображения
+									points={points} // Передаем points для отображения
 									bearerToken={bearerToken}
 									status={status}
 								/>

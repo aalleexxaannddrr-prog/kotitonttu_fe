@@ -57,14 +57,7 @@ const rejectedBonusDataSlice = createSlice({
 				// Сохраняем данные в стейт после успешного запроса
 				state.data = action.payload.map(user => ({
 					email: user.email,
-					bonusRequests: user.bonusRequests.map(request => ({
-						bonusRequestId: request.bonusRequestId, // Используем уникальный ID
-						requestDate: request.requestDate,
-						responseDate: request.responseDate,
-						status: request.status,
-						rejectionMessage: request.rejectionMessage, // Причина отклонения
-						photos: request.photos || [], // Обработка возможного отсутствия фотографий
-					})),
+					bonusRequests: user.bonusRequests,
 				}));
 				state.status = 'ready';
 			})
