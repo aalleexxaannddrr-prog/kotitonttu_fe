@@ -6,9 +6,9 @@ import { useDispatch } from 'react-redux';
 import RejectionModal from '../RejectionModal/RejectionModal';
 
 export default function ConfirmationCode({
-	requestId,
-	barcodeId,
-	rejectionMessage,
+	requestId, // BonusRequestId для функций
+	barcode, // Barcode для отображения
+	points, // Points для отображения
 	bearerToken,
 	status,
 }) {
@@ -16,6 +16,7 @@ export default function ConfirmationCode({
 	const [isApproved, setIsApproved] = useState(false);
 	const [isRejected, setIsRejected] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [errorMessage, setErrorMessage] = useState(null);
 
 	useEffect(() => {
 		if (status === 'APPROVED') {
@@ -33,7 +34,7 @@ export default function ConfirmationCode({
 	const handleApprove = () => {
 		dispatch(
 			approvedStatusKotibonus({
-				requestId: barcodeId,
+				requestId, // Используем bonusRequestId
 				rejectionMessage: '',
 				bearerToken,
 			})
@@ -46,15 +47,9 @@ export default function ConfirmationCode({
 	};
 
 	const handleRejectSubmit = rejectionMessage => {
-		console.log('Отправляемые данные:', {
-			requestId: barcodeId,
-			rejectionMessage,
-			bearerToken,
-		});
-
 		dispatch(
 			rejectedStatusKotibonus({
-				requestId: barcodeId,
+				requestId, // Используем bonusRequestId
 				rejectionMessage,
 				bearerToken,
 			})
@@ -63,10 +58,12 @@ export default function ConfirmationCode({
 			.then(() => {
 				setIsRejected(true);
 				setIsModalOpen(false);
+				setErrorMessage(null);
 			})
-			.catch(error =>
-				console.error('Ошибка при выполнении запроса на отклонение:', error)
-			);
+			.catch(error => {
+				console.error('Ошибка при выполнении запроса на отклонение:', error);
+				setErrorMessage('Ошибка: ' + error.message);
+			});
 	};
 
 	const handleReject = () => {
@@ -78,15 +75,18 @@ export default function ConfirmationCode({
 			<div className={styles.descr_info}>
 				<div className={styles.amount}>
 					<h4 className={styles.descr_title}>Код</h4>
-					<p className={styles.descr}>{requestId}</p>
+					<p className={styles.descr}>{barcode || 'Нет данных'}</p>{' '}
+					{/* Barcode */}
 				</div>
 				<div>
 					<h4 className={styles.descr_title}>Сумма бонусов</h4>
-					<p className={styles.descr}>{rejectionMessage}</p>
+					<p className={styles.descr}>{points || 'Нет данных'}</p>{' '}
+					{/* Points */}
 				</div>
 			</div>
 
-			{/* Сообщение о статусе заявки */}
+			{errorMessage && <p className={styles.error}>{errorMessage}</p>}
+
 			{isApproved ? (
 				<p className={styles.status}>Заявка одобрена!</p>
 			) : isRejected ? (
@@ -102,7 +102,6 @@ export default function ConfirmationCode({
 				</div>
 			)}
 
-			{/* Модальное окно */}
 			<RejectionModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}

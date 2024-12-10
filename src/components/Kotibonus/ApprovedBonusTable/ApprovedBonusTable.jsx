@@ -4,89 +4,55 @@ import { Link } from 'react-router-dom';
 import styles from './ApprovedBonusTable.module.css';
 import { fetchUsers } from '../../../store/slices/usersSlice';
 import { fetchApprovedBonusRequests } from '../../../store/slices/approvedBonusDataSlice';
-import { fetchBarcodeTypes } from '../../../store/slices/barcodeDataSlice';
-import { fetchBarcodes } from '../../../store/slices/allBarcodeDataSlice';
 
 export default function ApprovedBonusTable({ bearerToken }) {
 	const dispatch = useDispatch();
 
+	// Redux selectors
 	const { data: approvedBonusData, status: approvedStatus } = useSelector(
 		state => state.approvedBonusData
 	);
 	const { users, status: userStatus } = useSelector(state => state.users);
-	const { data: barcodeTypes, status: barcodeTypesStatus } = useSelector(
-		state => state.barcodeData
-	);
-	const { status: barcodesStatus } = useSelector(state => state.allBarcodeData);
 
+	// Fetching required data
 	useEffect(() => {
 		dispatch(fetchApprovedBonusRequests());
 		dispatch(fetchUsers());
-		dispatch(fetchBarcodeTypes());
-		if (bearerToken) {
-			dispatch(fetchBarcodes(bearerToken));
-		}
-	}, [dispatch, bearerToken]);
+	}, [dispatch]);
 
+	// Helper function: get user by email
 	const getUserByEmail = email => {
 		return users.find(
 			user => user.email.trim().toLowerCase() === email.trim().toLowerCase()
 		);
 	};
 
-	const columns = [
-		{ Header: 'Имя', accessor: 'firstName' },
-		{ Header: 'Фамилия', accessor: 'lastName' },
-		{ Header: 'Модель', accessor: 'model' },
-		{ Header: 'Стоимость', accessor: 'cost' },
-		{ Header: 'Статус', accessor: 'status' },
-	];
-
-	const getModelAndCost = bonusRequestId => {
-		// Ищем соответствие bonusRequestId с id в barcodeTypes
-		const barcodeType = barcodeTypes.find(item => item.id === bonusRequestId);
-
-		return {
-			model: barcodeType ? barcodeType.type : 'Нет данных',
-			cost: barcodeType ? `${barcodeType.points} руб.` : 'Нет данных',
-		};
-	};
-
+	// Preparing data for the table
 	const combinedData = approvedBonusData.flatMap(user => {
 		const userInfo = getUserByEmail(user.email);
 
 		return user.bonusRequests.map(request => {
-			// Используем bonusRequestId, как указано в обновленном слайсе
-			const { model, cost } = getModelAndCost(request.bonusRequestId);
 			return {
-				firstName: userInfo ? userInfo.firstname : 'Unknown',
-				lastName: userInfo ? userInfo.lastname : 'Unknown',
+				firstName: userInfo?.firstname || user.firstName || 'Нет данных',
+				lastName: userInfo?.lastname || user.lastName || 'Нет данных',
 				email: user.email,
-				model,
-				cost,
-				status: request.status === 'APPROVED' ? 'Принято' : request.status,
+				model: request.type || 'Нет данных', // Используем поле type для модели
+				cost: request.points ? `${request.points} руб.` : 'Нет данных', // Используем поле points для стоимости
+				status: request.status === 'APPROVED' ? 'Принято' : 'Нет данных',
 				bonusRequestId: request.bonusRequestId, // Используем bonusRequestId
 			};
 		});
 	});
 
+	// Фильтрация принятых заявок
 	const filteredData = combinedData.filter(row => row.status === 'Принято');
 
-	if (
-		approvedStatus === 'loading' ||
-		userStatus === 'loading' ||
-		barcodeTypesStatus === 'loading' ||
-		barcodesStatus === 'loading'
-	) {
+	// Обработка состояний загрузки и ошибок
+	if (approvedStatus === 'loading' || userStatus === 'loading') {
 		return <div>Loading...</div>;
 	}
 
-	if (
-		approvedStatus === 'error' ||
-		userStatus === 'error' ||
-		barcodeTypesStatus === 'error' ||
-		barcodesStatus === 'error'
-	) {
+	if (approvedStatus === 'error' || userStatus === 'error') {
 		return <div>Error loading data</div>;
 	}
 
@@ -96,9 +62,11 @@ export default function ApprovedBonusTable({ bearerToken }) {
 				<table className={styles.table}>
 					<thead>
 						<tr>
-							{columns.map(column => (
-								<th key={column.accessor}>{column.Header}</th>
-							))}
+							<th>Имя</th>
+							<th>Фамилия</th>
+							<th>Модель</th>
+							<th>Стоимость</th>
+							<th>Статус</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -106,7 +74,7 @@ export default function ApprovedBonusTable({ bearerToken }) {
 							<tr key={index}>
 								<td>
 									<Link
-										to={`/detailed-info/${row.bonusRequestId}`} // Передаем bonusRequestId вместо email
+										to={`/detailed-info/${row.bonusRequestId}`}
 										className={styles.detailed_link}
 									>
 										{row.firstName}

@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-// Асинхронное действие для одобрения бонусного запроса
 export const approvedStatusKotibonus = createAsyncThunk(
 	'approvedStatusKotibonus/approve',
 	async ({ requestId, rejectionMessage, bearerToken }) => {
@@ -8,35 +7,28 @@ export const approvedStatusKotibonus = createAsyncThunk(
 			throw new Error('Bearer token is missing');
 		}
 
-		const myHeaders = new Headers();
-		myHeaders.append('Accept', '*/*');
-		myHeaders.append('Authorization', `Bearer ${bearerToken}`);
-
 		const url = `/bonus-program/updateStatus?requestId=${requestId}&status=APPROVED&rejectionMessage=${encodeURIComponent(
 			rejectionMessage || ''
 		)}`;
 
-		// console.log('Bearer Token в approvedStatusKotibonus:', bearerToken);
-		// console.log('URL:', url);
+		const myHeaders = new Headers();
+		myHeaders.append('Accept', '*/*');
+		myHeaders.append('Authorization', `Bearer ${bearerToken}`);
 
 		try {
 			const response = await fetch(url, {
 				method: 'POST',
 				headers: myHeaders,
-				credentials: 'include', // Включаем отправку куков
 				redirect: 'follow',
 			});
 
-			// console.log('Response status:', response.status);
-
 			if (!response.ok) {
 				const errorText = await response.text();
-				console.error('Ошибка в ответе:', errorText);
+				console.error('Ошибка от сервера:', errorText);
 				throw new Error(errorText || 'Failed to approve bonus request');
 			}
 
-			const result = await response.text();
-			return result;
+			return await response.text();
 		} catch (error) {
 			console.error('Ошибка при выполнении запроса:', error);
 			throw error;
@@ -44,33 +36,24 @@ export const approvedStatusKotibonus = createAsyncThunk(
 	}
 );
 
-// Начальное состояние
-const initialState = {
-	status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
-	result: null,
-	error: null,
-};
-
-// Создание слайса
-const approvedStatus = createSlice({
+const approvedStatusSlice = createSlice({
 	name: 'approvedStatusKotibonus',
-	initialState,
+	initialState: { status: 'idle', result: null, error: null },
 	reducers: {},
 	extraReducers: builder => {
 		builder
 			.addCase(approvedStatusKotibonus.pending, state => {
 				state.status = 'loading';
-				state.error = null;
 			})
 			.addCase(approvedStatusKotibonus.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.result = action.payload; // Сохраняем результат выполнения запроса
+				state.result = action.payload;
 			})
 			.addCase(approvedStatusKotibonus.rejected, (state, action) => {
 				state.status = 'failed';
-				state.error = action.error.message; // Сохраняем сообщение об ошибке
+				state.error = action.error.message;
 			});
 	},
 });
 
-export default approvedStatus.reducer;
+export default approvedStatusSlice.reducer;

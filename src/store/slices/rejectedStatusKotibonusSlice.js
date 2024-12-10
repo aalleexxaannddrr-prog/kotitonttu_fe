@@ -3,6 +3,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 export const rejectedStatusKotibonus = createAsyncThunk(
 	'rejectedStatusKotibonus/reject',
 	async ({ requestId, rejectionMessage, bearerToken }) => {
+		if (!bearerToken) throw new Error('Bearer token is missing');
+
 		const myHeaders = new Headers();
 		myHeaders.append('Accept', '*/*');
 		myHeaders.append('Authorization', `Bearer ${bearerToken}`);
@@ -19,17 +21,19 @@ export const rejectedStatusKotibonus = createAsyncThunk(
 			});
 
 			if (!response.ok) {
-				throw new Error('Failed to reject bonus request');
+				const errorText = await response.text();
+				console.error('Ошибка от сервера:', errorText);
+				throw new Error(errorText || 'Failed to reject bonus request');
 			}
 
-			const result = await response.text();
-			return result;
+			return await response.text();
 		} catch (error) {
 			console.error('Ошибка при выполнении запроса:', error);
 			throw error;
 		}
 	}
 );
+
 
 const rejectedStatusSlice = createSlice({
 	name: 'rejectedStatusKotibonus',
