@@ -75,7 +75,7 @@ export default function NavMenu() {
 							onMouseLeave={() => setHoveredApplications(false)}
 							className={styles.dropdown_container}
 						>
-							<Link to='/applications' style={getLinkStyle('/applications')}>
+							<Link style={getLinkStyle('/applications')}>
 								Заявки
 							</Link>
 							{hoveredApplications && (
@@ -123,7 +123,7 @@ export default function NavMenu() {
 							onMouseLeave={() => setHoveredPassClient(false)}
 							className={styles.dropdown_container}
 						>
-							<Link to='/pass-client' style={getLinkStyle('/pass-client')}>
+							<Link style={getLinkStyle('/pass-client')}>
 								Паспорт Клиента
 							</Link>
 							{hoveredPassClient && (

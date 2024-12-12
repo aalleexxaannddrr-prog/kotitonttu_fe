@@ -1,7 +1,10 @@
-import React from 'react'
+import React from 'react';
+import BarcodeTableContainer from '../../components/Kotibonus/BarcodeTableContainer/BarcodeTableContainer';
 
 export default function BarcodesPage() {
-  return (
-    <div>BarcodesPage</div>
-  )
+	return (
+		<div>
+			<BarcodeTableContainer/>
+		</div>
+	);
 }

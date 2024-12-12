@@ -23,13 +23,6 @@ export default function RejectedBonusTable() {
 		);
 	};
 
-	const columns = [
-		{ Header: 'Имя', accessor: 'firstName' },
-		{ Header: 'Фамилия', accessor: 'lastName' },
-		{ Header: 'Сообщение об отклонении', accessor: 'rejectionMessage' },
-		{ Header: 'Статус', accessor: 'status' },
-	];
-
 	// Объединяем данные
 	const combinedData = rejectedBonusData.flatMap(user =>
 		user.bonusRequests.map(request => {
@@ -43,6 +36,13 @@ export default function RejectedBonusTable() {
 			};
 		})
 	);
+
+	const columns = [
+		{ Header: 'Имя', accessor: 'firstName' },
+		{ Header: 'Фамилия', accessor: 'lastName' },
+		{ Header: 'Сообщение об отклонении', accessor: 'rejectionMessage' },
+		{ Header: 'Статус', accessor: 'status' },
+	];
 
 	if (bonusStatus === 'loading' || userStatus === 'loading') {
 		return <div>Loading...</div>;
@@ -63,21 +63,29 @@ export default function RejectedBonusTable() {
 					</tr>
 				</thead>
 				<tbody>
-					{combinedData.map((row, index) => (
-						<tr key={index}>
-							<td>
-								<Link
-									to={`/detailed-info/${row.bonusRequestId}`} // Переход по bonusRequestId
-									className={styles.detailed_link}
-								>
-									{row.firstName}
-								</Link>
+					{combinedData.length > 0 ? (
+						combinedData.map((row, index) => (
+							<tr key={index}>
+								<td>
+									<Link
+										to={`/detailed-info/${row.bonusRequestId}`} // Переход по bonusRequestId
+										className={styles.detailed_link}
+									>
+										{row.firstName}
+									</Link>
+								</td>
+								<td>{row.lastName}</td>
+								<td>{row.rejectionMessage}</td>
+								<td>{row.status}</td>
+							</tr>
+						))
+					) : (
+						<tr>
+							<td colSpan={columns.length} style={{ textAlign: 'center' }}>
+								Отклоненных заявок нет
 							</td>
-							<td>{row.lastName}</td>
-							<td>{row.rejectionMessage}</td>
-							<td>{row.status}</td>
 						</tr>
-					))}
+					)}
 				</tbody>
 			</table>
 		</div>

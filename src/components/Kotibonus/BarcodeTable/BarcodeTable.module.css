@@ -1,0 +1,53 @@
+.table_container {
+   margin-top: 20px;
+   color: var(--txt-black);
+   background: var(--white);
+}
+
+.barcode_table {
+   border-collapse: collapse;
+   width: 100%;
+}
+
+.barcode_table td,
+.barcode_table th {
+   width: 200px;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+.barcode_table th {
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}
+
+.barcode_table td:last-child,
+.barcode_table th:last-child {
+   width: 30px;
+}
+
+.barcode_table td {
+   text-align: center;
+   padding: 5px 10px;
+   border: 1px solid var(--table-grey);
+}
+
+.barcode_table td:first-child {
+   padding-left: 10px;
+   padding-right: 10px;
+}
+
+.delete_btn {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+   cursor: pointer;
+   color: var(--txt-black);
+   background: transparent;
+}
+
+.delete_btn:hover {
+   color: var(--error);
+}

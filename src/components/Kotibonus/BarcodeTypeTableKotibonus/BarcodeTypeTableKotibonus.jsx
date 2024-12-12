@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBarcodeTypes } from '../../../store/slices/barcodeDataSlice';
 import { updateBarcodeType } from '../../../store/slices/updateBarcodeTypeSlice';
-import styles from './BarcodeTable.module.css';
+import styles from './BarcodeTypeTableKotibonus.module.css';
 import { deleteBarcodeType } from '../../../store/slices/deleteBarcodeTypeSlice';
 import { IoClose } from 'react-icons/io5';
 
-export default function BarcodeTable() {
+export default function BarcodeTypeTableKotibonus() {
 	const dispatch = useDispatch();
-	const { data, status, error } = useSelector(state => state.barcodeData);
+	const { data, status, error } = useSelector(state => state.barcodeTypeData);
 
 	// Состояния для редактирования полей
 	const [editMode, setEditMode] = useState(null);
