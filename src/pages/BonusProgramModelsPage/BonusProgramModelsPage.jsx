@@ -1,12 +1,12 @@
 import React from 'react';
 import BarcodeTypeForm from '../../components/Kotibonus/BarcodeTypeForm/BarcodeTypeForm';
-import BarcodeTable from '../../components/Kotibonus/BarcodeTableKotibonus/BarcodeTable';
+import BarcodeTypeTableKotibonus from '../../components/Kotibonus/BarcodeTypeTableKotibonus/BarcodeTypeTableKotibonus';
 
 export default function BonusProgramModelsPage() {
 	return (
 		<div className='container'>
 			<BarcodeTypeForm />
-			<BarcodeTable />
+			<BarcodeTypeTableKotibonus/>
 		</div>
 	);
 }

@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const fetchBarcodeTypes = createAsyncThunk(
-	'barcodeData/fetchBarcodeTypes',
+	'barcodeTypeData/fetchBarcodeTypes',
 	async () => {
 		try {
 			const response = await fetch('/bonus-program/get-all-barcode-types', {

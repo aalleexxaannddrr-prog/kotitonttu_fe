@@ -12,6 +12,7 @@ export default function RejectedBonusContainer() {
 	}
   return (
 		<div className='container'>
+			<h1>Отклоненные заявки</h1>
 			<RejectedBonusTable bearerToken={bearerToken} />
 		</div>
 	);

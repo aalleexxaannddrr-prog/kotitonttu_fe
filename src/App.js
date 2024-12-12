@@ -18,7 +18,6 @@ import DetailedInfoPage from './pages/DetailedInfoPage/DetailedInfoPage';
 import BonusProgramModelsPage from './pages/BonusProgramModelsPage/BonusProgramModelsPage';
 import RejectedApplicationsPage from './pages/RejectedApplicationsPage/RejectedApplicationsPage';
 import AcceptedApplicationsPage from './pages/ApprovedApplicationsPage/ApprovedApplicationsPage';
-import ClientPassportPage from './pages/ClientPassportPage/ClientPassportPage';
 import ProductPassportPage from './pages/ProductPassportPage/ProductPassportPage';
 import ChatsPage from './pages/ChatsPage/ChatsPage';
 import ChatDetails from './components/Chats/ChatDetails/ChatDetails';
@@ -55,7 +54,6 @@ function App() {
 						<Route path='/service-centers' element={<ServiceCentersPage />} />
 						<Route path='/exploded-view' element={<ExplodedViewPage />} />
 						<Route path='/spare-parts' element={<SparePartsPage />} />
-						<Route path='pass-client' element={<ClientPassportPage />} />
 						<Route path='pass-product' element={<ProductPassportPage />} />
 						<Route path='/error-codes' element={<ErrorСodesPage />} />
 						<Route path='/chats' element={<ChatsPage />} />

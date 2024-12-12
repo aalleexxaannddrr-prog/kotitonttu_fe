@@ -46,7 +46,15 @@ export default function PendingBonusTable({ bearerToken }) {
 
 	const filteredData = combinedData.filter(row => row.status === 'Ожидание');
 
-	// Handle loading and error states
+	const columns = [
+		{ Header: 'Имя', accessor: 'firstName' },
+		{ Header: 'Фамилия', accessor: 'lastName' },
+		{ Header: 'Модель', accessor: 'model' },
+		{ Header: 'Стоимость', accessor: 'cost' },
+		{ Header: 'Статус', accessor: 'status' },
+	];
+
+	//  Обработка состояний загрузки и ошибок
 	if (pendingStatus === 'loading' || userStatus === 'loading') {
 		return <div>Loading...</div>;
 	}
@@ -61,30 +69,36 @@ export default function PendingBonusTable({ bearerToken }) {
 				<table className={styles.table}>
 					<thead>
 						<tr>
-							<th>Имя</th>
-							<th>Фамилия</th>
-							<th>Модель</th>
-							<th>Стоимость</th>
-							<th>Статус</th>
+							{columns.map(column => (
+								<th key={column.accessor}>{column.Header}</th>
+							))}
 						</tr>
 					</thead>
 					<tbody>
-						{filteredData.map((row, index) => (
-							<tr key={index}>
-								<td>
-									<Link
-										to={`/detailed-info/${row.bonusRequestId}`}
-										className={styles.detailed_link}
-									>
-										{row.firstName}
-									</Link>
+						{filteredData.length > 0 ? (
+							filteredData.map((row, index) => (
+								<tr key={index}>
+									<td>
+										<Link
+											to={`/detailed-info/${row.bonusRequestId}`}
+											className={styles.detailed_link}
+										>
+											{row.firstName}
+										</Link>
+									</td>
+									<td>{row.lastName}</td>
+									<td>{row.model}</td>
+									<td>{row.cost}</td>
+									<td>{row.status}</td>
+								</tr>
+							))
+						) : (
+							<tr>
+								<td colSpan={columns.length} style={{ textAlign: 'center' }}>
+									Ожидающих заявок нет
 								</td>
-								<td>{row.lastName}</td>
-								<td>{row.model}</td>
-								<td>{row.cost}</td>
-								<td>{row.status}</td>
 							</tr>
-						))}
+						)}
 					</tbody>
 				</table>
 			</div>

@@ -13,6 +13,7 @@ export default function PendingBonusContainer() {
 
 	return (
 		<div className='container'>
+			<h1>Ожидающие заявки</h1>
 			<PendingBonusTable bearerToken={bearerToken} />
 		</div>
 	);

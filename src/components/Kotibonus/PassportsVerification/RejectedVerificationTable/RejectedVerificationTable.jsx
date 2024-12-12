@@ -41,8 +41,8 @@ export default function RejectedVerificationTable() {
 	const columns = [
 		{ Header: 'Имя', accessor: 'firstName' },
 		{ Header: 'Фамилия', accessor: 'lastName' },
-		{ Header: 'Статус', accessor: 'status' },
 		{ Header: 'Сообщение об отклонении', accessor: 'rejectionReason' },
+		{ Header: 'Статус', accessor: 'status' },
 	];
 
 	if (verificationStatus === 'loading' || userStatus === 'loading') {
@@ -76,15 +76,12 @@ export default function RejectedVerificationTable() {
 					email: item.email,
 					rejectionReason:
 						verification.rejectionMessage || 'Причина не указана',
-					status: 'Ожидание',
+					status:
+						verification.status === 'REJECTED' ? 'Отклонено' : 'Нет данных',
 					documentVerificationId: verification.documentVerificationId,
 				}));
 		})
 		.flat();
-
-	// Отладка данных
-	// console.log('Verification Data:', verificationData);
-	// console.log('Combined Data:', combinedData);
 
 	return (
 		<div>
@@ -98,21 +95,29 @@ export default function RejectedVerificationTable() {
 						</tr>
 					</thead>
 					<tbody>
-						{combinedData.map((row, index) => (
-							<tr key={index}>
-								<td>
-									<Link
-										to={`/verification-info/${row.documentVerificationId}`}
-										className={styles.detailed_link}
-									>
-										{row.firstName}
-									</Link>
+						{combinedData.length > 0 ? (
+							combinedData.map((row, index) => (
+								<tr key={index}>
+									<td>
+										<Link
+											to={`/verification-info/${row.documentVerificationId}`}
+											className={styles.detailed_link}
+										>
+											{row.firstName}
+										</Link>
+									</td>
+									<td>{row.lastName}</td>
+									<td>{row.rejectionReason}</td>
+									<td>{row.status}</td>
+								</tr>
+							))
+						) : (
+							<tr>
+								<td colSpan={columns.length} style={{ textAlign: 'center' }}>
+									Отклоненных заявок нет
 								</td>
-								<td>{row.lastName}</td>
-								<td>{row.status}</td>
-								<td>{row.rejectionReason}</td>
 							</tr>
-						))}
+						)}
 					</tbody>
 				</table>
 			</div>
