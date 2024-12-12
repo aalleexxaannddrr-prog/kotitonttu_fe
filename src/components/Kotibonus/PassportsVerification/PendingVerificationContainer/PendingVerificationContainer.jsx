@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';// Таблица для отображения данных
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchPendingPassVerificationData } from '../../../../store/slices/pendingPassVerificationSlice';
 import PendingVerificationTable from '../PendingVerificationTable/PendingVerificationTable';
 
@@ -23,7 +23,7 @@ export default function PendingVerificationContainer() {
 
 	return (
 		<div className='container'>
-			<h1>Верификация документов (ожидание)</h1>
+			<h1>Ожидающие заявки на верификацию</h1>
 			{data.length > 0 ? (
 				<PendingVerificationTable data={data} />
 			) : (

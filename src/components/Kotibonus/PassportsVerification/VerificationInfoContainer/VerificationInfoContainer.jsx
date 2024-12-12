@@ -115,7 +115,7 @@ export default function VerificationInfoContainer() {
 						) : (
 							<div className={styles.rejectionDetails}>
 								<p className={styles.status}>Верификация отклонена!</p>
-								<p>Причина: {rejectionMessage}</p>
+								<p>{rejectionMessage}</p>
 							</div>
 						)}
 					</div>

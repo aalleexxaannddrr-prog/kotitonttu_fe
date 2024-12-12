@@ -5,23 +5,30 @@ import { fetchApprovedPassVerificationData } from '../../../../store/slices/appr
 
 export default function ApprovedVerificationContainer() {
 	const dispatch = useDispatch();
-	const { status } = useSelector(state => state.approvedPassVerificationData);
+	const { data, status, error } = useSelector(
+		state => state.approvedPassVerificationData
+	);
 
 	useEffect(() => {
 		dispatch(fetchApprovedPassVerificationData()); // Загружаем данные верификаций
 	}, [dispatch]);
 
 	if (status === 'loading') {
-		return <div>Loading...</div>;
+		return <div>Загрузка...</div>;
 	}
 
 	if (status === 'error') {
-		return <div>Error loading approved verifications</div>;
+		return <div>Ошибка: {error}</div>;
 	}
 
 	return (
 		<div className='container'>
-			<ApprovedVerificationTable />
+			<h1>Принятые заявки на верификацию</h1>
+			{data && data.length > 0 ? (
+				<ApprovedVerificationTable data={data} />
+			) : (
+				<div>Нет данных для отображения</div>
+			)}
 		</div>
 	);
 }

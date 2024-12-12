@@ -9,6 +9,8 @@ import usersReducer from './slices/usersSlice';
 import barcodeTypeReducer from './slices/addBarcodeTypeSlice';
 import barcodeDataReducer from './slices/barcodeDataSlice';
 import allBarcodeDataReducer from './slices/allBarcodeDataSlice';
+import updateBarcodeReducer from './slices/updateBarcodeSlice';
+import deleteBarcodeReducer from './slices/deleteBarcodeSlice';
 import updateBarcodeTypeReducer from './slices/updateBarcodeTypeSlice';
 import deleteBarcodeTypeReducer from './slices/deleteBarcodeTypeSlice';
 import errorscodeReducer from './slices/errorscodeSlice';
@@ -33,9 +35,11 @@ export const store = configureStore({
 		auth: authReduser,
 		users: usersReducer,
 		barcodeTypes: barcodeTypeReducer,
-		barcodeData: barcodeDataReducer,
+		barcodeTypeData: barcodeDataReducer,
 		allBarcodeData: allBarcodeDataReducer,
+		updateBarcode: updateBarcodeReducer,
 		updateBarcodeType: updateBarcodeTypeReducer,
+		deleteBarcode: deleteBarcodeReducer,
 		deleteBarcodeType: deleteBarcodeTypeReducer,
 		errorscode: errorscodeReducer,
 		approvedBonusData: approvedBonusDataReducer,

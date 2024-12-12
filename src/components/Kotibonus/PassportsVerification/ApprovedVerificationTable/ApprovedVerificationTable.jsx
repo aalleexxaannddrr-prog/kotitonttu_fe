@@ -22,21 +22,6 @@ export default function ApprovedVerificationTable() {
 		);
 	};
 
-	const columns = [
-		{ Header: 'Имя', accessor: 'firstName' },
-		{ Header: 'Фамилия', accessor: 'lastName' },
-		{ Header: 'Почта', accessor: 'email' },
-		{ Header: 'Статус', accessor: 'status' },
-	];
-
-	if (approvedStatus === 'loading' || userStatus === 'loading') {
-		return <div>Loading...</div>;
-	}
-
-	if (approvedStatus === 'error' || userStatus === 'error') {
-		return <div>Error loading data</div>;
-	}
-
 	const combinedData = approvedData
 		.filter(item =>
 			item.documentVerifications.some(
@@ -51,12 +36,28 @@ export default function ApprovedVerificationTable() {
 					firstName: user?.firstname || 'Unknown',
 					lastName: user?.lastname || 'Unknown',
 					email: item.email,
-					status: 'Принято',
+					status: verification.status === 'APPROVED' ? 'Принято' : 'Нет данных',
 					userId: user?.id || null,
 					documentVerificationId: verification.documentVerificationId,
 				}));
 		})
 		.flat();
+
+		
+	const columns = [
+		{ Header: 'Имя', accessor: 'firstName' },
+		{ Header: 'Фамилия', accessor: 'lastName' },
+		{ Header: 'Почта', accessor: 'email' },
+		{ Header: 'Статус', accessor: 'status' },
+	];
+
+		if (approvedStatus === 'loading' || userStatus === 'loading') {
+			return <div>Loading...</div>;
+		}
+
+		if (approvedStatus === 'error' || userStatus === 'error') {
+			return <div>Error loading data</div>;
+		}
 
 	return (
 		<div>
@@ -70,21 +71,29 @@ export default function ApprovedVerificationTable() {
 						</tr>
 					</thead>
 					<tbody>
-						{combinedData.map((row, index) => (
-							<tr key={index}>
-								<td>
-									<Link
-										to={`/verification-info/${row.documentVerificationId}`}
-										className={styles.detailed_link}
-									>
-										{row.firstName}
-									</Link>
+						{combinedData.length > 0 ? (
+							combinedData.map((row, index) => (
+								<tr key={index}>
+									<td>
+										<Link
+											to={`/verification-info/${row.documentVerificationId}`}
+											className={styles.detailed_link}
+										>
+											{row.firstName}
+										</Link>
+									</td>
+									<td>{row.lastName}</td>
+									<td>{row.email}</td>
+									<td>{row.status}</td>
+								</tr>
+							))
+						) : (
+							<tr>
+								<td colSpan={columns.length} style={{ textAlign: 'center' }}>
+									Принятых заявок нет
 								</td>
-								<td>{row.lastName}</td>
-								<td>{row.email}</td>
-								<td>{row.status}</td>
 							</tr>
-						))}
+						)}
 					</tbody>
 				</table>
 			</div>

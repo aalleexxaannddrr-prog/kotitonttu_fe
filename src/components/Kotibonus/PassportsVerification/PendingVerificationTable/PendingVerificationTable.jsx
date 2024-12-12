@@ -71,7 +71,7 @@ export default function PendingVerificationTable() {
 					firstName: user?.firstname || 'Unknown',
 					lastName: user?.lastname || 'Unknown',
 					email: item.email,
-					status: "Ожидание",
+					status: verification.status === 'PENDING' ? 'Ожидание' : 'Нет данных',
 					documentVerificationId: verification.documentVerificationId,
 				}));
 		})
@@ -89,21 +89,29 @@ export default function PendingVerificationTable() {
 						</tr>
 					</thead>
 					<tbody>
-						{combinedData.map((row, index) => (
-							<tr key={index}>
-								<td>
-									<Link
-										to={`/verification-info/${row.documentVerificationId}`}
-										className={styles.detailed_link}
-									>
-										{row.firstName}
-									</Link>
+						{combinedData.length > 0 ? (
+							combinedData.map((row, index) => (
+								<tr key={index}>
+									<td>
+										<Link
+											to={`/verification-info/${row.documentVerificationId}`}
+											className={styles.detailed_link}
+										>
+											{row.firstName}
+										</Link>
+									</td>
+									<td>{row.lastName}</td>
+									<td>{row.email}</td>
+									<td>{row.status}</td>
+								</tr>
+							))
+						) : (
+							<tr>
+								<td colSpan={columns.length} style={{ textAlign: 'center' }}>
+									Запросов на рассмотрение нет
 								</td>
-								<td>{row.lastName}</td>
-								<td>{row.email}</td>
-								<td>{row.status}</td>
 							</tr>
-						))}
+						)}
 					</tbody>
 				</table>
 			</div>
