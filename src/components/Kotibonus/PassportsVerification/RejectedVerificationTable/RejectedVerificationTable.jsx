@@ -5,7 +5,7 @@ import styles from './RejectedVerificationTable.module.css';
 import { fetchUsers } from '../../../../store/slices/usersSlice';
 import { fetchRejectedPassVerificationData } from '../../../../store/slices/rejectedPassVerificationData';
 
-export default function RejectedVerificationTable() {
+export default function RejectedVerificationTable({ bearerToken }) {
 	const dispatch = useDispatch();
 
 	// Данные из Redux
@@ -28,7 +28,7 @@ export default function RejectedVerificationTable() {
 		if (verificationStatus === 'idle') {
 			dispatch(fetchRejectedPassVerificationData());
 		}
-	}, [dispatch, userStatus, verificationStatus]);
+	}, [dispatch, userStatus, verificationStatus, bearerToken]);
 
 	// Функция для получения данных пользователя по email
 	const getUserByEmail = email => {

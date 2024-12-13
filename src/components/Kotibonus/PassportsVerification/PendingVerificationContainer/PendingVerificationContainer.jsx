@@ -8,10 +8,17 @@ export default function PendingVerificationContainer() {
 	const { data, status, error } = useSelector(
 		state => state.pendingPassVerificationData
 	);
+	const bearerToken = useSelector(state => state.auth.bearerToken);
 
 	useEffect(() => {
 		dispatch(fetchPendingPassVerificationData()); // Запускаем запрос при загрузке компонента
 	}, [dispatch]);
+
+	// Если токен отсутствует
+	if (!bearerToken) {
+		console.error('Bearer token is missing!');
+		return <div>Error: Missing authentication token.</div>;
+	}
 
 	if (status === 'loading') {
 		return <div>Загрузка...</div>;
@@ -25,7 +32,7 @@ export default function PendingVerificationContainer() {
 		<div className='container'>
 			<h1>Ожидающие заявки на верификацию</h1>
 			{data.length > 0 ? (
-				<PendingVerificationTable data={data} />
+				<PendingVerificationTable data={data} bearerToken={bearerToken} />
 			) : (
 				<div>Нет данных для отображения</div>
 			)}

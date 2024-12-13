@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styles from './ApprovedVerificationTable.module.css';
 import { fetchUsers } from '../../../../store/slices/usersSlice';
 
-export default function ApprovedVerificationTable() {
+export default function ApprovedVerificationTable({ bearerToken }) {
 	const dispatch = useDispatch();
 	const { data: approvedData, status: approvedStatus } = useSelector(
 		state => state.approvedPassVerificationData
@@ -13,7 +13,7 @@ export default function ApprovedVerificationTable() {
 
 	useEffect(() => {
 		dispatch(fetchUsers()); // Загружаем пользователей
-	}, [dispatch]);
+	}, [dispatch, bearerToken]);
 
 	// Получить пользователя по email
 	const getUserByEmail = email => {
@@ -43,7 +43,6 @@ export default function ApprovedVerificationTable() {
 		})
 		.flat();
 
-		
 	const columns = [
 		{ Header: 'Имя', accessor: 'firstName' },
 		{ Header: 'Фамилия', accessor: 'lastName' },
@@ -51,13 +50,13 @@ export default function ApprovedVerificationTable() {
 		{ Header: 'Статус', accessor: 'status' },
 	];
 
-		if (approvedStatus === 'loading' || userStatus === 'loading') {
-			return <div>Loading...</div>;
-		}
+	if (approvedStatus === 'loading' || userStatus === 'loading') {
+		return <div>Loading...</div>;
+	}
 
-		if (approvedStatus === 'error' || userStatus === 'error') {
-			return <div>Error loading data</div>;
-		}
+	if (approvedStatus === 'error' || userStatus === 'error') {
+		return <div>Error loading data</div>;
+	}
 
 	return (
 		<div>

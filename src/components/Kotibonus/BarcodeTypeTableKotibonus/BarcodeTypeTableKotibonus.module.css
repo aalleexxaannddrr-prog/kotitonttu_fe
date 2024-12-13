@@ -10,6 +10,7 @@
 }
 
 .barcode_table {
+   margin-bottom: 20px;
    border-collapse: collapse;
    width: 100%;
 }

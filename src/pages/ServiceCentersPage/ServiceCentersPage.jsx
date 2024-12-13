@@ -43,7 +43,7 @@ export default function ServiceCentersPage() {
 
 	return (
 		<div className='container'>
-			<h1>Service Centers Map</h1>
+			<h1>Сервисные центры</h1>
 			<div className={styles.service_block}>
 				<EquipmentSelector
 					servisesCenters={servisesCenters}
