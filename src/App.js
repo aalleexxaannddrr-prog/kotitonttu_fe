@@ -20,7 +20,6 @@ import RejectedApplicationsPage from './pages/RejectedApplicationsPage/RejectedA
 import AcceptedApplicationsPage from './pages/ApprovedApplicationsPage/ApprovedApplicationsPage';
 import ProductPassportPage from './pages/ProductPassportPage/ProductPassportPage';
 import ChatsPage from './pages/ChatsPage/ChatsPage';
-import ChatDetails from './components/Chats/ChatDetails/ChatDetails';
 import { UserProvider } from './context/UserContext';
 import { restoreAuth } from './store/slices/authSlice';
 import PendingVerificationPage from './pages/PendingVerificationPage/PendingVerificationPage';
@@ -57,7 +56,6 @@ function App() {
 						<Route path='pass-product' element={<ProductPassportPage />} />
 						<Route path='/error-codes' element={<ErrorСodesPage />} />
 						<Route path='/chats' element={<ChatsPage />} />
-						<Route path='/chat/:id' element={<ChatDetails />} />
 						<Route path='/barcodes' element={<BarcodesPage />} />
 						<Route
 							path='/bonus-program/models'

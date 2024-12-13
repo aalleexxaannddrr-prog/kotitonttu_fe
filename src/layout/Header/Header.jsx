@@ -23,7 +23,7 @@ export default function Header() {
 
 	return (
 		<div className={styles.header_wrapper}>
-			<div className='container'>
+			<div className={styles.header_content}>
 				<div className={styles.header_list}>
 					{/* Отображаем NavMenu только если пользователь авторизован */}
 					{isAuthenticated && <NavMenu />}

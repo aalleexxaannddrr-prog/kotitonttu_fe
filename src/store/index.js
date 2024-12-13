@@ -27,6 +27,8 @@ import rejectVerificationStatusReducer from './slices/rejectiVerificationSlice';
 import sparePartsReducer from './slices/sparePartsSlice';
 import updateSparePartByIdReducer from './slices/updateSparePartSlice';
 import addSparePartReducer from './slices/addSparePartSlice';
+import fetchDialoguesReducer from './slices/dialoguesSlice';
+import sendMessageReducer from './slices/messagesSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -58,6 +60,8 @@ export const store = configureStore({
 		spareParts: sparePartsReducer,
 		updateSparePart: updateSparePartByIdReducer,
 		addSparePart: addSparePartReducer,
+		dialogues: fetchDialoguesReducer,
+		messages: sendMessageReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
