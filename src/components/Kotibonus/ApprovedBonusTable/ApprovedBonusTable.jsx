@@ -18,7 +18,7 @@ export default function ApprovedBonusTable({ bearerToken }) {
 	useEffect(() => {
 		dispatch(fetchApprovedBonusRequests());
 		dispatch(fetchUsers());
-	}, [dispatch]);
+	}, [dispatch, bearerToken]);
 
 	// Helper function: get user by email
 	const getUserByEmail = email => {

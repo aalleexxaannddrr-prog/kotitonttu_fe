@@ -1,15 +1,10 @@
 import React from 'react';
-import styles from './SparePartsPage.module.css';
-import SparePartsForm from '../../components/SpareParts/SparePartsForm/SparePartsForm';
-import SparePartsTable from '../../components/SpareParts/SparePartsTable/SparePartsTable';
+import SparePartsContainer from '../../components/SpareParts/SparePartsContainer/SparePartsContainer';
 
 export default function SparePartsPage() {
 	return (
-		<div className='container'>
-			<SparePartsForm />
-
-			<h2 className={styles.title}>Список запчастей по серии</h2>
-			<SparePartsTable />
+		<div>
+			<SparePartsContainer/>
 		</div>
 	);
 }

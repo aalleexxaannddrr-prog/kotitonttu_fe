@@ -1,0 +1,15 @@
+.title {
+   margin-top: 20px;
+}
+
+.add_button {
+   padding: 8px;
+   font-size: 16px;
+   border: none;
+   border-radius: .5em;
+}
+
+.add_button:hover {
+   color: var(--txt-white);
+   background: var(--btn-hover);
+}

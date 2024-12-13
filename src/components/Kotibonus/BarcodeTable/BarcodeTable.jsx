@@ -6,7 +6,7 @@ import { deleteBarcode } from '../../../store/slices/deleteBarcodeSlice';
 import { IoClose } from 'react-icons/io5';
 import styles from './BarcodeTable.module.css';
 
-export default function BarcodeTable() {
+export default function BarcodeTable({ bearerToken }) {
 	const dispatch = useDispatch();
 	const { data, status, error } = useSelector(state => state.allBarcodeData);
 
@@ -16,7 +16,7 @@ export default function BarcodeTable() {
 
 	useEffect(() => {
 		dispatch(fetchBarcodes());
-	}, [dispatch]);
+	}, [dispatch, bearerToken]);
 
 	const handleUpdateField = (id, field) => {
 		const updatedValue = editedData[id]?.[field];
@@ -35,7 +35,6 @@ export default function BarcodeTable() {
 					field === 'used'
 						? updatedValue
 						: data.find(item => item.id === id).used,
-				bearerToken: 'yourBearerToken', // Replace with actual bearer token
 			};
 
 			dispatch(updateBarcode(updateData)).then(() => {

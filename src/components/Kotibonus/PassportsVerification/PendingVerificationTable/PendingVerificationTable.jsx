@@ -5,7 +5,7 @@ import styles from './PendingVerificationTable.module.css';
 import { fetchUsers } from '../../../../store/slices/usersSlice';
 import { fetchPendingPassVerificationData } from '../../../../store/slices/pendingPassVerificationSlice';
 
-export default function PendingVerificationTable() {
+export default function PendingVerificationTable({ bearerToken }) {
 	const dispatch = useDispatch();
 	const {
 		data: verificationData,
@@ -26,7 +26,7 @@ export default function PendingVerificationTable() {
 		if (verificationStatus === 'idle') {
 			dispatch(fetchPendingPassVerificationData());
 		}
-	}, [dispatch, userStatus, verificationStatus]);
+	}, [dispatch, userStatus, verificationStatus, bearerToken]);
 
 	// Функция для получения данных пользователя по email
 	const getUserByEmail = email => {

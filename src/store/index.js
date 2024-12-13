@@ -24,6 +24,9 @@ import approvedPassVerificationDataReducer from './slices/approvedPassVerificati
 import rejectedPassVerificationReducer from './slices/rejectedPassVerificationData';
 import approveVerificationStatusReduser from './slices/approvedVerificationSlice';
 import rejectVerificationStatusReducer from './slices/rejectiVerificationSlice';
+import sparePartsReducer from './slices/sparePartsSlice';
+import updateSparePartByIdReducer from './slices/updateSparePartSlice';
+import addSparePartReducer from './slices/addSparePartSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -52,6 +55,9 @@ export const store = configureStore({
 		rejectedPassVerificationData: rejectedPassVerificationReducer,
 		approvedVerification: approveVerificationStatusReduser,
 		rejectedVerification: rejectVerificationStatusReducer,
+		spareParts: sparePartsReducer,
+		updateSparePart: updateSparePartByIdReducer,
+		addSparePart: addSparePartReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
