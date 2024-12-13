@@ -1,70 +1,87 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ChatDialogues from '../ChatDialogues/ChatDialogues';
+import ChatMessages from '../ChatMessages/ChatMessages';
 import styles from './ChatsContainer.module.css';
-import ChatList from '../ChatList/ChatList';
-import ChatDetails from '../ChatDetails/ChatDetails';
-import MessageButton from '../MessageButton/MessageButton';
+import { fetchUsers } from '../../../store/slices/usersSlice';
 
-const sampleChats = [
-	{
-		id: 1,
-		from: 'User1',
-		subject: 'Привет!',
-		date: '2024-09-25',
-		content: 'Привет! Как дела?',
-	},
-	{
-		id: 2,
-		from: 'User2',
-		subject: 'Новый заказ',
-		date: '2024-09-24',
-		content: 'Есть новый заказ на выполнение.',
-	},
-	{
-		id: 3,
-		from: 'User3',
-		subject: 'Информация по проекту №NDL78946jb',
-		date: '2024-09-23',
-		content:
-			'Я отправил всю информацию по проекту. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Amet alias laudantium quod asperiores ex sequi eum nam pariatur voluptas quos dicta odit vitae architecto quisquam nesciunt laboriosam, excepturi eos commodi natus, dolore officia cumque unde. Hic odio laboriosam maiores non iusto! Quisquam praesentium eos labore maiores eum dicta aliquam laborum.',
-	},
-	// Добавьте больше чатов для примера
-];
+export default function ChatsContainer({ userId }) {
+	const dispatch = useDispatch();
+	const users = useSelector(state => state.users.users); // Получаем список пользователей
+	const usersStatus = useSelector(state => state.users.status);
+	const currentUser = useSelector(state => state.auth.user); // Получаем текущего пользователя
 
-export default function ChatsContainer() {
-	const [selectedChat, setSelectedChat] = useState(null);
+	const [selectedDialogue, setSelectedDialogue] = useState(null);
+	const [newMessage, setNewMessage] = useState('');
 
-	const handleSelectChat = chat => {
-		setSelectedChat(chat);
-	};
-
-	const handleKeyDown = event => {
-		if (event.key === 'Escape') {
-			setSelectedChat(null); // Закрываем чат при нажатии на Escape
-		}
-	};
-
+	// Загружаем пользователей при монтировании
 	useEffect(() => {
-		// Добавляем обработчик событий при монтировании компонента
-		document.addEventListener('keydown', handleKeyDown);
+		if (usersStatus === 'idle') {
+			dispatch(fetchUsers());
+		}
+	}, [dispatch, usersStatus]);
 
-		// Удаляем обработчик событий при размонтировании компонента
+	// Обработчик события нажатия клавиш
+	useEffect(() => {
+		const handleKeyDown = event => {
+			if (event.key === 'Escape') {
+				setSelectedDialogue(null); // Закрыть текущий диалог
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+
 		return () => {
-			document.removeEventListener('keydown', handleKeyDown);
+			window.removeEventListener('keydown', handleKeyDown);
 		};
 	}, []);
 
+	const handleSendMessage = () => {
+		if (newMessage.trim() && selectedDialogue) {
+			const updatedMessages = [
+				...selectedDialogue.messages,
+				{ senderId: userId, content: newMessage },
+			];
+			setSelectedDialogue({ ...selectedDialogue, messages: updatedMessages });
+			setNewMessage('');
+		}
+	};
+
+	// Создаем массив диалогов, исключая авторизованного пользователя
+	const dialogues = users
+		.filter(user => user.email !== currentUser?.email) // Исключаем текущего пользователя
+		.map(user => ({
+			id: user.id,
+			name: `${user.firstname} ${user.lastname}`,
+			lastMessage: 'Начните переписку', // Последнее сообщение, если нет истории
+			userId: userId,
+			messages: [], // Пустой массив сообщений, т.к. это тестовые данные
+		}));
+
 	return (
 		<div className='container'>
-			<MessageButton/>
-			<div className={styles.chats_content}>
-				<div className={styles.chat_list_container}>
-					<ChatList chats={sampleChats} onSelectChat={handleSelectChat} />
+			<div className={styles.chat_container}>
+				<div className={styles.dialogues_column}>
+					<ChatDialogues
+						dialogues={dialogues}
+						onSelect={setSelectedDialogue}
+						selectedDialogue={selectedDialogue}
+						status={usersStatus}
+					/>
 				</div>
-				<div>
-					<ChatDetails selectedChat={selectedChat} />
-				</div>
+				{selectedDialogue ? (
+					<ChatMessages
+						dialogue={selectedDialogue}
+						onSendMessage={handleSendMessage}
+						newMessage={newMessage}
+						setNewMessage={setNewMessage}
+					/>
+				) : (
+					<div className={styles.no_dialogue}>
+						Выберите диалог для начала общения
+					</div>
+				)}
 			</div>
 		</div>
 	);
 }
-

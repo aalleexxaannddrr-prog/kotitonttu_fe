@@ -1,0 +1,55 @@
+.dialogues_list {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   overflow-y: auto;
+   height: 100%;
+   background-color: var(--bg-chat);
+   border: 1px solid var(--border-cha);
+   border-radius: 8px;
+   padding: 10px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dialogue_item {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   padding: 10px;
+   border-radius: 8px;
+   cursor: pointer;
+   background-color: var(--bg-chat-dialogue_item);
+   transition: background-color 0.3s ease;
+}
+
+.dialogue_item:hover {
+   background-color: var(--chat-dialogue-hover);
+}
+
+.dialogue_item h4 {
+   margin: 0;
+   font-size: 16px;
+   color: var(--chat-dialogue-name);
+}
+
+.dialogue_item p {
+   margin: 5px 0 0;
+   font-size: 14px;
+   color: var(--grey);
+}
+
+.selected {
+   background-color: var(--selected-chat);
+}
+
+.loading {
+   text-align: center;
+   color: var(--grey);
+   font-size: 14px;
+}
+
+.error {
+   text-align: center;
+   color: var(--error);
+   font-size: 14px;
+}

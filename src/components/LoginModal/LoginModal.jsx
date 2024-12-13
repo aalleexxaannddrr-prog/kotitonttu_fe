@@ -29,15 +29,16 @@ const LoginModal = ({ closeModal }) => {
 			loginUser({
 				email: formData.email,
 				password: formData.password,
-				bearerToken: 'YOUR_BEARER_TOKEN',
 			})
 		)
 			.unwrap()
 			.then(() => {
+				// console.log('Login succeeded');
 				setFormData({ email: '', password: '' });
 				closeModal();
 			})
 			.catch(error => {
+				console.error('Login error:', error);
 				setError('Ошибка авторизации. Пожалуйста, проверьте ваши данные.');
 			});
 	};
@@ -76,7 +77,7 @@ const LoginModal = ({ closeModal }) => {
 					</form>
 				) : (
 					<div>
-						<p>Добро пожаловать, {user.firstname}!</p>
+						<p>Добро пожаловать, {user?.firstname || 'Гость'}!</p>
 					</div>
 				)}
 			</div>
