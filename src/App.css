@@ -15,12 +15,14 @@
   --bg-chat: #fff;
   --bg-chat-messages: #f7f9fc;
   --border-chat:#afafaf;
-  --chat-message_sent:#d1f0ff;
-  --chat-message_received:#e8e8e8;
+  --chat-message_sent:#c5c5c5;
+  --chat-message_received:rgba(216, 143, 7, 0.3);
   --selected-chat: rgba(216, 143, 7, 0.3);
   --chat-dialogue-name: #333;
   --chat-dialogue-hover: #c5c5c5;
   --bg-chat-dialogue_item: #f9f9f9;
+  --chat-btn: rgba(216, 143, 7, 0.5);
+  --chat-btn-hover: rgba(216, 143, 7, 0.7);
 }
 
 * {

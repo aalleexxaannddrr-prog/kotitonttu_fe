@@ -29,6 +29,8 @@ import updateSparePartByIdReducer from './slices/updateSparePartSlice';
 import addSparePartReducer from './slices/addSparePartSlice';
 import fetchDialoguesReducer from './slices/dialoguesSlice';
 import sendMessageReducer from './slices/messagesSlice';
+import fetchBoilerSeriesPassportsReducer from './slices/boilerSeriesPassportsSlice';
+import uploadProductPassPdfReducer from './slices/productPassPdfSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -62,6 +64,8 @@ export const store = configureStore({
 		addSparePart: addSparePartReducer,
 		dialogues: fetchDialoguesReducer,
 		messages: sendMessageReducer,
+		boilerSeriesPassports: fetchBoilerSeriesPassportsReducer,
+		productPassPdf: uploadProductPassPdfReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({

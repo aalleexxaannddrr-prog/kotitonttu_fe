@@ -45,7 +45,7 @@ export default function ErrorsCodeTable() {
 	const handleDelete = code => {
 		const updatedErrors = filteredErrors.filter(error => error.code !== code);
 		setFilteredErrors(updatedErrors);
-		// В этом месте можно также вызвать action для удаления ошибки из состояния Redux
+		// В этом месте нужно также вызвать action для удаления ошибки из состояния Redux!!!
 	};
 
 	// Обработчик обновления данных

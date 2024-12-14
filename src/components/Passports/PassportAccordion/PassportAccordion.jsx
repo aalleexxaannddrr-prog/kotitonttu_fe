@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './PassportAccordion.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchErrorscode } from '../../../store/slices/errorscodeSlice';
+import { fetchBoilerSeriesPassports } from '../../../store/slices/boilerSeriesPassportsSlice';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { IoMdArrowDropup } from 'react-icons/io';
+
 
 const PassportAccordion = () => {
 	const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const PassportAccordion = () => {
 	const [activeTitle, setActiveTitle] = useState(null);
 
 	useEffect(() => {
-		dispatch(fetchErrorscode());
+		dispatch(fetchBoilerSeriesPassports());
 	}, [dispatch]);
 
 	const toggleCategory = index => {
