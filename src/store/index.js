@@ -31,6 +31,7 @@ import fetchDialoguesReducer from './slices/dialoguesSlice';
 import sendMessageReducer from './slices/messagesSlice';
 import fetchBoilerSeriesPassportsReducer from './slices/boilerSeriesPassportsSlice';
 import uploadProductPassPdfReducer from './slices/productPassPdfSlice';
+import fetchBoilersReducer from './slices/boilersSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -66,6 +67,7 @@ export const store = configureStore({
 		messages: sendMessageReducer,
 		boilerSeriesPassports: fetchBoilerSeriesPassportsReducer,
 		productPassPdf: uploadProductPassPdfReducer,
+		boilers: fetchBoilersReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({

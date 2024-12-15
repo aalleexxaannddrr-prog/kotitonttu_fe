@@ -26,6 +26,7 @@ import PendingVerificationPage from './pages/PendingVerificationPage/PendingVeri
 import ApprovedVerificationsPage from './pages/ApprovedVerificationsPage/ApprovedVerificationsPage';
 import VerificationInfoPage from './pages/VerificationInfoPage/VerificationInfoPage'
 import RejectedVerificationPage from './pages/RejectedVerificationPage/RejectedVerificationPage';
+import BoilersPage from './pages/BoilersPage/BoilersPage';
 
 function App() {
 	const dispatch = useDispatch();
@@ -48,7 +49,7 @@ function App() {
 				{isAuthenticated ? (
 					<>
 						<Route path='/users' element={<UserPage />} />
-						<Route path='/types' element={<TypesPage />} />
+						<Route path='/types' element={<BoilersPage />} />
 						<Route path='/types/all/:id' element={<ProductsByTypesPage />} />
 						<Route path='/service-centers' element={<ServiceCentersPage />} />
 						<Route path='/exploded-view' element={<ExplodedViewPage />} />
