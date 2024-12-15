@@ -11,10 +11,14 @@
 
 .messages_list {
    display: flex;
-      flex-direction: column;
+   flex-direction: column;
    flex-grow: 1;
    overflow-y: auto;
    margin-bottom: 10px;
+}
+
+.messages_list::-webkit-scrollbar {
+   display: none;
 }
 
 .message_sent {
@@ -38,7 +42,7 @@
    max-width: 70%;
 }
 
-.message_input_container {
+.message_container {
    display: flex;
    padding-top: 10px;
    border-top: 1px solid var(--border-chat);
@@ -47,25 +51,40 @@
    gap: 10px;
 }
 
-.message_input_container input {
+.textarea {
    flex-grow: 1;
    padding: 8px;
    border-radius: 8px;
    border: 1px solid var(--border-chat);
    outline: none;
    font-size: 14px;
+   resize: none;
+   overflow-y: auto;
 }
 
-.message_input_container button {
-   padding: 8px 16px;
-   background-color: var(--orange);
-   color: var(--txt-white);
+.textarea::-webkit-scrollbar {
+   display: none;
+}
+
+.textarea:focus {
+   border-color: var(--orange);
+}
+
+.message_container button {
+   padding: 5px;
+   background-color: var(--chat-btn);
+   color: var(--grey);
    border: none;
    border-radius: 8px;
    cursor: pointer;
    font-size: 14px;
 }
 
-.message_input_container button:hover {
-   background-color: var(--btn-hover);
+.send_icon {
+   display: block;
+}
+
+.message_container button:hover {
+   background-color: var(--chat-btn-hover);
+   color: var(--txt-black);
 }

@@ -1,0 +1,15 @@
+.pass_title {
+   margin-bottom: 20px;
+}
+
+.pass_btn {
+   padding: 10px;
+   font-size: 16px;
+   border: none;
+   border-radius: 8px;
+   color: var(--txt-white);
+}
+
+.pass_btn:hover {
+   background: var(--btn-hover);
+}
