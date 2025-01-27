@@ -5,15 +5,35 @@ import styles from './ChatMessages.module.css';
 import { LuSend } from 'react-icons/lu';
 
 export default function ChatMessages({ dialogue, newMessage, setNewMessage }) {
-	const [messages, setMessages] = useState(dialogue.messages || []);
+	//const [messages, setMessages] = useState(dialogue.messages || []);
+	const mockMessages = [
+		{ senderId: '8', content: 'Привет!' },
+		{ senderId: '2', content: 'Как дела?' },
+		{ senderId: '8', content: 'Все хорошо, а у тебя?' },
+		{ senderId: '8', content: 'Отлично, спасибо!' },
+	];
+	const [messages, setMessages] = useState(mockMessages);
+	console.log(messages)
 	const dispatch = useDispatch();
 	const { userId } = useSelector(state => state.auth);
+	const { currentUser } = useSelector(state => state.auth.user);
 	const { bearerToken } = useSelector(state => state.auth);
 	const textareaRef = useRef(null);
+	console.log(dialogue)
 
 	// Обновляем сообщения при выборе нового диалога
 	useEffect(() => {
-		setMessages(dialogue.messages || []);
+		if (dialogue && dialogue.messages) {
+			// Преобразование сообщений в нужный формат
+			const formattedMessages = dialogue.messages.map((msg) => ({
+				senderId: msg.direction === 'incoming' ? dialogue.interlocutor.email : userId,
+				content: msg.messageContent,
+				createdAt: msg.createdAt,
+			}));
+			//setMessages(formattedMessages); Изначальная реализация
+			setMessages(messages => [...messages, ...formattedMessages]);
+
+		}
 	}, [dialogue]);
 
 	const handleSendMessage = () => {
@@ -60,18 +80,22 @@ export default function ChatMessages({ dialogue, newMessage, setNewMessage }) {
 	return (
 		<div className={styles.messages_container}>
 			<div className={styles.messages_list}>
-				{messages.map((message, index) => (
+				{messages.map((message, index) => {
+					console.log(`SenderId: ${message.senderId}, UserId: ${userId}, index ${index}`);
+					const isSentByUser = message.senderId === userId;
+					console.log(`Is sent by user: ${isSentByUser}`);
+					return(
 					<div
 						key={index}
 						className={
-							message.senderId === userId
-								? styles.message_sent
-								: styles.message_received
+							isSentByUser
+								? styles.message_received
+								: styles.message_sent
 						}
 					>
 						<p>{message.content}</p>
 					</div>
-				))}
+				)})}
 			</div>
 			<div className={styles.message_container}>
 				<textarea

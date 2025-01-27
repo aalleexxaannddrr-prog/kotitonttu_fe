@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 export const sendMessage = createAsyncThunk(
 	'messages/sendMessage',
@@ -25,11 +25,11 @@ export const sendMessage = createAsyncThunk(
 			);
 
 			if (!response.ok) {
-				throw new Error('Failed to send message');
+				const errorText = await response.text(); // Получаем текст ответа от API
+				throw new Error('Failed to send message: ' + errorText);
 			}
 
-			const result = await response.json();
-			return result;
+			return await response.text();
 		} catch (error) {
 			console.error('Error sending message:', error);
 			return rejectWithValue(error.message);

@@ -4,12 +4,14 @@ import ChatDialogues from '../ChatDialogues/ChatDialogues';
 import ChatMessages from '../ChatMessages/ChatMessages';
 import styles from './ChatsContainer.module.css';
 import { fetchUsers } from '../../../store/slices/usersSlice';
+import {fetchDialogues} from "../../../store/slices/dialoguesSlice";
 
 export default function ChatsContainer({ userId }) {
 	const dispatch = useDispatch();
 	const users = useSelector(state => state.users.users); // Получаем список пользователей
 	const usersStatus = useSelector(state => state.users.status);
 	const currentUser = useSelector(state => state.auth.user); // Получаем текущего пользователя
+	const dialoguesMessagesStatus = useSelector(state => state.dialogues.data);
 
 	const [selectedDialogue, setSelectedDialogue] = useState(null);
 	const [newMessage, setNewMessage] = useState('');
@@ -18,6 +20,9 @@ export default function ChatsContainer({ userId }) {
 	useEffect(() => {
 		if (usersStatus === 'idle') {
 			dispatch(fetchUsers());
+		}
+		if (dialoguesMessagesStatus === 'idle'){
+			dispatch(fetchDialogues({id: currentUser?.id, bearerToken: currentUser?.bearerToken}))
 		}
 	}, [dispatch, usersStatus]);
 

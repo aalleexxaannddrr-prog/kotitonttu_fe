@@ -74,4 +74,5 @@ export const store = configureStore({
 			serializableCheck: false, // Отключение проверки сериализуемости
 			immutableCheck: false, // Отключение проверки неизменяемости
 		}),
+	devtools: process.env.NODE_ENV !== "production",
 });
