@@ -3,23 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sendMessage } from '../../../store/slices/messagesSlice';
 import styles from './ChatMessages.module.css';
 import { LuSend } from 'react-icons/lu';
+import {fetchDialogues} from "../../../store/slices/dialoguesSlice";
 
-export default function ChatMessages({ dialogue, newMessage, setNewMessage }) {
-	//const [messages, setMessages] = useState(dialogue.messages || []);
-	const mockMessages = [
+export default function ChatMessages({ dialogue, newMessage, setNewMessage, selectedDialogue }) {
+	const [messages, setMessages] = useState(dialogue.messages || []);
+	// Тестовые данные сообщений
+	/*const mockMessages = [
 		{ senderId: '8', content: 'Привет!' },
 		{ senderId: '2', content: 'Как дела?' },
 		{ senderId: '8', content: 'Все хорошо, а у тебя?' },
 		{ senderId: '8', content: 'Отлично, спасибо!' },
 	];
-	const [messages, setMessages] = useState(mockMessages);
-	console.log(messages)
+	const [messages, setMessages] = useState(mockMessages);*/
 	const dispatch = useDispatch();
 	const { userId } = useSelector(state => state.auth);
 	const { currentUser } = useSelector(state => state.auth.user);
 	const { bearerToken } = useSelector(state => state.auth);
 	const textareaRef = useRef(null);
-	console.log(dialogue)
 
 	// Обновляем сообщения при выборе нового диалога
 	useEffect(() => {
@@ -30,8 +30,9 @@ export default function ChatMessages({ dialogue, newMessage, setNewMessage }) {
 				content: msg.messageContent,
 				createdAt: msg.createdAt,
 			}));
-			//setMessages(formattedMessages); Изначальная реализация
-			setMessages(messages => [...messages, ...formattedMessages]);
+			setMessages(formattedMessages); //Изначальная реализация
+
+			//setMessages(messages => [...messages, ...formattedMessages]);
 
 		}
 	}, [dialogue]);
@@ -44,12 +45,12 @@ export default function ChatMessages({ dialogue, newMessage, setNewMessage }) {
 				content: newMessage,
 			};
 			setMessages(prevMessages => [...prevMessages, newMsg]);
-
+			console.log("New message:" + newMessage);
 			// Отправляем сообщение на сервер
 			dispatch(
 				sendMessage({
 					senderId: userId,
-					receiverId: dialogue.id, // ID получателя
+					receiverId: selectedDialogue.id, // ID получателя
 					messageContent: newMessage,
 					bearerToken,
 				})
@@ -58,7 +59,8 @@ export default function ChatMessages({ dialogue, newMessage, setNewMessage }) {
 				.catch(error => {
 					console.error('Error sending message:', error);
 				});
-
+			dispatch(fetchDialogues({userId: userId, bearerToken: bearerToken}))
+			console.log("New message:" + newMessage);
 			// Очищаем поле ввода
 			setNewMessage('');
 		}
@@ -77,13 +79,14 @@ export default function ChatMessages({ dialogue, newMessage, setNewMessage }) {
 		}
 	}, [newMessage]); // Отслеживаем изменения в newMessage
 
+
 	return (
 		<div className={styles.messages_container}>
 			<div className={styles.messages_list}>
 				{messages.map((message, index) => {
-					console.log(`SenderId: ${message.senderId}, UserId: ${userId}, index ${index}`);
+					//console.log(`SenderId: ${message.senderId}, UserId: ${userId}, index ${index}`);
 					const isSentByUser = message.senderId === userId;
-					console.log(`Is sent by user: ${isSentByUser}`);
+					//console.log(`Is sent by user: ${isSentByUser}`);
 					return(
 					<div
 						key={index}

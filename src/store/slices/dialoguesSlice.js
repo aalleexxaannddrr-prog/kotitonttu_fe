@@ -4,8 +4,8 @@ export const fetchDialogues = createAsyncThunk(
 	'dialogues/fetchDialogues',
 	async ({ userId, bearerToken }, { rejectWithValue }) => {
 		// Логи для проверки переданных параметров
-		// console.log('fetchDialogues: userId:', userId);
-		// console.log('fetchDialogues: bearerToken:', bearerToken);
+		//console.log('fetchDialogues: userId:', userId);
+		//console.log('fetchDialogues: bearerToken:', bearerToken);
 
 		if (!userId || !bearerToken) {
 			console.error(
@@ -43,7 +43,7 @@ export const fetchDialogues = createAsyncThunk(
 			}
 
 			const result = await response.json();
-			// console.log('fetchDialogues: result:', result);
+			console.log('fetchDialogues: result:', result);
 			return result;
 		} catch (error) {
 			console.error('Ошибка в fetchDialogues:', error.message);
@@ -57,7 +57,7 @@ const dialoguesSlice = createSlice({
 	name: 'dialogues',
 	initialState: {
 		data: [],
-		status: null,
+		status: 'idle',
 		error: null,
 	},
 	reducers: {},

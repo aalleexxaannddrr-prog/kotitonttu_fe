@@ -9,7 +9,7 @@ export const sendMessage = createAsyncThunk(
 		const myHeaders = new Headers();
 		myHeaders.append('Accept', '*/*');
 		myHeaders.append('Authorization', `Bearer ${bearerToken}`);
-
+		console.log(`Send Message data ${senderId} ${receiverId} ${messageContent} ${bearerToken}`)
 		const requestOptions = {
 			method: 'POST',
 			headers: myHeaders,

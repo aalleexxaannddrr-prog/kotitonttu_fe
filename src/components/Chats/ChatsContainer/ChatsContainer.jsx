@@ -11,9 +11,13 @@ export default function ChatsContainer({ userId }) {
 	const users = useSelector(state => state.users.users); // Получаем список пользователей
 	const usersStatus = useSelector(state => state.users.status);
 	const currentUser = useSelector(state => state.auth.user); // Получаем текущего пользователя
-	const dialoguesMessagesStatus = useSelector(state => state.dialogues.data);
+	const {bearerToken} = useSelector(state => state.auth)
+	// Состояния диалогов получаемые через dialogueSlice
+	const dialogue = useSelector(state => state.dialogues.data)
+	const dialoguesMessagesStatus = useSelector(state => state.dialogues.status);
 
 	const [selectedDialogue, setSelectedDialogue] = useState(null);
+	//console.log('Selected Dialogue:', JSON.stringify(selectedDialogue, null, 2))
 	const [newMessage, setNewMessage] = useState('');
 
 	// Загружаем пользователей при монтировании
@@ -21,10 +25,16 @@ export default function ChatsContainer({ userId }) {
 		if (usersStatus === 'idle') {
 			dispatch(fetchUsers());
 		}
-		if (dialoguesMessagesStatus === 'idle'){
-			dispatch(fetchDialogues({id: currentUser?.id, bearerToken: currentUser?.bearerToken}))
-		}
+
 	}, [dispatch, usersStatus]);
+
+
+	// Получение диалогов для текущего пользователя
+	useEffect(() => {
+		if (dialoguesMessagesStatus === 'idle'){
+			dispatch(fetchDialogues({userId: userId, bearerToken: bearerToken}))
+		}
+	}, [dispatch, dialoguesMessagesStatus, currentUser])
 
 	// Обработчик события нажатия клавиш
 	useEffect(() => {
@@ -58,11 +68,16 @@ export default function ChatsContainer({ userId }) {
 		.map(user => ({
 			id: user.id,
 			name: `${user.firstname} ${user.lastname}`,
+			email: user.email,
 			lastMessage: 'Начните переписку', // Последнее сообщение, если нет истории
 			userId: userId,
 			messages: [], // Пустой массив сообщений, т.к. это тестовые данные
 		}));
 
+	//console.log("Dialog: " + JSON.stringify(dialogue, null, 2))
+	// Ищем диалог с конкретным пользователем, включающим сообщения
+	const dialogueForChatMessages = dialogue.find(dialogue => dialogue?.interlocutor?.email === selectedDialogue?.email) || selectedDialogue;
+	//console.log("DialogForChatMessages: " + JSON.stringify(dialogueForChatMessages, null, 2))
 	return (
 		<div className='container'>
 			<div className={styles.chat_container}>
@@ -76,10 +91,11 @@ export default function ChatsContainer({ userId }) {
 				</div>
 				{selectedDialogue ? (
 					<ChatMessages
-						dialogue={selectedDialogue}
+						dialogue={dialogueForChatMessages}
 						onSendMessage={handleSendMessage}
 						newMessage={newMessage}
 						setNewMessage={setNewMessage}
+						selectedDialogue={selectedDialogue}
 					/>
 				) : (
 					<div className={styles.no_dialogue}>
