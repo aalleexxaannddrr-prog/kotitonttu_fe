@@ -13,7 +13,6 @@ export default function ChatsContainer({ userId }) {
 	const currentUser = useSelector(state => state.auth.user); // Получаем текущего пользователя
 	const {bearerToken} = useSelector(state => state.auth)
 	// Состояния диалогов получаемые через dialogueSlice
-	const dialogue = useSelector(state => state.dialogues.data)
 	const dialoguesMessagesStatus = useSelector(state => state.dialogues.status);
 
 	const [selectedDialogue, setSelectedDialogue] = useState(null);
@@ -76,7 +75,7 @@ export default function ChatsContainer({ userId }) {
 
 	//console.log("Dialog: " + JSON.stringify(dialogue, null, 2))
 	// Ищем диалог с конкретным пользователем, включающим сообщения
-	const dialogueForChatMessages = dialogue.find(dialogue => dialogue?.interlocutor?.email === selectedDialogue?.email) || selectedDialogue;
+
 	//console.log("DialogForChatMessages: " + JSON.stringify(dialogueForChatMessages, null, 2))
 	return (
 		<div className='container'>
@@ -91,7 +90,6 @@ export default function ChatsContainer({ userId }) {
 				</div>
 				{selectedDialogue ? (
 					<ChatMessages
-						dialogue={dialogueForChatMessages}
 						onSendMessage={handleSendMessage}
 						newMessage={newMessage}
 						setNewMessage={setNewMessage}
