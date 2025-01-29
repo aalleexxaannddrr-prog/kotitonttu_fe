@@ -7,12 +7,12 @@ export default function UsersContainer() {
    const { users, status, error } = useSelector(state => state.users);
 
    if (status === 'loading') {
-			return <div>Loading...</div>;
-		}
+	   return <div>Loading...</div>;
+   }
 
-		if (status === 'error') {
-			return <div>Error: {error}</div>;
-		}
+	if (status === 'error') {
+		return <div>Error: {error}</div>;
+	}
 
    if(!Array.isArray(users)){
       console.log('Expected types to be an array but got:', users);
@@ -20,6 +20,7 @@ export default function UsersContainer() {
    }
   return (
 			<div className='container'>
+				<h2>Список пользователей</h2>
 				<UserCard users={users} />
 			</div>
 	);

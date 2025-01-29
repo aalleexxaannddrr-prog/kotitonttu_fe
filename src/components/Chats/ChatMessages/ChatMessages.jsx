@@ -119,7 +119,7 @@ export default function ChatMessages({dialogueState, newMessage, setNewMessage, 
 	// Получение даты без времени в виде строки
 	const getDateString = (date) => {
 		const d = new Date(date);
-		return d.toISOString().split('T')[0];
+		return d.toLocaleDateString('ru-Ru', { day: 'numeric', month: 'long', year: 'numeric' });
 	};
 
 	let lastDate = null;
@@ -129,7 +129,7 @@ export default function ChatMessages({dialogueState, newMessage, setNewMessage, 
 				{messages.map((message, index) => {
 					const isSentByUser = message.senderId === userId; // Отправлено ли сообщение текущим пользователем
 					const date = message.createdAt? new Date(message.createdAt + "Z"): new Date();
-					const messageDateString = message.createdAt ? getDateString(message.createdAt) : null;
+					const messageDateString = message.createdAt ? getDateString(message.createdAt + 'Z') : null;
 					const showDate = messageDateString && (messageDateString !== lastDate);
 					if (showDate) {
 						lastDate = messageDateString;
@@ -138,7 +138,7 @@ export default function ChatMessages({dialogueState, newMessage, setNewMessage, 
 					<React.Fragment key={index}>
 						{showDate && (
 							<div className={styles.date_separator}>
-								{new Date(lastDate).toLocaleDateString('ru-Ru', { day: 'numeric', month: 'long', year: 'numeric' })}
+								{messageDateString}
 							</div>
 						)}
 						<div

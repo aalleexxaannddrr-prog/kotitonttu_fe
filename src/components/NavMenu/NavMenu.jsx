@@ -10,7 +10,7 @@ export default function NavMenu() {
 
 	const getLinkStyle = path => {
 		return currentPath === path
-			? { color: 'var(--txt-black)' }
+			? { color: 'orange' }
 			: { color: 'inherit' };
 	};
 

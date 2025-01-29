@@ -17,11 +17,36 @@ export default function ChatDialogues({
 		return <div className={styles.error}>Ошибка загрузки диалогов</div>;
 	}
 
+	const sortedUsers = [...users].sort((a, b) => {
+		const aDialogue = dialogueState.find(dialogue => dialogue?.interlocutor?.email === a.email)?.messages;
+		const bDialogue = dialogueState.find(dialogue => dialogue?.interlocutor?.email === b.email)?.messages;
+
+		const aLastMessageDate = aDialogue && aDialogue.length > 0
+			? new Date(aDialogue[aDialogue.length - 1].createdAt + 'Z')
+			: null;
+
+		const bLastMessageDate = bDialogue && bDialogue.length > 0
+			? new Date(bDialogue[bDialogue.length - 1].createdAt + 'Z')
+			: null;
+
+		// Сортировка по дате последнего сообщения
+		if (aLastMessageDate && bLastMessageDate) {
+			return bLastMessageDate - aLastMessageDate; // От большего к меньшему
+		}
+		if (aLastMessageDate) {
+			return -1; // a выше
+		}
+		if (bLastMessageDate) {
+			return 1; // b выше
+		}
+		return 0; // Оба без сообщений
+	});
+
 
 	return (
 		<div className={styles.dialogues_list}>
 			{
-			users.map(user => {
+			sortedUsers.map(user => {
 				const unsortedMessages = dialogueState.find(dialogue => dialogue?.interlocutor?.email === user.email)?.messages;
 				let sortedMessages = null;
 				if (unsortedMessages){

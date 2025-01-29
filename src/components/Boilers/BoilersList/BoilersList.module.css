@@ -1,0 +1,22 @@
+.table_container {
+    margin-top: 20px;
+    color: var(--txt-black);
+    background: var(--white);
+}
+
+.boiler_table {
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.boiler_table th {
+    padding: 5px 10px;
+    border: 1px solid var(--table-grey);
+}
+
+.boiler_table td {
+    text-align: center;
+    padding: 5px 10px;
+    border: 1px solid var(--table-grey);
+}
