@@ -5,8 +5,7 @@ import styles from './ChatMessages.module.css';
 import { LuSend } from 'react-icons/lu';
 import {fetchDialogues} from "../../../store/slices/dialoguesSlice";
 
-export default function ChatMessages({ newMessage, setNewMessage, selectedDialogue }) {
-	const dialogueState = useSelector(state => state.dialogues.data)
+export default function ChatMessages({dialogueState, newMessage, setNewMessage, selectedDialogue }) {
 	let dialogue = dialogueState.find(dialogue => dialogue?.interlocutor?.email === selectedDialogue?.email) || selectedDialogue;
 	const [messages, setMessages] = useState(dialogue.messages || []);
 	const [messagesLength, setMessagesLength] = useState(dialogue.messages.length || 0);

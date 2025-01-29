@@ -14,7 +14,7 @@ export default function ChatsContainer({ userId }) {
 	const {bearerToken} = useSelector(state => state.auth)
 	// Состояния диалогов получаемые через dialogueSlice
 	const dialoguesMessagesStatus = useSelector(state => state.dialogues.status);
-
+	const dialogueState = useSelector(state => state.dialogues.data)
 	const [selectedDialogue, setSelectedDialogue] = useState(null);
 	//console.log('Selected Dialogue:', JSON.stringify(selectedDialogue, null, 2))
 	const [newMessage, setNewMessage] = useState('');
@@ -82,7 +82,8 @@ export default function ChatsContainer({ userId }) {
 			<div className={styles.chat_container}>
 				<div className={styles.dialogues_column}>
 					<ChatDialogues
-						dialogues={dialogues}
+						dialogueState={dialogueState}
+						users={dialogues}
 						onSelect={setSelectedDialogue}
 						selectedDialogue={selectedDialogue}
 						status={usersStatus}
@@ -90,6 +91,7 @@ export default function ChatsContainer({ userId }) {
 				</div>
 				{selectedDialogue ? (
 					<ChatMessages
+						dialogueState={dialogueState}
 						onSendMessage={handleSendMessage}
 						newMessage={newMessage}
 						setNewMessage={setNewMessage}
