@@ -3,7 +3,7 @@ import SparePartsContainer from '../../components/SpareParts/SparePartsContainer
 
 export default function SparePartsPage() {
 	return (
-		<div>
+		<div className="container">
 			<SparePartsContainer/>
 		</div>
 	);

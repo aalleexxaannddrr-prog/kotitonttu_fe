@@ -4,19 +4,17 @@ import { fetchSpareParts } from '../../../store/slices/sparePartsSlice';
 import { updateSparePartById } from '../../../store/slices/updateSparePartSlice';
 import styles from './SparePartsTable.module.css';
 
-export default function SparePartsTable({ bearerToken }) {
+const generateMockPrice = (min, max) => {
+	return (Math.random() * (max - min) + min).toFixed(2);
+};
+
+const SparePartsTable = React.memo(({bearerToken, spares, status, error }) => {
 	const dispatch = useDispatch();
-	const {
-		data: spares,
-		status,
-		error,
-	} = useSelector(state => state.spareParts);
+
 	const [editMode, setEditMode] = useState(null);
 	const [editedData, setEditedData] = useState({});
 
-	useEffect(() => {
-		dispatch(fetchSpareParts({ bearerToken }));
-	}, [dispatch, bearerToken]);
+
 
 	const handleUpdateField = (id, field) => {
 		const updatedValue = editedData[field];
@@ -49,12 +47,12 @@ export default function SparePartsTable({ bearerToken }) {
 	const columns = [
 		{ Header: 'Артикул', accessor: 'articleNumber' },
 		{ Header: 'Название', accessor: 'name' },
-		{ Header: 'ASC Цена (Юань)', accessor: 'ascPriceYuan' },
+		/*{ Header: 'ASC Цена (Юань)', accessor: 'ascPriceYuan' },
 		{ Header: 'Оптовая Цена (Юань)', accessor: 'wholesalePriceYuan' },
-		{ Header: 'Розничная Цена (Юань)', accessor: 'retailPriceYuan' },
-		{ Header: 'ASC Цена (Руб)', accessor: 'ascPriceRub' },
-		{ Header: 'Оптовая Цена (Руб)', accessor: 'wholesalePriceRub' },
-		{ Header: 'Розничная Цена (Руб)', accessor: 'retailPriceRub' },
+		{ Header: 'Розничная Цена (Юань)', accessor: 'retailPriceYuan' },*/
+		{ Header: 'ASC Цена', accessor: 'ascPriceRub', isPrice: true },
+		{ Header: 'Оптовая Цена', accessor: 'wholesalePriceRub', isPrice: true },
+		{ Header: 'Розничная Цена', accessor: 'retailPriceRub', isPrice: true },
 	];
 
 	return (
@@ -118,7 +116,9 @@ export default function SparePartsTable({ bearerToken }) {
 												autoFocus
 											/>
 										) : (
-											spare[column.accessor] || '—'
+											column.isPrice && typeof spare[column.accessor] === 'number'
+												? parseFloat(spare[column.accessor]).toFixed(2)
+												: spare[column.accessor] || '—'
 										)}
 									</td>
 								))}
@@ -128,4 +128,5 @@ export default function SparePartsTable({ bearerToken }) {
 			</table>
 		</div>
 	);
-}
+})
+export default SparePartsTable;
