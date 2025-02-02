@@ -1,6 +1,7 @@
 import React from 'react';
 import BarcodeTable from '../BarcodeTable/BarcodeTable';
 import { useSelector } from 'react-redux';
+import BarcodeForm from "../BarcodeForm/BarcodeForm";
 
 export default function BarcodeTableContainer() {
 	 const bearerToken = useSelector(state => state.auth.bearerToken);
@@ -13,6 +14,7 @@ export default function BarcodeTableContainer() {
 		
 	return (
 		<div className='container'>
+			<BarcodeForm/>
 			<BarcodeTable bearerToken={bearerToken} />
 		</div>
 	);

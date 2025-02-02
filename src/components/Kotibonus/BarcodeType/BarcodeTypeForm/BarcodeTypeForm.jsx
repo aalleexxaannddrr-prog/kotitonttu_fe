@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './BarcodeTypeForm.module.css';
 import { useDispatch } from 'react-redux';
-import { addBarcodeType } from '../../../store/slices/addBarcodeTypeSlice';
+import { addBarcodeType } from '../../../../store/slices/addBarcodeTypeSlice';
 
 function BarcodeTypeForm() {
 	const [points, setPoints] = useState('');
@@ -24,12 +24,19 @@ function BarcodeTypeForm() {
 
 	return (
 		<form className={styles.form_block} onSubmit={handleSubmit}>
-			<label htmlFor='points'>Балы:</label>
+			<label htmlFor='points'>Баллы:</label>
 			<input
 				type='number'
 				id='points'
 				value={points}
-				onChange={e => setPoints(e.target.value)}
+				onKeyPress={(event) => {
+					if (!/[0-9]/.test(event.key)){
+						event.preventDefault();
+					}
+				}}
+				onChange={e => {
+					if (Number(e.target.value) < 2_147_483_648) setPoints(e.target.value) // Проверяем, не больше ли значение чем int 32
+				}}
 				required
 			/>
 			<label htmlFor='type'>Тип:</label>
@@ -37,7 +44,9 @@ function BarcodeTypeForm() {
 				type='text'
 				id='type'
 				value={type}
-				onChange={e => setType(e.target.value)}
+				onChange={e => {
+					if (e.target.value.length < 256) setType(e.target.value) // Проверяем, не больше ли длина строки максимально возможного значения
+				}}
 				required
 			/>
 			<label htmlFor='subtype'>Подтип:</label>
@@ -45,7 +54,9 @@ function BarcodeTypeForm() {
 				type='text'
 				id='subtype'
 				value={subtype}
-				onChange={e => setSubtype(e.target.value)}
+				onChange={e => {
+					if (e.target.value.length < 256) setSubtype(e.target.value) // Проверяем, не больше ли длина строки максимально возможного значения
+				}}
 				required
 			/>
 			<button className={styles.form_btn} type='submit'>

@@ -1,45 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBarcodes } from '../../../store/slices/allBarcodeDataSlice';
-import { updateBarcode } from '../../../store/slices/updateBarcodeSlice';
-import { deleteBarcode } from '../../../store/slices/deleteBarcodeSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchBarcodeTypes } from '../../../../store/slices/barcodeDataSlice';
+import { updateBarcodeType } from '../../../../store/slices/updateBarcodeTypeSlice';
+import styles from './BarcodeTypeTableKotibonus.module.css';
+import { deleteBarcodeType } from '../../../../store/slices/deleteBarcodeTypeSlice';
 import { IoClose } from 'react-icons/io5';
-import styles from './BarcodeTable.module.css';
 
-export default function BarcodeTable({ bearerToken }) {
+export default function BarcodeTypeTableKotibonus() {
 	const dispatch = useDispatch();
-	const { data, status, error } = useSelector(state => state.allBarcodeData);
+	const { data, status, error } = useSelector(state => state.barcodeTypeData);
 
+	// Состояния для редактирования полей
 	const [editMode, setEditMode] = useState(null);
 	const [editedData, setEditedData] = useState({});
 	const [originalData, setOriginalData] = useState({});
 
 	useEffect(() => {
-		dispatch(fetchBarcodes());
-	}, [dispatch, bearerToken]);
+		dispatch(fetchBarcodeTypes());
+	}, [dispatch]);
 
+	// Обработчик обновления данных
 	const handleUpdateField = (id, field) => {
-		const updatedValue = editedData[id]?.[field];
+		const updatedData = editedData[id][field];
 
-		if (
-			updatedValue !== undefined &&
-			updatedValue !== originalData[id]?.[field]
-		) {
+		if (updatedData !== originalData[id][field]) {
 			const updateData = {
 				id,
-				code:
-					field === 'code'
-						? updatedValue
-						: data.find(item => item.id === id).code,
-				used:
-					field === 'used'
-						? updatedValue
-						: data.find(item => item.id === id).used,
+				points:
+					field === 'points'
+						? updatedData
+						: data.find(item => item.id === id).points,
+				type:
+					field === 'type'
+						? updatedData
+						: data.find(item => item.id === id).type,
+				subtype:
+					field === 'subtype'
+						? updatedData
+						: data.find(item => item.id === id).subtype,
 			};
 
-			dispatch(updateBarcode(updateData)).then(() => {
-				window.location.reload(); // Перезагрузка страницы после обновления
-			});
+			dispatch(updateBarcodeType(updateData));
+			window.location.reload();
 		}
 
 		setEditMode(null);
@@ -65,16 +67,17 @@ export default function BarcodeTable({ bearerToken }) {
 		}));
 	};
 
+	// Обработчик удаления
 	const handleDelete = id => {
-		dispatch(deleteBarcode({ id, bearerToken: 'yourBearerToken' })).then(() => {
-			window.location.reload(); // Перезагрузка страницы после удаления
-		});
+		dispatch(deleteBarcodeType(id));
+		window.location.reload();
 	};
 
 	const columns = [
-		{ Header: 'Код', accessor: 'code' },
-		{ Header: 'Статус', accessor: 'used' },
-		{ Header: '', accessor: 'delete' },
+		{ Header: 'Баллы', accessor: 'points' },
+		{ Header: 'Тип', accessor: 'type' },
+		{ Header: 'Подтип', accessor: 'subtype' },
+		{ Header: '', accessor: 'delete' }, // Добавляем столбец для удаления
 	];
 
 	return (
@@ -116,12 +119,11 @@ export default function BarcodeTable({ bearerToken }) {
 										{editMode?.id === row.id &&
 										editMode.field === column.accessor ? (
 											<input
-												type={column.accessor === 'code' ? 'text' : 'checkbox'}
+												type={column.accessor === 'points' ? 'number' : 'text'}
 												value={
-													column.accessor === 'used'
-														? editedData[row.id]?.[column.accessor]
-														: editedData[row.id]?.[column.accessor] ||
-														  row[column.accessor]
+													editedData[row.id]?.[column.accessor] !== undefined
+														? editedData[row.id][column.accessor]
+														: row[column.accessor]
 												}
 												onChange={e =>
 													setEditedData(prev => ({
@@ -150,12 +152,6 @@ export default function BarcodeTable({ bearerToken }) {
 											>
 												<IoClose size={24} />
 											</button>
-										) : column.accessor === 'used' ? (
-											<span>
-												{row[column.accessor]
-													? 'Используется'
-													: 'Не используется'}
-											</span>
 										) : (
 											<span>{row[column.accessor]}</span>
 										)}

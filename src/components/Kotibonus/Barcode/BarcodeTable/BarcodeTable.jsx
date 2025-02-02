@@ -1,47 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchBarcodeTypes } from '../../../store/slices/barcodeDataSlice';
-import { updateBarcodeType } from '../../../store/slices/updateBarcodeTypeSlice';
-import styles from './BarcodeTypeTableKotibonus.module.css';
-import { deleteBarcodeType } from '../../../store/slices/deleteBarcodeTypeSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBarcodes } from '../../../../store/slices/allBarcodeDataSlice';
+import { updateBarcode } from '../../../../store/slices/updateBarcodeSlice';
+import { deleteBarcode } from '../../../../store/slices/deleteBarcodeSlice';
 import { IoClose } from 'react-icons/io5';
+import styles from './BarcodeTable.module.css';
 
-export default function BarcodeTypeTableKotibonus() {
+export default function BarcodeTable({ bearerToken }) {
 	const dispatch = useDispatch();
-	const { data, status, error } = useSelector(state => state.barcodeTypeData);
+	const { data, status, error } = useSelector(state => state.allBarcodeData);
 
-	// Состояния для редактирования полей
 	const [editMode, setEditMode] = useState(null);
 	const [editedData, setEditedData] = useState({});
 	const [originalData, setOriginalData] = useState({});
 
 	useEffect(() => {
-		dispatch(fetchBarcodeTypes());
-	}, [dispatch]);
+		dispatch(fetchBarcodes());
+	}, [dispatch, bearerToken]);
 
-	// Обработчик обновления данных
 	const handleUpdateField = (id, field) => {
-		const updatedData = editedData[id][field];
+		const updatedValue = editedData[id]?.[field];
 
-		if (updatedData !== originalData[id][field]) {
+		if (
+			updatedValue !== undefined &&
+			updatedValue !== originalData[id]?.[field]
+		) {
 			const updateData = {
 				id,
-				points:
-					field === 'points'
-						? updatedData
-						: data.find(item => item.id === id).points,
-				type:
-					field === 'type'
-						? updatedData
-						: data.find(item => item.id === id).type,
-				subtype:
-					field === 'subtype'
-						? updatedData
-						: data.find(item => item.id === id).subtype,
+				code:
+					field === 'code'
+						? updatedValue
+						: data.find(item => item.id === id).code,
+				used:
+					field === 'used'
+						? updatedValue
+						: data.find(item => item.id === id).used,
 			};
 
-			dispatch(updateBarcodeType(updateData));
-			window.location.reload();
+			dispatch(updateBarcode(updateData)).then(() => {
+				//window.location.reload(); // Перезагрузка страницы после обновления
+			});
 		}
 
 		setEditMode(null);
@@ -67,17 +65,16 @@ export default function BarcodeTypeTableKotibonus() {
 		}));
 	};
 
-	// Обработчик удаления
 	const handleDelete = id => {
-		dispatch(deleteBarcodeType(id));
-		window.location.reload();
+		dispatch(deleteBarcode({ id, bearerToken: 'yourBearerToken' })).then(() => {
+			window.location.reload(); // Перезагрузка страницы после удаления
+		});
 	};
 
 	const columns = [
-		{ Header: 'Балы', accessor: 'points' },
-		{ Header: 'Тип', accessor: 'type' },
-		{ Header: 'Подтип', accessor: 'subtype' },
-		{ Header: '', accessor: 'delete' }, // Добавляем столбец для удаления
+		{ Header: 'Код', accessor: 'code' },
+		{ Header: 'Статус', accessor: 'used' },
+		{ Header: '', accessor: 'delete' },
 	];
 
 	return (
@@ -119,11 +116,12 @@ export default function BarcodeTypeTableKotibonus() {
 										{editMode?.id === row.id &&
 										editMode.field === column.accessor ? (
 											<input
-												type={column.accessor === 'points' ? 'number' : 'text'}
+												type={column.accessor === 'code' ? 'text' : 'checkbox'}
 												value={
-													editedData[row.id]?.[column.accessor] !== undefined
-														? editedData[row.id][column.accessor]
-														: row[column.accessor]
+													column.accessor === 'used'
+														? editedData[row.id]?.[column.accessor]
+														: editedData[row.id]?.[column.accessor] ||
+														  row[column.accessor]
 												}
 												onChange={e =>
 													setEditedData(prev => ({
@@ -138,6 +136,7 @@ export default function BarcodeTypeTableKotibonus() {
 													handleUpdateField(row.id, column.accessor)
 												}
 												onKeyPress={e => {
+													console.log(row.id, column.accessor)
 													if (e.key === 'Enter') {
 														handleUpdateField(row.id, column.accessor);
 													}
@@ -152,6 +151,12 @@ export default function BarcodeTypeTableKotibonus() {
 											>
 												<IoClose size={24} />
 											</button>
+										) : column.accessor === 'used' ? (
+											<span>
+												{row[column.accessor]
+													? 'Используется'
+													: 'Не используется'}
+											</span>
 										) : (
 											<span>{row[column.accessor]}</span>
 										)}

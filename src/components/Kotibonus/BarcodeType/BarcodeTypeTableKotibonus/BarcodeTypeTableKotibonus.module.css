@@ -17,9 +17,10 @@
 
 .barcode_table td,
 .barcode_table th {
-   width: 200px;
-   white-space: nowrap;
-   overflow: hidden;
+   width: auto;
+   white-space: normal;
+   overflow-wrap: break-word;
+   word-wrap: break-word;
    text-overflow: ellipsis;
 }
 
@@ -37,6 +38,7 @@
    text-align: center;
    padding: 5px 10px;
    border: 1px solid var(--table-grey);
+   max-width: 200px;
 }
 
 .barcode_table td:first-child {

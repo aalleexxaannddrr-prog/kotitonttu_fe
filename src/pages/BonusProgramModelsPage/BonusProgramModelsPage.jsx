@@ -1,6 +1,6 @@
 import React from 'react';
-import BarcodeTypeForm from '../../components/Kotibonus/BarcodeTypeForm/BarcodeTypeForm';
-import BarcodeTypeTableKotibonus from '../../components/Kotibonus/BarcodeTypeTableKotibonus/BarcodeTypeTableKotibonus';
+import BarcodeTypeForm from '../../components/Kotibonus/BarcodeType/BarcodeTypeForm/BarcodeTypeForm';
+import BarcodeTypeTableKotibonus from '../../components/Kotibonus/BarcodeType/BarcodeTypeTableKotibonus/BarcodeTypeTableKotibonus';
 
 export default function BonusProgramModelsPage() {
 	return (

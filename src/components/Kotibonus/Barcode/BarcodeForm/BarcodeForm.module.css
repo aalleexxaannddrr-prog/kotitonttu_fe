@@ -1,0 +1,101 @@
+.form_block {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+    color: var(--txt-white);
+}
+
+.form_block input {
+    display: flex;
+    padding: 8px;
+    width: 50%;
+    max-width: 300px;
+    outline: none;
+    border: 1px solid var(--txt-black);
+    border-radius: 8px;
+}
+
+.form_block input:hover,
+.form_block input:focus {
+    border: 1px solid var(--orange);
+}
+
+input::placeholder {
+    color: #a0a0a0;
+    font-size: 12px;
+}
+
+.form_btn {
+    padding: 10px;
+    width: 50%;
+    max-width: 200px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    color: var(--txt-white);
+}
+
+.form_btn:hover{
+    background: var(--btn-hover);
+}
+
+.select_block {
+    position: relative;
+    max-width: 100%;
+}
+
+.custom_select_outer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--txt-white);
+    background-color: var(--orange);
+    font-size: 14px;
+}
+
+.custom_select {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--orange);
+    border-radius: 8px;
+    z-index: 10;
+    font-size: 14px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.custom_select::-webkit-scrollbar {
+    width: 10px;
+}
+
+.custom_select::-webkit-scrollbar-track {
+    background: none;
+}
+
+.custom_select::-webkit-scrollbar-thumb {
+    background-color: lightgray;
+    border-radius: 5px;
+    border: 3px solid transparent;
+}
+
+.custom_select li {
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.custom_select li:hover,
+.custom_select li:focus{
+    background-color: var(--select-hover);
+}
