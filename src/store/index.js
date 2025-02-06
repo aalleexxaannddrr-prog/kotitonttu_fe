@@ -6,6 +6,7 @@ import serviceCreationReducer from './slices/serviceCreationSlice';
 import authReduser from './slices/authSlice';
 import serviceDeletionSlice from './slices/serviceDeletionSlice';
 import usersReducer from './slices/usersSlice';
+import usersPaginatedReducer from './slices/usersPaginatedSlice'
 import barcodeTypeReducer from './slices/addBarcodeTypeSlice';
 import barcodeDataReducer from './slices/barcodeDataSlice';
 import allBarcodeDataReducer from './slices/allBarcodeDataSlice';
@@ -42,6 +43,7 @@ export const store = configureStore({
 		serviceCreation: serviceCreationReducer,
 		serviceDeletionSlice: serviceDeletionSlice,
 		auth: authReduser,
+		usersPag: usersPaginatedReducer,
 		users: usersReducer,
 		barcodeTypes: barcodeTypeReducer,
 		barcodeTypeData: barcodeDataReducer,

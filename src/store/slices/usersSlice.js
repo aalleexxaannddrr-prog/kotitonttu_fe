@@ -9,6 +9,7 @@ const initialState = {
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
 	try {
+		console.trace(`Запрос на получение пользователей вызван в:`, new Error().stack);
 		const response = await fetch('/admin/allUsers?page=0&size=10', {
 			method: 'GET',
 			redirect: 'follow',

@@ -3,3 +3,17 @@
    flex-wrap: wrap;
    gap: 30px;
 }
+
+.buttonsContainer{
+   display: flex;
+   justify-content: center;
+   align-content: center;
+}
+
+.loadMoreButton{
+   padding: 10px;
+}
+
+.loadMoreButton:disabled{
+   background: var(--border-chat);
+}
