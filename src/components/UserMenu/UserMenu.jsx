@@ -1,19 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './UserMenu.module.css';
 import { FaRegCircleUser } from 'react-icons/fa6';
 import { logout } from '../../store/slices/authSlice';
 import { fetchUsers } from '../../store/slices/usersSlice';
+import {fetchRejectedBonusRequests} from "../../store/slices/rejectedBonusDataSlice";
+import {fetchUsersPag} from "../../store/slices/usersPaginatedSlice";
 
 export default function UserMenu({ email }) {
 	const dispatch = useDispatch();
-	const { users } = useSelector(state => state.users); // Получаем список всех пользователей
 	const [isDropdownVisible, setDropdownVisible] = useState(false);
+	const { users, status, error, currentPage, totalPages } = useSelector(state => state.usersPag);
+	const hasLoaded = useRef(false);
 
-	// Запрашиваем пользователей при монтировании компонента
 	useEffect(() => {
-		dispatch(fetchUsers());
+		if (!hasLoaded.current) {
+			loadMoreUsers(0);
+			hasLoaded.current = true;
+		}
+		dispatch(fetchRejectedBonusRequests());
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (currentPage < totalPages - 1) {
+			loadMoreUsers(currentPage + 1); // Загружаем следующую страницу
+		}
+	}, [currentPage, totalPages]);
+
+	const loadMoreUsers = async (page) => {
+		try {
+			await dispatch(fetchUsersPag(page)); // Загружаем текущую страницу
+		} catch (error) {
+			console.error("Ошибка при загрузке пользователей:", error);
+		}
+	};
 
 	// Ищем пользователя по email из списка пользователей
 	const user = users.find(

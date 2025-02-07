@@ -12,8 +12,6 @@ export default function UsersContainer() {
 
 	useEffect(() => {
 		if (!hasLoaded.current) {
-			// Сбрасываем пользователей перед загрузкой
-			dispatch({ type: "usersPag/resetUsers" });
 			dispatch(fetchUsersPag(0)); // Загружаем первую страницу при загрузке компонента
 			hasLoaded.current = true;
 		}
@@ -42,9 +40,11 @@ export default function UsersContainer() {
 			<h2>Список пользователей</h2>
 			<UserCard users={users} />
 			<div className={styles.buttonsContainer}>
-				<button className={styles.loadMoreButton} onClick={() => loadMoreUsers(currentPage + 1)} disabled={currentPage === totalPages - 1}>
-					Загрузить еще
-				</button>
+				{currentPage !== totalPages -1 &&
+					<button className={styles.loadMoreButton} onClick={() => loadMoreUsers(currentPage + 1)}>
+						Загрузить еще
+					</button>
+				}
 			</div>
 		</div>
 	);

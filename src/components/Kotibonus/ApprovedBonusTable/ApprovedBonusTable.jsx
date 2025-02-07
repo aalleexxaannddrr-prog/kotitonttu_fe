@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './ApprovedBonusTable.module.css';
 import { fetchUsers } from '../../../store/slices/usersSlice';
 import { fetchApprovedBonusRequests } from '../../../store/slices/approvedBonusDataSlice';
+import {fetchRejectedBonusRequests} from "../../../store/slices/rejectedBonusDataSlice";
+import {fetchUsersPag} from "../../../store/slices/usersPaginatedSlice";
 
 export default function ApprovedBonusTable({ bearerToken }) {
 	const dispatch = useDispatch();
@@ -12,13 +14,30 @@ export default function ApprovedBonusTable({ bearerToken }) {
 	const { data: approvedBonusData, status: approvedStatus } = useSelector(
 		state => state.approvedBonusData
 	);
-	const { users, status: userStatus } = useSelector(state => state.users);
+	const { users, status, error, currentPage, totalPages } = useSelector(state => state.usersPag);
+	const hasLoaded = useRef(false);
 
-	// Fetching required data
 	useEffect(() => {
+		if (!hasLoaded.current) {
+			loadMoreUsers(0);
+			hasLoaded.current = true;
+		}
 		dispatch(fetchApprovedBonusRequests());
-		dispatch(fetchUsers());
-	}, [dispatch, bearerToken]);
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (currentPage < totalPages - 1) {
+			loadMoreUsers(currentPage + 1); // Загружаем следующую страницу
+		}
+	}, [currentPage, totalPages]);
+
+	const loadMoreUsers = async (page) => {
+		try {
+			await dispatch(fetchUsersPag(page)); // Загружаем текущую страницу
+		} catch (error) {
+			console.error("Ошибка при загрузке пользователей:", error);
+		}
+	};
 
 	// Helper function: get user by email
 	const getUserByEmail = email => {
@@ -56,11 +75,11 @@ export default function ApprovedBonusTable({ bearerToken }) {
 	];
 
 	// Обработка состояний загрузки и ошибок
-	if (approvedStatus === 'loading' || userStatus === 'loading') {
+	if (approvedStatus === 'loading' || status === 'loading') {
 		return <div>Loading...</div>;
 	}
 
-	if (approvedStatus === 'error' || userStatus === 'error') {
+	if (approvedStatus === 'error' || status === 'error') {
 		return <div>Error loading data</div>;
 	}
 

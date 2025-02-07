@@ -26,19 +26,31 @@ export const fetchUserIdAfterLogin = createAsyncThunk(
 	'auth/fetchUserIdAfterLogin',
 	async ({ email, bearerToken }, { rejectWithValue }) => {
 		try {
-			const response = await fetch('/admin/allUsers?page=0&size=10', {
-				method: 'GET',
-				headers: {
-					Authorization: `Bearer ${bearerToken}`,
-				},
-			});
+			let allUsers = []; // Массив для хранения всех пользователей
+			let currentPage = 0;
+			let totalPages = 0;
 
-			if (!response.ok) {
-				throw new Error('Failed to fetch userId');
-			}
+			// Загрузка пользователей с пагинацией
+			do {
+				const response = await fetch(`/admin/allUsers?page=${currentPage}&size=10`, {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${bearerToken}`,
+					},
+				});
 
-			const data = await response.json();
-			const user = data.users.find(user => user.email === email);
+				if (!response.ok) {
+					throw new Error('Failed to fetch users');
+				}
+
+				const data = await response.json();
+
+				allUsers = [...allUsers, ...data.users]; // Объединяем загруженных пользователей
+				totalPages = data.totalPages; // Получаем общее количество страниц
+				currentPage++; // Переходим к следующей странице
+			} while (currentPage < totalPages); // Загружаем пока есть страницы
+
+			const user = allUsers.find(user => user.email === email); // Ищем пользователя по email
 
 			if (!user) {
 				throw new Error('User not found');

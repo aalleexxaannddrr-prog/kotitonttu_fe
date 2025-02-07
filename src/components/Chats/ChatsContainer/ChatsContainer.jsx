@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ChatDialogues from '../ChatDialogues/ChatDialogues';
 import ChatMessages from '../ChatMessages/ChatMessages';
 import styles from './ChatsContainer.module.css';
 import { fetchUsers } from '../../../store/slices/usersSlice';
 import {fetchDialogues} from "../../../store/slices/dialoguesSlice";
+import {fetchUsersPag} from "../../../store/slices/usersPaginatedSlice";
 
 export default function ChatsContainer({ userId }) {
 	const dispatch = useDispatch();
-	const users = useSelector(state => state.users.users); // Получаем список пользователей
-	const usersStatus = useSelector(state => state.users.status);
+	const { users, status, error, currentPage, totalPages } = useSelector(state => state.usersPag);
+	const hasLoaded = useRef(false);
 	const currentUser = useSelector(state => state.auth.user); // Получаем текущего пользователя
 	const {bearerToken} = useSelector(state => state.auth)
 	// Состояния диалогов получаемые через dialogueSlice
@@ -21,11 +22,17 @@ export default function ChatsContainer({ userId }) {
 
 	// Загружаем пользователей при монтировании
 	useEffect(() => {
-		if (usersStatus === 'idle') {
-			dispatch(fetchUsers());
+		if (!hasLoaded.current) {
+			dispatch(fetchUsersPag(0));
+			hasLoaded.current = true;
 		}
+	}, [dispatch]);
 
-	}, [dispatch, usersStatus]);
+	const loadMoreUsers = () => {
+		if (currentPage < totalPages - 1) {
+			dispatch(fetchUsersPag(currentPage + 1)); // Загружаем следующую страницу
+		}
+	};
 
 
 	// Получение диалогов для текущего пользователя
@@ -86,7 +93,10 @@ export default function ChatsContainer({ userId }) {
 						users={dialogues}
 						onSelect={setSelectedDialogue}
 						selectedDialogue={selectedDialogue}
-						status={usersStatus}
+						status={status}
+						loadMore={loadMoreUsers}
+						totalPages={totalPages}
+						currentPage={currentPage}
 					/>
 				</div>
 				{selectedDialogue ? (

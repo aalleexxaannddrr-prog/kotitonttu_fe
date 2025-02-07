@@ -57,3 +57,11 @@
    color: var(--error);
    font-size: 14px;
 }
+
+.loadMoreButton{
+   padding: 10px;
+}
+
+.loadMoreButton:disabled{
+   background: var(--border-chat);
+}

@@ -1,20 +1,44 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './ApprovedVerificationTable.module.css';
 import { fetchUsers } from '../../../../store/slices/usersSlice';
+import {fetchApprovedPassVerificationData} from "../../../../store/slices/approvedPassVerificationDataSlice";
+import {fetchUsersPag} from "../../../../store/slices/usersPaginatedSlice";
 
 export default function ApprovedVerificationTable({ bearerToken }) {
 	const dispatch = useDispatch();
 	const { data: approvedData, status: approvedStatus } = useSelector(
 		state => state.approvedPassVerificationData
 	);
-	const { users, status: userStatus } = useSelector(state => state.users);
+	const { users, userStatus, error, currentPage, totalPages } = useSelector(state => state.usersPag);
+	const hasLoaded = useRef(false);
+
+	// Загружаем пользователей и данные верификаций
+	useEffect(() => {
+		if (!hasLoaded.current) {
+			loadMoreUsers(0);
+			hasLoaded.current = true;
+		}
+		if (approvedStatus === 'idle') {
+			dispatch(fetchApprovedPassVerificationData());
+		}
+	}, [dispatch, userStatus, approvedStatus, bearerToken]);
 
 	useEffect(() => {
-		dispatch(fetchUsers()); // Загружаем пользователей
-	}, [dispatch, bearerToken]);
+		if (currentPage < totalPages - 1) {
+			loadMoreUsers(currentPage + 1); // Загружаем следующую страницу
+		}
+	}, [currentPage, totalPages]);
 
+
+	const loadMoreUsers = async (page) => {
+		try {
+			await dispatch(fetchUsersPag(page)); // Загружаем текущую страницу
+		} catch (error) {
+			console.error("Ошибка при загрузке пользователей:", error);
+		}
+	};
 	// Получить пользователя по email
 	const getUserByEmail = email => {
 		return users?.find(

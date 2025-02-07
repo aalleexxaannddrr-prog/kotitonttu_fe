@@ -10,7 +10,7 @@ const initialState = {
 
 export const fetchUsersPag = createAsyncThunk('users/fetchUsersPag', async (page) => {
     try {
-        const responseText = `/admin/allUsers?page=${page || 0}&size=3`
+        const responseText = `/admin/allUsers?page=${page || 0}&size=20`
         const response = await fetch(responseText, {
             method: 'GET',
             redirect: 'follow',
@@ -50,7 +50,11 @@ const usersPaginatedSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchUsersPag.fulfilled, (state, action) => {
-                state.users = [...state.users, ...action.payload.users];
+                if (action.payload.currentPage === 0) {
+                    state.users = action.payload.users; // Если это первая страница, обновляем пользователей
+                } else {
+                    state.users = [...state.users, ...action.payload.users]; // Добавляем новых пользователей
+                }
                 state.currentPage = action.payload.currentPage;
                 state.totalPages = action.payload.totalPages
                 state.status = 'ready';

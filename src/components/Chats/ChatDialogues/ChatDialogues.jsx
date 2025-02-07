@@ -7,6 +7,9 @@ export default function ChatDialogues({
 	onSelect,
 	selectedDialogue,
 	status,
+	loadMore,
+	totalPages,
+	currentPage
 }) {
 	const LAST_MESSAGE_MAX_LENGTH = 35
 	if (status === 'loading') {
@@ -67,6 +70,11 @@ export default function ChatDialogues({
 					<p>{sortedMessages ? (sortedMessages[0].messageContent.length > LAST_MESSAGE_MAX_LENGTH ? sortedMessages[0].messageContent.slice(0,LAST_MESSAGE_MAX_LENGTH)+"...": sortedMessages[0].messageContent): user.lastMessage}</p>
 				</div>)
 			})}
+			{currentPage !== totalPages - 1 &&
+				<button className={styles.loadMoreButton} onClick={loadMore}>
+					Загрузить еще
+				</button>
+			}
 		</div>
 	);
 }

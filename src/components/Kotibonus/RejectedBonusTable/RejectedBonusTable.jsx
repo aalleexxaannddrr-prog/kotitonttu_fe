@@ -1,21 +1,40 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'; // Добавлено
 import styles from './RejectedBonusTable.module.css';
 import { fetchUsers } from '../../../store/slices/usersSlice';
 import { fetchRejectedBonusRequests } from '../../../store/slices/rejectedBonusDataSlice';
+import {fetchUsersPag} from "../../../store/slices/usersPaginatedSlice";
 
 export default function RejectedBonusTable() {
 	const dispatch = useDispatch();
 	const { data: rejectedBonusData, status: bonusStatus } = useSelector(
 		state => state.rejectedBonusData
 	);
-	const { users, status: userStatus } = useSelector(state => state.users);
+	const { users, status, error, currentPage, totalPages } = useSelector(state => state.usersPag);
+	const hasLoaded = useRef(false);
 
 	useEffect(() => {
+		if (!hasLoaded.current) {
+			loadMoreUsers(0);
+			hasLoaded.current = true;
+		}
 		dispatch(fetchRejectedBonusRequests());
-		dispatch(fetchUsers());
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (currentPage < totalPages - 1) {
+			loadMoreUsers(currentPage + 1); // Загружаем следующую страницу
+		}
+	}, [currentPage, totalPages]);
+
+	const loadMoreUsers = async (page) => {
+		try {
+			await dispatch(fetchUsersPag(page)); // Загружаем текущую страницу
+		} catch (error) {
+			console.error("Ошибка при загрузке пользователей:", error);
+		}
+	};
 
 	const getUserByEmail = email => {
 		return users.find(
@@ -44,11 +63,11 @@ export default function RejectedBonusTable() {
 		{ Header: 'Статус', accessor: 'status' },
 	];
 
-	if (bonusStatus === 'loading' || userStatus === 'loading') {
+	if (bonusStatus === 'loading' || status === 'loading') {
 		return <div>Loading...</div>;
 	}
 
-	if (bonusStatus === 'error' || userStatus === 'error') {
+	if (bonusStatus === 'error' || status === 'error') {
 		return <div>Error loading data</div>;
 	}
 

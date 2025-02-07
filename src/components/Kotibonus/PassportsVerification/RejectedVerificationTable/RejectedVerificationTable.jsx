@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './RejectedVerificationTable.module.css';
 import { fetchUsers } from '../../../../store/slices/usersSlice';
 import { fetchRejectedPassVerificationData } from '../../../../store/slices/rejectedPassVerificationData';
+import {fetchUsersPag} from "../../../../store/slices/usersPaginatedSlice";
 
 export default function RejectedVerificationTable({ bearerToken }) {
 	const dispatch = useDispatch();
@@ -14,21 +15,33 @@ export default function RejectedVerificationTable({ bearerToken }) {
 		status: verificationStatus,
 		error: verificationError,
 	} = useSelector(state => state.rejectedPassVerificationData);
-	const {
-		users,
-		status: userStatus,
-		error: userError,
-	} = useSelector(state => state.users);
+	const { users, status, error, currentPage, totalPages } = useSelector(state => state.usersPag);
+	const hasLoaded = useRef(false);
 
 	// Загружаем пользователей и данные верификаций
 	useEffect(() => {
-		if (userStatus === 'idle') {
-			dispatch(fetchUsers());
+		if (!hasLoaded.current) {
+			loadMoreUsers(0);
+			hasLoaded.current = true;
 		}
 		if (verificationStatus === 'idle') {
 			dispatch(fetchRejectedPassVerificationData());
 		}
-	}, [dispatch, userStatus, verificationStatus, bearerToken]);
+	}, [dispatch, status, verificationStatus, bearerToken]);
+
+	useEffect(() => {
+		if (currentPage < totalPages - 1) {
+			loadMoreUsers(currentPage + 1); // Загружаем следующую страницу
+		}
+	}, [currentPage, totalPages]);
+
+	const loadMoreUsers = async (page) => {
+		try {
+			await dispatch(fetchUsersPag(page)); // Загружаем текущую страницу
+		} catch (error) {
+			console.error("Ошибка при загрузке пользователей:", error);
+		}
+	};
 
 	// Функция для получения данных пользователя по email
 	const getUserByEmail = email => {
@@ -45,16 +58,16 @@ export default function RejectedVerificationTable({ bearerToken }) {
 		{ Header: 'Статус', accessor: 'status' },
 	];
 
-	if (verificationStatus === 'loading' || userStatus === 'loading') {
+	if (verificationStatus === 'loading' || status === 'loading') {
 		return <div>Загрузка...</div>;
 	}
 
-	if (verificationStatus === 'error' || userStatus === 'error') {
+	if (verificationStatus === 'error' || status === 'error') {
 		return (
 			<div>
 				Ошибка загрузки данных:
 				<p>{verificationError || 'Verification Error'}</p>
-				<p>{userError || 'User Error'}</p>
+				<p>{error || 'User Error'}</p>
 			</div>
 		);
 	}
