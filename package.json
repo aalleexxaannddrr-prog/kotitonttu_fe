@@ -2,7 +2,7 @@
 	"name": "kotitonttu",
 	"version": "0.1.0",
 	"private": true,
-	"proxy": "http://31.129.102.70:8080",
+	"proxy": "http://84.252.140.147:8080",
 	"dependencies": {
 		"@babel/core": "^7.16.0",
 		"@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",

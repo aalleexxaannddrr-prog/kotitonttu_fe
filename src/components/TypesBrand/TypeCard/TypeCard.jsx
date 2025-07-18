@@ -4,7 +4,7 @@ import TitleH2 from "../../Text/TitleH2/TitleH2";
 import { Link } from "react-router-dom";
 
 export default function TypeCard({ id, title, description, path }) {
-	const imageUrl = `http://31.129.102.70:8080/types/all/${path}`;
+	const imageUrl = `http://84.252.140.147:8080/types/all/${path}`;
 	console.log("Image URL:", imageUrl); // Логирование URL изображения
 
 	return (
